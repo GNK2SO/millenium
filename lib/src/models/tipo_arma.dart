@@ -1,0 +1,1 @@
+enum TipoArma { CORPO_A_CORPO, DISTANCIA }

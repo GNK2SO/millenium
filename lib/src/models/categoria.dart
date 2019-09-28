@@ -1,0 +1,1 @@
+enum Categoria { BASICA, NORMAL, EPICA, LENDARIA }

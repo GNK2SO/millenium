@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "515967499732",
+    "firebase_url": "https://millenium-14e81.firebaseio.com",
+    "project_id": "millenium-14e81",
+    "storage_bucket": "millenium-14e81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515967499732:android:c862a2f610d2a071c42a41",
+        "android_client_info": {
+          "package_name": "br.com.millenium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515967499732-ki6qpva62uio99gdtc6ei47766j1svu4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.millenium",
+            "certificate_hash": "3300db45e7ec9ad29d5d99976fbd175a33f65a88"
+          }
+        },
+        {
+          "client_id": "515967499732-dk3g5oalrkb7revf14qnqginqas13f70.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiRQlXSj3YFfUepdV1yvZFJk-1eE3G-qA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515967499732-dk3g5oalrkb7revf14qnqginqas13f70.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
