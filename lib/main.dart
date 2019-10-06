@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
@@ -6,10 +5,7 @@ import 'package:millenium/src/bloc/authentication_bloc/authentication_bloc.dart'
 import 'package:millenium/src/bloc/authentication_bloc/authentication_event.dart';
 import 'package:millenium/src/bloc/authentication_bloc/authentication_state.dart';
 import 'package:millenium/src/bloc/bloc_delegate.dart';
-import 'package:millenium/src/models/atributos.dart';
-import 'package:millenium/src/models/raca.dart';
-import 'package:millenium/src/repository/usuario/usuario_repository.dart';
-import 'package:millenium/src/screens/cadastro_personagem.dart/cadastro_personagem_screen.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/cadastro_usuario/cadastro_usuario_screen.dart';
 import 'package:millenium/src/screens/classes/classes_screen.dart';
 import 'package:millenium/src/screens/home_screen/home_screen.dart';
@@ -49,7 +45,9 @@ class Millenium extends StatelessWidget {
           } else if (state is Unauthenticated) {
             return LoginScreen(usuarioRepository: _usuarioRepository);
           } else if (state is Authenticated) {
-            return HomeScreen(usuario: state.usuario);
+            return HomeScreen(
+              usuario: state.usuario,
+            );
           } else {
             throw Exception('Estado informado é inválido.');
           }
@@ -62,7 +60,6 @@ class Millenium extends StatelessWidget {
             CadastroUsuarioScreen(usuarioRepository: _usuarioRepository),
         "/homeScreen": (context) => HomeScreen(),
         "/personagensScreen": (context) => PersonagensScreen(),
-        "/cadastroPersonagemScreen": (context) => CadastroPersonagemScreen(),
         "/personagemScreen": (context) => PersonagemScreen(),
         "/classesScreen": (context) => ClassesScreen(),
       },

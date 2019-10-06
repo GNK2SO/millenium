@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:bloc/bloc.dart';
 import 'package:millenium/src/bloc/authentication_bloc/authentication_event.dart';
-import 'package:millenium/src/repository/usuario/usuario_repository.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 
 import 'authentication_state.dart';
 

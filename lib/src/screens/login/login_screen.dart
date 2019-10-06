@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/bloc/login_bloc/login_bloc.dart';
-import 'package:millenium/src/repository/usuario/usuario_repository.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/login/login_form.dart';
 
 class LoginScreen extends StatelessWidget {

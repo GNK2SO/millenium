@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:millenium/src/components/custom_divider.dart';
 import 'package:millenium/src/models/atributos.dart';
 
-class AtributoCard extends StatefulWidget {
-  final bool update;
+class AtributosCard extends StatefulWidget {
+  bool isMutable;
   int pontosDistribuicao;
-  final Atributos atributos;
-  Function onSaved;
+  Atributos atributos;
 
-  AtributoCard({
-    this.update,
+  AtributosCard({
+    this.isMutable: false,
     this.pontosDistribuicao,
     this.atributos,
   });
 
   @override
-  _AtributoCardState createState() => _AtributoCardState();
+  _AtributosCardState createState() => _AtributosCardState();
 }
 
-class _AtributoCardState extends State<AtributoCard> {
+class _AtributosCardState extends State<AtributosCard> {
   int _strenght;
   int _dexterity;
   int _vitality;
@@ -70,7 +69,7 @@ class _AtributoCardState extends State<AtributoCard> {
         _buildRow(
           text: "STR",
           pontos: _strenght,
-          addPonto: this.widget.update
+          addPonto: this.widget.isMutable
               ? () {
                   if (this.widget.pontosDistribuicao > 0) {
                     setState(() {
@@ -80,7 +79,7 @@ class _AtributoCardState extends State<AtributoCard> {
                   }
                 }
               : null,
-          removePonto: this.widget.update
+          removePonto: this.widget.isMutable
               ? () {
                   if (_strenght > this.widget.atributos.strenght) {
                     setState(() {
@@ -97,7 +96,7 @@ class _AtributoCardState extends State<AtributoCard> {
         _buildRow(
           text: "DEX",
           pontos: _dexterity,
-          addPonto: this.widget.update
+          addPonto: this.widget.isMutable
               ? () {
                   if (this.widget.pontosDistribuicao > 0) {
                     setState(() {
@@ -107,7 +106,7 @@ class _AtributoCardState extends State<AtributoCard> {
                   }
                 }
               : null,
-          removePonto: this.widget.update
+          removePonto: this.widget.isMutable
               ? () {
                   if (_dexterity > this.widget.atributos.dexterity) {
                     setState(() {
@@ -124,7 +123,7 @@ class _AtributoCardState extends State<AtributoCard> {
         _buildRow(
           text: "VIT",
           pontos: _vitality,
-          addPonto: this.widget.update
+          addPonto: this.widget.isMutable
               ? () {
                   if (this.widget.pontosDistribuicao > 0) {
                     setState(() {
@@ -135,7 +134,7 @@ class _AtributoCardState extends State<AtributoCard> {
                   }
                 }
               : null,
-          removePonto: this.widget.update
+          removePonto: this.widget.isMutable
               ? () {
                   if (_vitality > this.widget.atributos.vitality) {
                     setState(() {
@@ -152,7 +151,7 @@ class _AtributoCardState extends State<AtributoCard> {
         _buildRow(
           text: "INT",
           pontos: _intelligence,
-          addPonto: this.widget.update
+          addPonto: this.widget.isMutable
               ? () {
                   if (this.widget.pontosDistribuicao > 0) {
                     setState(() {
@@ -163,7 +162,7 @@ class _AtributoCardState extends State<AtributoCard> {
                   }
                 }
               : null,
-          removePonto: this.widget.update
+          removePonto: this.widget.isMutable
               ? () {
                   if (_intelligence > this.widget.atributos.intelligence) {
                     setState(() {

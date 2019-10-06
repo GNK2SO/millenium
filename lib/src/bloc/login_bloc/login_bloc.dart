@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/bloc/login_bloc/login_event.dart';
 import 'package:millenium/src/bloc/login_bloc/login_state.dart';
-import 'package:millenium/src/repository/usuario/usuario_repository.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

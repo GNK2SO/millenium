@@ -61,8 +61,7 @@ class _AtributosScreenState extends State<AtributosScreen>
             ),
             InfoCard(),
             StatusCard(),
-            AtributoCard(
-              update: false,
+            AtributosCard(
               pontosDistribuicao: _pontosDistribuicao,
               atributos: personagem.atributos,
             ),

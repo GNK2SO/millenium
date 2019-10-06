@@ -1,46 +1,46 @@
 import 'package:meta/meta.dart';
 
 @immutable
-class CadastroUsuarioState {
+class PersonagemState {
   final bool isSubmitting;
   final bool isSuccess;
   final bool isFailure;
 
-  CadastroUsuarioState({
+  PersonagemState({
     @required this.isSubmitting,
     @required this.isSuccess,
     @required this.isFailure,
   });
 
-  factory CadastroUsuarioState.empty() {
-    return CadastroUsuarioState(
+  factory PersonagemState.empty() {
+    return PersonagemState(
       isSubmitting: false,
       isSuccess: false,
       isFailure: false,
     );
   }
 
-  factory CadastroUsuarioState.loading() {
-    return CadastroUsuarioState(
+  factory PersonagemState.loading() {
+    return PersonagemState(
         isSubmitting: true, isSuccess: false, isFailure: false);
   }
 
-  factory CadastroUsuarioState.failure() {
-    return CadastroUsuarioState(
+  factory PersonagemState.failure() {
+    return PersonagemState(
         isSubmitting: false, isSuccess: false, isFailure: true);
   }
 
-  factory CadastroUsuarioState.success() {
-    return CadastroUsuarioState(
+  factory PersonagemState.success() {
+    return PersonagemState(
         isSubmitting: false, isSuccess: true, isFailure: false);
   }
 
-  CadastroUsuarioState copyWith({
+  PersonagemState copyWith({
     bool isSubmitting,
     bool isSuccess,
     bool isFailure,
   }) {
-    return CadastroUsuarioState(
+    return PersonagemState(
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
       isFailure: isFailure ?? this.isFailure,

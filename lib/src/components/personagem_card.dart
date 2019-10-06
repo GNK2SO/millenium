@@ -26,7 +26,6 @@ class PersonagemCard extends StatelessWidget {
               children: <Widget>[
                 Text("Vida: 100/${personagem.vida}"),
                 Text("Energia: 30/${personagem.energia}"),
-                Text("Fome: 100/${personagem.fome}"),
               ],
             ),
             onTap: () {

@@ -1,50 +1,40 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:millenium/src/bloc/cadastro_usuario_bloc/cadastro_usuario_event.dart';
-import 'package:millenium/src/bloc/cadastro_usuario_bloc/cadastro_usuario_state.dart';
-import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/repository/usuario/usuario_repository.dart';
+import 'package:millenium/src/bloc/personagem_bloc/personagem_event.dart';
+import 'package:millenium/src/bloc/personagem_bloc/personagem_state.dart';
+import 'package:millenium/src/models/atributos.dart';
+import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/repository/personagem_repository.dart';
 
-class CadastroUsuarioBloc
-    extends Bloc<CadastroUsuarioEvent, CadastroUsuarioState> {
-  final UsuarioRepository _usuarioRepository;
-
-  CadastroUsuarioBloc({@required usuarioRepository})
-      : assert(usuarioRepository != null),
-        _usuarioRepository = usuarioRepository;
+class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
+  final PersonagemRepository _personagemRepository = PersonagemRepository();
 
   @override
-  CadastroUsuarioState get initialState => CadastroUsuarioState.empty();
+  PersonagemState get initialState => PersonagemState.empty();
 
   @override
-  Stream<CadastroUsuarioState> mapEventToState(
-      CadastroUsuarioEvent event) async* {
+  Stream<PersonagemState> mapEventToState(PersonagemEvent event) async* {
     if (event is FormSubmitted) {
       yield* _mapFormSubmittedToState(
-        email: event.email,
-        senha: event.senha,
         nome: event.nome,
+        idUsuario: event.idUsuario,
+        atributos: event.atributos,
       );
     }
   }
 
-  Stream<CadastroUsuarioState> _mapFormSubmittedToState({
-    String nome,
-    String email,
-    String senha,
-  }) async* {
-    yield CadastroUsuarioState.loading();
-    final usuario = Usuario(
-      email: email,
-      senha: senha,
+  Stream<PersonagemState> _mapFormSubmittedToState(
+      {String nome, String idUsuario, Atributos atributos}) async* {
+    yield PersonagemState.loading();
+    final personagem = Personagem(
       nome: nome,
+      atributos: atributos,
     );
     try {
-      await _usuarioRepository.salvar(usuario);
-      yield CadastroUsuarioState.success();
+      await _personagemRepository.salvar(personagem, idUsuario);
+      yield PersonagemState.success();
     } catch (_) {
       print(_);
-      yield CadastroUsuarioState.failure();
+      yield PersonagemState.failure();
     }
   }
 }

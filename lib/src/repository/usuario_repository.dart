@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/models/usuario.dart';
@@ -21,9 +22,16 @@ class UsuarioRepository {
   Future<void> salvar(Usuario usuario) {
     UserUpdateInfo _updateData = new UserUpdateInfo();
     _updateData.displayName = usuario.nome;
+
+    Firestore.instance.collection("usuarios").document(usuario.uid).setData({
+      "pontosDistribuicao": 0,
+    });
+
     return _firebaseAuth
         .createUserWithEmailAndPassword(
-            email: usuario.email, password: usuario.senha)
+      email: usuario.email,
+      password: usuario.senha,
+    )
         .then((result) {
       result.user.updateProfile(_updateData);
     }).catchError(

@@ -11,7 +11,7 @@ mixin UsuarioValidator {
 
   String isValidEmail(String email) {
     final regExp =
-        RegExp(r"^[a-zA-Z0-9]{3,61}@[a-zA-Z0-9]{3,61}.[a-zA-Z0-9]{3,61}$");
+        RegExp(r"^[a-zA-Z0-9]{3,61}@[a-zA-Z0-9]{3,61}.[a-zA-Z0-9]{2,61}$");
     if (email.isEmpty) {
       return "Campo obrigatório!";
     } else if (!regExp.hasMatch(email)) {

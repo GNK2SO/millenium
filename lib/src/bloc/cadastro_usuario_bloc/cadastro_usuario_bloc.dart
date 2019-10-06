@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:millenium/src/bloc/cadastro_usuario_bloc/cadastro_usuario_event.dart';
 import 'package:millenium/src/bloc/cadastro_usuario_bloc/cadastro_usuario_state.dart';
 import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/repository/usuario/usuario_repository.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 
 class CadastroUsuarioBloc
     extends Bloc<CadastroUsuarioEvent, CadastroUsuarioState> {
