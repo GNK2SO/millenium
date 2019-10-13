@@ -6,6 +6,7 @@ class Personagem {
   int vidaAtual;
   int energia;
   int energiaAtual;
+  int fome;
   int level;
   int xp;
   Atributos atributos;
@@ -16,7 +17,8 @@ class Personagem {
     this.vidaAtual: 20,
     this.energia: 6,
     this.energiaAtual: 6,
-    this.level: 0,
+    this.fome: 5,
+    this.level: 1,
     this.xp: 0,
     this.atributos,
   });
@@ -27,6 +29,7 @@ class Personagem {
     vidaAtual = json['vidaAtual'];
     energia = json['energia'];
     energiaAtual = json['energiaAtual'];
+    fome = json['fome'];
     level = json['level'];
     xp = json['xp'];
     atributos = json['atributos'] != null
@@ -41,6 +44,7 @@ class Personagem {
     data['vidaAtual'] = this.vidaAtual;
     data['energia'] = this.energia;
     data['energiaAtual'] = this.energiaAtual;
+    data['fome'] = this.fome;
     data['level'] = this.level;
     data['xp'] = this.xp;
     if (this.atributos != null) {

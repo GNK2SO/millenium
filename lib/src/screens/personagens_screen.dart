@@ -33,6 +33,7 @@ class _PersonagensScreenState extends State<PersonagensScreen> {
   @override
   void initState() {
     super.initState();
+
     _bloc.stateStream.listen(
       (pageState) {
         if (pageState.message != null) {

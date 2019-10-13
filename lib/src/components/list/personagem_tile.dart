@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/models/personagem.dart';
-import 'package:millenium/src/screens/login_screen.dart';
 import 'package:millenium/src/screens/personagem_screen/personagem_screen.dart';
 import 'package:millenium/src/util/util.dart';
 

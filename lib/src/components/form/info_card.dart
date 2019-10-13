@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
+import 'package:millenium/src/models/personagem.dart';
 
 class InfoCard extends StatelessWidget {
-  bool update;
-
-  InfoCard();
+  final Personagem personagem;
+  InfoCard({@required this.personagem});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,11 +26,11 @@ class InfoCard extends StatelessWidget {
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("XP", "0 / 25"),
+                  _buildRow("XP", "${personagem.xp} / 25"),
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("Level", "1"),
+                  _buildRow("Level", "${personagem.level}"),
                   CustomDivider(
                     height: 1,
                   ),
@@ -38,11 +38,11 @@ class InfoCard extends StatelessWidget {
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("Classe", "Guerreiro"),
+                  _buildRow("Classe", "-"),
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("Título", "O Suicída"),
+                  _buildRow("Título", "-"),
                 ],
               )
             ],

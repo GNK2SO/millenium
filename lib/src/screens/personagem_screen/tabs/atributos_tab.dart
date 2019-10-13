@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:millenium/src/blocs/personagem_bloc.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/atributo_form_field.dart';
+import 'package:millenium/src/components/form/info_card.dart';
 import 'package:millenium/src/components/form/status_card.dart';
+import 'package:millenium/src/models/atributos.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/page_state_info.dart';
 import 'package:millenium/src/models/personagem.dart';
-import 'package:millenium/src/util/util.dart';
 
 class AtributosTab extends StatefulWidget {
   final Personagem personagem;
@@ -55,10 +56,11 @@ class _AtributosTabState extends State<AtributosTab>
                 radius: 64,
               ),
             ),
-            StatusCard(),
+            InfoCard(personagem: personagem),
+            StatusCard(personagem: personagem),
             AtributosFormField(
               atributos: personagem.atributos,
-              atributosBase: personagem.atributos,
+              atributosBase: Atributos.fromJson(personagem.atributos.toJson()),
               onSaved: (atributos) {
                 personagem.atributos = atributos;
               },

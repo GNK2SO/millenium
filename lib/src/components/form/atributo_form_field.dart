@@ -51,8 +51,6 @@ class AtributosFormField extends FormField<Atributos> {
                                 }
                               },
                               removerPonto: () {
-                                print(atributosBase.strenght);
-                                print(atributos.strenght);
                                 if (atributosBase.strenght <
                                     atributos.strenght) {
                                   atributos.strenght--;
@@ -78,7 +76,7 @@ class AtributosFormField extends FormField<Atributos> {
                               removerPonto: () {
                                 if (atributosBase.dexterity <
                                         atributos.dexterity &&
-                                    atributos.pontosDistribuicao >
+                                    atributos.pontosDistribuicao <
                                         atributosBase.pontosDistribuicao) {
                                   atributos.dexterity--;
                                   atributos.pontosDistribuicao++;
@@ -103,7 +101,7 @@ class AtributosFormField extends FormField<Atributos> {
                               removerPonto: () {
                                 if (atributosBase.vitality <
                                         atributos.vitality &&
-                                    atributos.pontosDistribuicao >
+                                    atributos.pontosDistribuicao <
                                         atributosBase.pontosDistribuicao) {
                                   atributos.vitality--;
                                   atributos.pontosDistribuicao++;
@@ -128,7 +126,7 @@ class AtributosFormField extends FormField<Atributos> {
                               removerPonto: () {
                                 if (atributosBase.intelligence <
                                         atributos.intelligence &&
-                                    atributos.pontosDistribuicao >
+                                    atributos.pontosDistribuicao <
                                         atributosBase.pontosDistribuicao) {
                                   atributos.intelligence--;
                                   atributos.pontosDistribuicao++;

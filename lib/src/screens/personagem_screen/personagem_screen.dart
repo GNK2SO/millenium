@@ -13,8 +13,9 @@ import 'package:millenium/src/util/util.dart';
 
 class PersonagemScreen extends StatefulWidget {
   final Personagem personagem;
+  final PersonagemBloc bloc;
 
-  PersonagemScreen({@required this.personagem});
+  PersonagemScreen({@required this.personagem, this.bloc});
   @override
   _PersonagemScreenState createState() =>
       _PersonagemScreenState(personagem: personagem);
@@ -32,13 +33,13 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
   @override
   void initState() {
     super.initState();
+    _bloc.stateSink.add(PageStateInfo(state: PageState.SCREEN));
     _bloc.stateStream.listen((state) {
-      if (state.message != null && _scaffoldKey != null) {
+      if (state.message != null) {
         showMessage(
           key: _scaffoldKey,
           mensagem: state.message,
         );
-        _bloc.stateSink.add(PageStateInfo(state: PageState.SCREEN));
       }
     });
   }
@@ -59,7 +60,9 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
         ),
         body: TabBarView(
           children: <Widget>[
-            AtributosTab(personagem: personagem),
+            AtributosTab(
+              personagem: personagem,
+            ),
             HabilidadesTab(),
             EquipamentoTab()
           ],

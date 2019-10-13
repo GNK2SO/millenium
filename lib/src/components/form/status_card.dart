@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
+import 'package:millenium/src/models/personagem.dart';
 
 class StatusCard extends StatelessWidget {
+  final Personagem personagem;
+  StatusCard({@required this.personagem});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,15 +26,17 @@ class StatusCard extends StatelessWidget {
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("Vida", 70),
+                  _buildRow("Vida",
+                      "${personagem.vidaAtual}/${personagem.vidaTotal()}"),
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("Energia", 20),
+                  _buildRow("Energia",
+                      "${personagem.energiaAtual}/${personagem.energiaTotal()}"),
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("Fome", 87),
+                  _buildRow("Fome", "${personagem.fome}"),
                 ],
               )
             ],
@@ -41,7 +46,7 @@ class StatusCard extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String text, int valor) {
+  Widget _buildRow(String text, String valor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(children: <Widget>[
@@ -56,7 +61,7 @@ class StatusCard extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            "$valor",
+            valor,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,
