@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  TabBar tabBar;
+  final TabBar tabBar;
+  final String personagemNome;
 
-  CustomAppBar({this.tabBar});
+  CustomAppBar({this.tabBar, this.personagemNome});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        "Millenium",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'pentagrams_malefissent',
-          fontSize: 24,
-        ),
-      ),
+      title: Text(this.personagemNome ?? "Millenium"),
       bottom: tabBar,
     );
   }

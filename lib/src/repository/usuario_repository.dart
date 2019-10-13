@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/models/usuario.dart';
@@ -20,20 +19,15 @@ class UsuarioRepository {
   }
 
   Future<void> salvar(Usuario usuario) {
-    UserUpdateInfo _updateData = new UserUpdateInfo();
+    UserUpdateInfo _updateData = UserUpdateInfo();
     _updateData.displayName = usuario.nome;
-
-    Firestore.instance.collection("usuarios").document(usuario.uid).setData({
-      "pontosDistribuicao": 0,
-    });
-
     return _firebaseAuth
         .createUserWithEmailAndPassword(
       email: usuario.email,
       password: usuario.senha,
     )
-        .then((result) {
-      result.user.updateProfile(_updateData);
+        .then((result) async {
+      await result.user.updateProfile(_updateData);
     }).catchError(
       (e) {
         throw Exception("Falha ao cadastrar usuário");
@@ -48,7 +42,7 @@ class UsuarioRepository {
   }
 
   Future<bool> estaAutenticado() async {
-    final usuarioAtual = _firebaseAuth.currentUser();
+    final usuarioAtual = await _firebaseAuth.currentUser();
     return usuarioAtual != null;
   }
 

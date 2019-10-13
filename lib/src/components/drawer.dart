@@ -1,11 +1,14 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:millenium/src/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:millenium/src/bloc/authentication_bloc/authentication_event.dart';
+import 'package:millenium/src/blocs/authentication_bloc.dart';
 import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/screens/login_screen.dart';
+import 'package:millenium/src/screens/personagens_screen.dart';
+import 'package:millenium/src/util/util.dart';
 
 class CustomDrawer extends StatelessWidget {
-  Usuario _usuario;
+  final _bloc = BlocProvider.getBloc<AuthenticationBloc>();
+  final Usuario _usuario;
 
   CustomDrawer({@required Usuario usuario})
       : assert(usuario != null),
@@ -27,8 +30,12 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             title: Text("Personagens"),
             onTap: () {
-              Navigator.of(context)
-                  .popAndPushNamed("/personagensScreen", arguments: _usuario);
+              navigateTo(
+                context,
+                PersonagensScreen(
+                  usuario: this._usuario,
+                ),
+              );
             },
           ),
           ListTile(
@@ -61,6 +68,7 @@ class CustomDrawer extends StatelessWidget {
   }
 
   void deslogar(BuildContext context) {
-    BlocProvider.of<AuthenticationBloc>(context).dispatch(LoggedOut());
+    _bloc.efetuarLogout();
+    replaceTo(context, LoginScreen());
   }
 }

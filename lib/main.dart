@@ -1,68 +1,73 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
-import 'package:millenium/src/bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:millenium/src/bloc/authentication_bloc/authentication_event.dart';
-import 'package:millenium/src/bloc/authentication_bloc/authentication_state.dart';
-import 'package:millenium/src/bloc/bloc_delegate.dart';
-import 'package:millenium/src/repository/usuario_repository.dart';
-import 'package:millenium/src/screens/cadastro_usuario/cadastro_usuario_screen.dart';
-import 'package:millenium/src/screens/classes/classes_screen.dart';
-import 'package:millenium/src/screens/home_screen/home_screen.dart';
-import 'package:millenium/src/screens/login/login_screen.dart';
-import 'package:millenium/src/screens/personagem/personagem_screen.dart';
-import 'package:millenium/src/screens/personagens/personagens_screen.dart';
+import 'package:millenium/src/blocs/authentication_bloc.dart';
+import 'package:millenium/src/blocs/personagem_bloc.dart';
+import 'package:millenium/src/blocs/usuario_bloc.dart';
+import 'package:millenium/src/models/page_state.dart';
+import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/screens/cadastro_usuario_screen.dart';
+import 'package:millenium/src/screens/home_screen.dart';
+import 'package:millenium/src/screens/login_screen.dart';
+import 'package:millenium/src/screens/splash_screen.dart';
 
-void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+void main() => runApp(Millenium());
 
-  final UsuarioRepository usuarioRepository = UsuarioRepository();
-
-  runApp(BlocProvider(
-    builder: (context) =>
-        AuthenticationBloc(usuarioRepository: usuarioRepository)
-          ..dispatch(AppStarted()),
-    child: Millenium(usuarioRepository: usuarioRepository),
-  ));
+class Millenium extends StatefulWidget {
+  @override
+  _MilleniumState createState() => _MilleniumState();
 }
 
-class Millenium extends StatelessWidget {
-  final UsuarioRepository _usuarioRepository;
+class _MilleniumState extends State<Millenium> {
+  final _auth = AuthenticationBloc();
+  final UsuarioBloc _userbloc = UsuarioBloc();
 
-  Millenium({Key key, @required UsuarioRepository usuarioRepository})
-      : assert(usuarioRepository != null),
-        _usuarioRepository = usuarioRepository,
-        super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    _auth.stateStream.listen((state) {
+      if (state == PageState.INITIALIZATION) {
+        _auth.appInitialization();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          if (state is Uninitialized) {
-            return Container();
-          } else if (state is Unauthenticated) {
-            return LoginScreen(usuarioRepository: _usuarioRepository);
-          } else if (state is Authenticated) {
-            return HomeScreen(
-              usuario: state.usuario,
-            );
-          } else {
-            throw Exception('Estado informado é inválido.');
-          }
+    return BlocProvider(
+      blocs: [
+        Bloc((i) => UsuarioBloc()),
+        Bloc((i) => AuthenticationBloc()),
+        Bloc((i) => PersonagemBloc()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder<PageState>(
+          stream: _auth.stateStream,
+          builder: (context, snapshot) {
+            switch (snapshot.data) {
+              case PageState.AUTHENTICADED:
+                return FutureBuilder<Usuario>(
+                  future: _userbloc.obterUsuario(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return HomeScreen(
+                        usuario: snapshot.data,
+                      );
+                    }
+                    return SplashScreen();
+                  },
+                );
+              case PageState.UNAUTHENTICADED:
+                return LoginScreen();
+              default:
+                return SplashScreen();
+            }
+          },
+        ),
+        routes: {
+          "/cadastroContaScreen": (context) => CadastroUsuarioScreen(),
         },
       ),
-      routes: {
-        "/loginScreen": (context) =>
-            LoginScreen(usuarioRepository: _usuarioRepository),
-        "/cadastroContaScreen": (context) =>
-            CadastroUsuarioScreen(usuarioRepository: _usuarioRepository),
-        "/homeScreen": (context) => HomeScreen(),
-        "/personagensScreen": (context) => PersonagensScreen(),
-        "/personagemScreen": (context) => PersonagemScreen(),
-        "/classesScreen": (context) => ClassesScreen(),
-      },
     );
   }
 }
