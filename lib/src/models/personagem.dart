@@ -1,4 +1,5 @@
-import 'package:millenium/src/models/atributos.dart';
+import 'package:millenium/src/models/atributos_combate.dart';
+import 'package:millenium/src/models/atributos_exploracao.dart';
 
 class Personagem {
   String nome;
@@ -9,7 +10,8 @@ class Personagem {
   int fome;
   int level;
   int xp;
-  Atributos atributos;
+  AtributosCombate atributosCombate;
+  AtributosExploracao atributosExploracao;
 
   Personagem({
     this.nome,
@@ -20,7 +22,8 @@ class Personagem {
     this.fome: 5,
     this.level: 1,
     this.xp: 0,
-    this.atributos,
+    this.atributosCombate,
+    this.atributosExploracao,
   });
 
   Personagem.fromJson(Map<String, dynamic> json) {
@@ -32,8 +35,11 @@ class Personagem {
     fome = json['fome'];
     level = json['level'];
     xp = json['xp'];
-    atributos = json['atributos'] != null
-        ? new Atributos.fromJson(json['atributos'])
+    atributosCombate = json['atributosCombate'] != null
+        ? new AtributosCombate.fromJson(json['atributosCombate'])
+        : null;
+    atributosExploracao = json['atributosExploracao'] != null
+        ? new AtributosExploracao.fromJson(json['atributosExploracao'])
         : null;
   }
 
@@ -47,17 +53,20 @@ class Personagem {
     data['fome'] = this.fome;
     data['level'] = this.level;
     data['xp'] = this.xp;
-    if (this.atributos != null) {
-      data['atributos'] = this.atributos.toJson();
+    if (this.atributosCombate != null) {
+      data['atributosCombate'] = this.atributosCombate.toJson();
+    }
+    if (this.atributosExploracao != null) {
+      data['atributosExploracao'] = this.atributosExploracao.toJson();
     }
     return data;
   }
 
   int vidaTotal() {
-    return this.vida + 5 * (this.atributos.vitality / 5).floor();
+    return this.vida + 5 * (this.atributosCombate.vitality / 5).floor();
   }
 
   int energiaTotal() {
-    return this.energia + 2 * (this.atributos.vitality / 5).floor();
+    return this.energia + 2 * (this.atributosCombate.vitality / 5).floor();
   }
 }

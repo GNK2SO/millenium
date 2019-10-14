@@ -2,10 +2,12 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/blocs/personagem_bloc.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
-import 'package:millenium/src/components/form/atributo_form_field.dart';
+import 'package:millenium/src/components/form/atributo_combate_form_field.dart';
+import 'package:millenium/src/components/form/atributo_exploracao_form_field.dart.dart';
 import 'package:millenium/src/components/form/info_card.dart';
 import 'package:millenium/src/components/form/status_card.dart';
-import 'package:millenium/src/models/atributos.dart';
+import 'package:millenium/src/models/atributos_combate.dart';
+import 'package:millenium/src/models/atributos_exploracao.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/page_state_info.dart';
 import 'package:millenium/src/models/personagem.dart';
@@ -58,26 +60,38 @@ class _AtributosTabState extends State<AtributosTab>
             ),
             InfoCard(personagem: personagem),
             StatusCard(personagem: personagem),
-            AtributosFormField(
-              atributos: personagem.atributos,
-              atributosBase: Atributos.fromJson(personagem.atributos.toJson()),
-              onSaved: (atributos) {
-                personagem.atributos = atributos;
+            AtributosCombateFormField(
+              atributos: personagem.atributosCombate,
+              atributosBase: AtributosCombate.fromJson(
+                  personagem.atributosCombate.toJson()),
+              onSaved: (atributosCombate) {
+                personagem.atributosCombate = atributosCombate;
+              },
+            ),
+            AtributosExploracaoFormField(
+              atributos: personagem.atributosExploracao,
+              atributosBase: AtributosExploracao.fromJson(
+                personagem.atributosExploracao.toJson(),
+              ),
+              onSaved: (atributosExploracao) {
+                personagem.atributosExploracao = atributosExploracao;
               },
             ),
             StreamBuilder<PageStateInfo>(
-                stream: _bloc.stateStream,
-                builder: (context, snapshot) {
-                  return AnimatedButton(
-                    controller: _animationController,
-                    text: "SALVAR",
-                    onPressed: () {
-                      if (snapshot.hasData) {
-                        _onFormSubmitted(snapshot.data.state);
-                      }
-                    },
-                  );
-                }),
+              stream: _bloc.stateStream,
+              builder: (context, snapshot) {
+                return AnimatedButton(
+                  controller: _animationController,
+                  text: "SALVAR",
+                  onPressed: () {
+                    if (snapshot.hasData) {
+                      _onFormSubmitted(snapshot.data.state);
+                      setState(() {});
+                    }
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),

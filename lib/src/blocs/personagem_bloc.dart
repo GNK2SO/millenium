@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:millenium/src/models/atributos.dart';
+import 'package:millenium/src/models/atributos_combate.dart';
+import 'package:millenium/src/models/atributos_exploracao.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/personagem.dart';
 import 'package:millenium/src/models/page_state_info.dart';
@@ -32,7 +33,8 @@ class PersonagemBloc extends BlocBase {
     stateSink.add(PageStateInfo(state: PageState.LOADING));
     final personagem = Personagem(
       nome: _nomeController.value,
-      atributos: Atributos(),
+      atributosCombate: AtributosCombate(),
+      atributosExploracao: AtributosExploracao(),
     );
     try {
       await _personagemRepository.salvar(personagem);
