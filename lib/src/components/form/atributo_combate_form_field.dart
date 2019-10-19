@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:millenium/src/components/form/atributo_row.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/atributos_combate.dart';
 
 class AtributosCombateFormField extends FormField<AtributosCombate> {
   AtributosCombateFormField({
+    bool isAdmin,
     FormFieldSetter<AtributosCombate> onSaved,
     AtributosCombate atributos,
     AtributosCombate atributosBase,
@@ -36,8 +38,9 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Força",
+                            isAdmin: isAdmin,
                             pontos: atributos.strenght,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0) {
@@ -58,7 +61,8 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                             width: double.infinity,
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
+                            isAdmin: isAdmin,
                             text: "Destreza",
                             pontos: atributos.dexterity,
                             adicionarPonto: () {
@@ -83,7 +87,8 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                             width: double.infinity,
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
+                            isAdmin: isAdmin,
                             text: "Vitalidade",
                             pontos: atributos.vitality,
                             adicionarPonto: () {
@@ -107,7 +112,8 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                             width: double.infinity,
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
+                            isAdmin: isAdmin,
                             text: "Inteligência",
                             pontos: atributos.intelligence,
                             adicionarPonto: () {
@@ -137,47 +143,4 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
             );
           },
         );
-
-  static Widget _buildRow({text, pontos, adicionarPonto, removerPonto}) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(children: <Widget>[
-            Expanded(
-              flex: 3,
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: Icon(Icons.remove),
-                onPressed: removerPonto,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                "$pontos",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: adicionarPonto,
-              ),
-            ),
-          ]),
-        ),
-      ],
-    );
-  }
 }

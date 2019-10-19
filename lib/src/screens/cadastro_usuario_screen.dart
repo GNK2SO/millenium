@@ -5,7 +5,7 @@ import 'package:millenium/src/blocs/usuario_bloc.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/text_field.dart';
 import 'package:millenium/src/models/page_state.dart';
-import 'package:millenium/src/screens/home_screen.dart';
+import 'package:millenium/src/screens/jogador/jogador_home_screen.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
 
@@ -33,7 +33,7 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
           case PageState.SUCCESS:
             replaceTo(
                 context,
-                HomeScreen(
+                JogadorHomeScreen(
                   usuario: await _userbloc.obterUsuario(),
                 ));
             _bloc.stateSink.add(PageState.SCREEN);

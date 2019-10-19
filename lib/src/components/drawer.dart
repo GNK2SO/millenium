@@ -2,8 +2,9 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/blocs/authentication_bloc.dart';
 import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/screens/jogador/personagens_jogador_screen.dart';
 import 'package:millenium/src/screens/login_screen.dart';
-import 'package:millenium/src/screens/personagens_screen.dart';
+import 'package:millenium/src/screens/mestre/personagens_screen.dart';
 import 'package:millenium/src/util/util.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -30,12 +31,22 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             title: Text("Personagens"),
             onTap: () {
-              navigateTo(
-                context,
-                PersonagensScreen(
-                  usuario: this._usuario,
-                ),
-              );
+              Navigator.of(context).pop();
+              if (this._usuario.isAdmin) {
+                navigateTo(
+                  context,
+                  PersonagensScreen(
+                    usuario: this._usuario,
+                  ),
+                );
+              } else {
+                navigateTo(
+                  context,
+                  PersonagensJogadorScreen(
+                    usuario: this._usuario,
+                  ),
+                );
+              }
             },
           ),
           ListTile(

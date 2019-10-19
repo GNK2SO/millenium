@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:millenium/src/components/form/atributo_row.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/atributos_exploracao.dart';
+import 'package:millenium/src/util/descricao_atributos_exploracao.dart';
 
 class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
   AtributosExploracaoFormField({
+    bool isAdmin,
     FormFieldSetter<AtributosExploracao> onSaved,
     AtributosExploracao atributos,
     AtributosExploracao atributosBase,
@@ -36,8 +39,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Carisma",
+                            descricao: descricao_carisma,
+                            isAdmin: isAdmin,
                             pontos: atributos.carisma,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -58,8 +63,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Governação",
+                            descricao: descricao_governacao,
+                            isAdmin: isAdmin,
                             pontos: atributos.governacao,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -81,8 +88,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Navegação",
+                            descricao: descricao_navegacao,
+                            isAdmin: isAdmin,
                             pontos: atributos.navegacao,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -104,8 +113,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Sobrevivência",
+                            descricao: descricao_sobrevivencia,
+                            isAdmin: isAdmin,
                             pontos: atributos.sobrevivencia,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -127,8 +138,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Comércio",
+                            descricao: descricao_comercio,
+                            isAdmin: isAdmin,
                             pontos: atributos.comercio,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -149,30 +162,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
-                            text: "Ferreiro",
-                            pontos: atributos.ferreiro,
-                            adicionarPonto: () {
-                              if (atributos.pontosDistribuicao > 0 &&
-                                  atributos.ferreiro < 8) {
-                                atributos.ferreiro++;
-                                atributos.pontosDistribuicao--;
-                                state.didChange(atributos);
-                              }
-                            },
-                            removerPonto: () {
-                              if (atributosBase.ferreiro < atributos.ferreiro) {
-                                atributos.ferreiro--;
-                                atributos.pontosDistribuicao++;
-                                state.didChange(atributos);
-                              }
-                            },
-                          ),
-                          CustomDivider(
-                            height: 1,
-                          ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Construção",
+                            descricao: descricao_construcao,
+                            isAdmin: isAdmin,
                             pontos: atributos.construcao,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -194,8 +187,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Exploração",
+                            descricao: descricao_exploracao,
+                            isAdmin: isAdmin,
                             pontos: atributos.exploracao,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -217,8 +212,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Militarismo",
+                            descricao: descricao_militarismo,
+                            isAdmin: isAdmin,
                             pontos: atributos.militarismo,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -240,8 +237,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Sabedoria",
+                            descricao: descricao_sabedoria,
+                            isAdmin: isAdmin,
                             pontos: atributos.sabedoria,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -263,8 +262,10 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
                           CustomDivider(
                             height: 1,
                           ),
-                          _buildRow(
+                          AtributoRow(
                             text: "Magia",
+                            descricao: descricao_magia,
+                            isAdmin: isAdmin,
                             pontos: atributos.magia,
                             adicionarPonto: () {
                               if (atributos.pontosDistribuicao > 0 &&
@@ -291,47 +292,4 @@ class AtributosExploracaoFormField extends FormField<AtributosExploracao> {
             );
           },
         );
-
-  static Widget _buildRow({text, pontos, adicionarPonto, removerPonto}) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(children: <Widget>[
-            Expanded(
-              flex: 3,
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: Icon(Icons.remove),
-                onPressed: removerPonto,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                "$pontos",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: adicionarPonto,
-              ),
-            ),
-          ]),
-        ),
-      ],
-    );
-  }
 }

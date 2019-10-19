@@ -6,16 +6,22 @@ import 'package:millenium/src/components/app_bar.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/page_state_info.dart';
 import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/atributos_tab.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/equipamento_tab.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/habilidades_tab.dart';
 import 'package:millenium/src/util/util.dart';
 
 class PersonagemScreen extends StatefulWidget {
+  final Usuario usuario;
   final Personagem personagem;
   final PersonagemBloc bloc;
 
-  PersonagemScreen({@required this.personagem, this.bloc});
+  PersonagemScreen({
+    @required this.usuario,
+    @required this.personagem,
+    this.bloc,
+  });
   @override
   _PersonagemScreenState createState() =>
       _PersonagemScreenState(personagem: personagem);
@@ -61,6 +67,7 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
         body: TabBarView(
           children: <Widget>[
             AtributosTab(
+              usuario: this.widget.usuario,
               personagem: personagem,
             ),
             HabilidadesTab(),

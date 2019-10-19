@@ -3,9 +3,9 @@ import 'package:millenium/src/components/app_bar.dart';
 import 'package:millenium/src/components/drawer.dart';
 import 'package:millenium/src/models/usuario.dart';
 
-class HomeScreen extends StatelessWidget {
+class JogadorHomeScreen extends StatelessWidget {
   final Usuario _usuario;
-  HomeScreen({@required Usuario usuario})
+  JogadorHomeScreen({@required Usuario usuario})
       : assert(usuario != null),
         _usuario = usuario;
 

@@ -8,7 +8,9 @@ import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/logo.dart';
 import 'package:millenium/src/components/form/text_field.dart';
 import 'package:millenium/src/models/page_state.dart';
-import 'package:millenium/src/screens/home_screen.dart';
+import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/screens/jogador/jogador_home_screen.dart';
+import 'package:millenium/src/screens/mestre/mestre_home_screen.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
 
@@ -31,11 +33,22 @@ class _LoginScreenState extends State<LoginScreen>
     _bloc.stateStream.listen((state) async {
       switch (state) {
         case PageState.SUCCESS:
-          navigateTo(
+          Usuario usuario = await _userBloc.obterUsuario();
+          if (usuario.isAdmin) {
+            navigateTo(
               context,
-              HomeScreen(
-                usuario: await _userBloc.obterUsuario(),
-              ));
+              MestreHomeScreen(
+                usuario: usuario,
+              ),
+            );
+          } else {
+            navigateTo(
+              context,
+              JogadorHomeScreen(
+                usuario: usuario,
+              ),
+            );
+          }
           break;
         case PageState.FAILED:
           showMessage(

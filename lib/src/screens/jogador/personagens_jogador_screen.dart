@@ -14,18 +14,19 @@ import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
 
-class PersonagensScreen extends StatefulWidget {
+class PersonagensJogadorScreen extends StatefulWidget {
   final Usuario _usuario;
 
-  PersonagensScreen({@required Usuario usuario})
+  PersonagensJogadorScreen({@required Usuario usuario})
       : assert(usuario != null),
         _usuario = usuario;
 
   @override
-  _PersonagensScreenState createState() => _PersonagensScreenState();
+  _PersonagensJogadorScreenState createState() =>
+      _PersonagensJogadorScreenState();
 }
 
-class _PersonagensScreenState extends State<PersonagensScreen> {
+class _PersonagensJogadorScreenState extends State<PersonagensJogadorScreen> {
   final _bloc = BlocProvider.getBloc<PersonagemBloc>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -55,7 +56,7 @@ class _PersonagensScreenState extends State<PersonagensScreen> {
         usuario: this.widget._usuario,
       ),
       body: StreamBuilder(
-        stream: _bloc.obterTodosPersonagens(this.widget._usuario.uid),
+        stream: _bloc.obterMeusPersonagens(this.widget._usuario.uid),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
@@ -68,7 +69,10 @@ class _PersonagensScreenState extends State<PersonagensScreen> {
                   itemBuilder: (context, index) {
                     return Dismissible(
                       key: Key(personagens[index].nome),
-                      child: PersonagemTile(personagem: personagens[index]),
+                      child: PersonagemTile(
+                        personagem: personagens[index],
+                        usuario: this.widget._usuario,
+                      ),
                       background: Container(
                         color: Colors.red,
                       ),

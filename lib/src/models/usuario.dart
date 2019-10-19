@@ -5,14 +5,23 @@ class Usuario {
   String nome;
   String email;
   String senha;
+  bool isAdmin;
   List<Personagem> personagens;
 
-  Usuario({this.uid, this.nome, this.email, this.senha, this.personagens});
+  Usuario({
+    this.uid,
+    this.nome,
+    this.email,
+    this.senha,
+    this.isAdmin,
+    this.personagens,
+  });
 
   Usuario.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
     email = json['email'];
     senha = json['senha'];
+    isAdmin = json['isAdmin'];
     if (json['personagem'] != null) {
       personagens = new List<Personagem>();
       json['personagem'].forEach((personagem) {
@@ -26,6 +35,7 @@ class Usuario {
     data['nome'] = this.nome;
     data['email'] = this.email;
     data['senha'] = this.senha;
+    data['isAdmin'] = this.isAdmin;
     if (this.personagens != null) {
       data['personagens'] = this.personagens.map((personagem) {
         return personagem.toJson();

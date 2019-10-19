@@ -37,6 +37,7 @@ class CustomTextField<T> extends StatelessWidget {
               labelText: this.labelText,
               contentPadding: this.contentPadding ?? const EdgeInsets.all(0),
             ),
+            keyboardType: TextInputType.emailAddress,
             controller: controller,
             obscureText: this.obscureText,
             onChanged: (value) {

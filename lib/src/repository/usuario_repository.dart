@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/models/usuario.dart';
@@ -48,10 +49,26 @@ class UsuarioRepository {
 
   Future<Usuario> obterUsuario() async {
     FirebaseUser usuarioAtual = await _firebaseAuth.currentUser();
+    bool isAdmin;
+    await Firestore.instance
+        .collection("administradores")
+        .document(usuarioAtual.uid)
+        .get()
+        .then(
+      (doc) {
+        if (doc.data != null) {
+          isAdmin = true;
+        } else {
+          isAdmin = false;
+        }
+      },
+    );
+
     return Usuario(
       uid: usuarioAtual.uid,
       nome: usuarioAtual.displayName,
       email: usuarioAtual.email,
+      isAdmin: isAdmin,
     );
   }
 }

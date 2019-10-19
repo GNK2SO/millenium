@@ -5,7 +5,6 @@ class AtributosExploracao {
   int navegacao;
   int sobrevivencia;
   int comercio;
-  int ferreiro;
   int construcao;
   int exploracao;
   int militarismo;
@@ -19,7 +18,6 @@ class AtributosExploracao {
     this.navegacao: 0,
     this.sobrevivencia: 0,
     this.comercio: 0,
-    this.ferreiro: 0,
     this.construcao: 0,
     this.exploracao: 0,
     this.militarismo: 0,
@@ -34,7 +32,6 @@ class AtributosExploracao {
     navegacao = json['navegacao'];
     sobrevivencia = json['sobrevivencia'];
     comercio = json['comercio'];
-    ferreiro = json['ferreiro'];
     construcao = json['construcao'];
     exploracao = json['exploracao'];
     militarismo = json['militarismo'];
@@ -50,7 +47,6 @@ class AtributosExploracao {
     data['navegacao'] = this.navegacao;
     data['sobrevivencia'] = this.sobrevivencia;
     data['comercio'] = this.comercio;
-    data['ferreiro'] = this.ferreiro;
     data['construcao'] = this.construcao;
     data['exploracao'] = this.exploracao;
     data['militarismo'] = this.militarismo;

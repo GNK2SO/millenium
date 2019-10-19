@@ -6,8 +6,9 @@ import 'package:millenium/src/blocs/usuario_bloc.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/cadastro_usuario_screen.dart';
-import 'package:millenium/src/screens/home_screen.dart';
+import 'package:millenium/src/screens/jogador/jogador_home_screen.dart';
 import 'package:millenium/src/screens/login_screen.dart';
+import 'package:millenium/src/screens/mestre/mestre_home_screen.dart';
 import 'package:millenium/src/screens/splash_screen.dart';
 
 void main() => runApp(Millenium());
@@ -43,18 +44,29 @@ class _MilleniumState extends State<Millenium> {
         debugShowCheckedModeBanner: false,
         home: StreamBuilder<PageState>(
           stream: _auth.stateStream,
-          builder: (context, snapshot) {
-            switch (snapshot.data) {
+          builder: (context, snapshotPageState) {
+            switch (snapshotPageState.data) {
               case PageState.AUTHENTICADED:
                 return FutureBuilder<Usuario>(
                   future: _userbloc.obterUsuario(),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return HomeScreen(
-                        usuario: snapshot.data,
-                      );
+                    if (snapshot.hasData &&
+                        snapshot.connectionState == ConnectionState.done) {
+                      Usuario usuario = snapshot.data;
+                      if (usuario.isAdmin) {
+                        return MestreHomeScreen(
+                          usuario: usuario,
+                        );
+                      } else {
+                        return JogadorHomeScreen(
+                          usuario: usuario,
+                        );
+                      }
+                    } else if (snapshot.hasError) {
+                      return Container();
+                    } else {
+                      return SplashScreen();
                     }
-                    return SplashScreen();
                   },
                 );
               case PageState.UNAUTHENTICADED:

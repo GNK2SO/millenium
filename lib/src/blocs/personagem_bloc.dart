@@ -49,8 +49,12 @@ class PersonagemBloc extends BlocBase {
     }
   }
 
-  Stream<QuerySnapshot> obterTodosPersonagens(String uid) {
-    return _personagemRepository.obterTodosPersonagens(uid);
+  Stream obterTodosPersonagens() {
+    return _personagemRepository.obterTodosPersonagens();
+  }
+
+  Stream<QuerySnapshot> obterMeusPersonagens(String uid) {
+    return _personagemRepository.obterMeusPersonagens(uid);
   }
 
   Stream<DocumentSnapshot> obterPersonagem(String uid, String nome) {
