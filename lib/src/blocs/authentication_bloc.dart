@@ -1,10 +1,16 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/material.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
+import 'package:millenium/src/validators/usuario_validator.dart';
 import 'package:rxdart/subjects.dart';
 
-class AuthenticationBloc extends BlocBase {
-  final UsuarioRepository _usuarioRepository = UsuarioRepository();
+class AuthenticationBloc extends BlocBase with UsuarioValidator {
+  final UsuarioRepository _usuarioRepository;
+
+  AuthenticationBloc({@required UsuarioRepository usuarioRepository})
+      : assert(usuarioRepository != null),
+        _usuarioRepository = usuarioRepository;
 
   //Controllers
   final _stateController =
@@ -13,8 +19,10 @@ class AuthenticationBloc extends BlocBase {
   final _senhaController = BehaviorSubject<String>();
 
   //Streams
-  Stream<String> get emailStream => _emailController.stream;
-  Stream<String> get senhaStream => _senhaController.stream;
+  Stream<String> get emailStream =>
+      _emailController.stream.transform(isValidNome);
+  Stream<String> get senhaStream =>
+      _senhaController.stream.transform(isValidSenha);
   Stream<PageState> get stateStream => _stateController.stream;
 
   //Sinks

@@ -143,7 +143,6 @@ class PersonagemForm extends StatelessWidget with UsuarioValidator {
           stream: bloc.nomeStream,
           sink: bloc.nomeSink,
           labelText: "Nome",
-          validator: isValidNome,
         ),
       ),
       actions: <Widget>[

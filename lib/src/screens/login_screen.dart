@@ -91,14 +91,12 @@ class _LoginScreenState extends State<LoginScreen>
                         stream: _bloc.emailStream,
                         sink: _bloc.emailSink,
                         labelText: "Email",
-                        validator: isValidEmail,
                       ),
                       CustomTextField(
                         stream: _bloc.senhaStream,
                         sink: _bloc.senhaSink,
                         labelText: "Senha",
                         obscureText: true,
-                        validator: isValidSenha,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),

@@ -5,6 +5,7 @@ import 'package:millenium/src/blocs/usuario_bloc.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/text_field.dart';
 import 'package:millenium/src/models/page_state.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/jogador/jogador_home_screen.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
@@ -16,9 +17,8 @@ class CadastroUsuarioScreen extends StatefulWidget {
 
 class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
     with SingleTickerProviderStateMixin, UsuarioValidator {
-  final _bloc = CadastroUsuarioBloc();
+  final _bloc = CadastroUsuarioBloc(usuarioRepository: UsuarioRepository());
   final UsuarioBloc _userbloc = BlocProvider.getBloc<UsuarioBloc>();
-  final _senhaController = TextEditingController();
   AnimationController _animationController;
 
   final _formKey = GlobalKey<FormState>();
@@ -59,7 +59,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
 
   @override
   void dispose() {
-    _senhaController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -90,28 +89,23 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
                 stream: _bloc.nomeStream,
                 sink: _bloc.nomeSink,
                 labelText: "Nome",
-                validator: isValidNome,
               ),
               CustomTextField(
                 stream: _bloc.emailStream,
                 sink: _bloc.emailSink,
                 labelText: "Email",
-                validator: isValidEmail,
               ),
               CustomTextField(
                 stream: _bloc.senhaStream,
                 sink: _bloc.senhaSink,
-                controller: _senhaController,
                 labelText: "Senha",
                 obscureText: true,
-                validator: isValidSenha,
               ),
               CustomTextField(
+                stream: _bloc.confirmarSenhaStream,
+                sink: _bloc.confirmarSenhaSink,
                 labelText: "Confirmar Senha",
                 obscureText: true,
-                validator: (senha) {
-                  _confirmarSenhaValidator(senha);
-                },
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -128,15 +122,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
         ),
       ),
     );
-  }
-
-  String _confirmarSenhaValidator(String confirmarSenha) {
-    print(confirmarSenha);
-    print(_senhaController.text);
-    if (confirmarSenha != _senhaController.text) {
-      return "Senhas não são iguais!";
-    }
-    return isValidSenha(confirmarSenha);
   }
 
   void _onFormSubmitted(PageState state) {

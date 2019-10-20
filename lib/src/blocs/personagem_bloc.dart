@@ -2,16 +2,22 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:millenium/src/models/atributos_combate.dart';
 import 'package:millenium/src/models/atributos_exploracao.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/personagem.dart';
 import 'package:millenium/src/models/page_state_info.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
+import 'package:millenium/src/validators/usuario_validator.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PersonagemBloc extends BlocBase {
-  final PersonagemRepository _personagemRepository = PersonagemRepository();
+class PersonagemBloc extends BlocBase with UsuarioValidator {
+  PersonagemRepository _personagemRepository;
+
+  PersonagemBloc({@required PersonagemRepository personagemRepository})
+      : assert(personagemRepository != null),
+        _personagemRepository = personagemRepository;
 
   //Controllers
   final _nomeController = BehaviorSubject<String>();
@@ -22,7 +28,8 @@ class PersonagemBloc extends BlocBase {
   );
 
   //Streams
-  Stream<String> get nomeStream => _nomeController.stream;
+  Stream<String> get nomeStream =>
+      _nomeController.stream.transform(isValidNome);
   Stream<PageStateInfo> get stateStream => _stateController.stream;
 
   //Sinks

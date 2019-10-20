@@ -5,6 +5,8 @@ import 'package:millenium/src/blocs/personagem_bloc.dart';
 import 'package:millenium/src/blocs/usuario_bloc.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/repository/personagem_repository.dart';
+import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/cadastro_usuario_screen.dart';
 import 'package:millenium/src/screens/jogador/jogador_home_screen.dart';
 import 'package:millenium/src/screens/login_screen.dart';
@@ -19,12 +21,15 @@ class Millenium extends StatefulWidget {
 }
 
 class _MilleniumState extends State<Millenium> {
-  final _auth = AuthenticationBloc();
-  final UsuarioBloc _userbloc = UsuarioBloc();
+  final UsuarioRepository _usuarioRepository = UsuarioRepository();
+  AuthenticationBloc _auth;
+  UsuarioBloc _userbloc;
 
   @override
   void initState() {
     super.initState();
+    _auth = AuthenticationBloc(usuarioRepository: _usuarioRepository);
+    _userbloc = UsuarioBloc();
     _auth.stateStream.listen((state) {
       if (state == PageState.INITIALIZATION) {
         _auth.appInitialization();
@@ -37,8 +42,12 @@ class _MilleniumState extends State<Millenium> {
     return BlocProvider(
       blocs: [
         Bloc((i) => UsuarioBloc()),
-        Bloc((i) => AuthenticationBloc()),
-        Bloc((i) => PersonagemBloc()),
+        Bloc((i) => AuthenticationBloc(usuarioRepository: _usuarioRepository)),
+        Bloc(
+          (i) => PersonagemBloc(
+            personagemRepository: PersonagemRepository(),
+          ),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

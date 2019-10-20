@@ -2,7 +2,7 @@ import 'package:millenium/src/models/atributos_combate.dart';
 import 'package:millenium/src/models/atributos_exploracao.dart';
 
 class Personagem {
-  String jogador_id;
+  String jogadorId;
   String id;
   String nome;
   int vida;
@@ -16,7 +16,7 @@ class Personagem {
   AtributosExploracao atributosExploracao;
 
   Personagem({
-    this.jogador_id,
+    this.jogadorId,
     this.id,
     this.nome,
     this.vida: 20,
@@ -31,7 +31,7 @@ class Personagem {
   });
 
   Personagem.fromJson(Map<String, dynamic> json) {
-    jogador_id = json['jogador_id'];
+    jogadorId = json['jogadorId'];
     id = json['id'];
     nome = json['nome'];
     vida = json['vida'];
@@ -51,7 +51,7 @@ class Personagem {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['jogador_id'] = this.jogador_id;
+    data['jogadorId'] = this.jogadorId;
     data['id'] = this.id;
     data['nome'] = this.nome;
     data['vida'] = this.vida;
