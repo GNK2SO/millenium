@@ -1,14 +1,10 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:millenium/src/blocs/authentication_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:millenium/src/blocs/authentication_bloc/authentication_event.dart';
 import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/screens/jogador/personagens_jogador_screen.dart';
-import 'package:millenium/src/screens/login_screen.dart';
-import 'package:millenium/src/screens/mestre/personagens_screen.dart';
-import 'package:millenium/src/util/util.dart';
+import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final _bloc = BlocProvider.getBloc<AuthenticationBloc>();
   final Usuario _usuario;
 
   CustomDrawer({@required Usuario usuario})
@@ -33,18 +29,14 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               if (this._usuario.isAdmin) {
-                navigateTo(
-                  context,
-                  PersonagensScreen(
-                    usuario: this._usuario,
-                  ),
+                Navigator.of(context).pushNamed(
+                  "/todosPersonagemScreen",
+                  arguments: this._usuario,
                 );
               } else {
-                navigateTo(
-                  context,
-                  PersonagensJogadorScreen(
-                    usuario: this._usuario,
-                  ),
+                Navigator.of(context).pushNamed(
+                  "/meusPersonagensScreen",
+                  arguments: this._usuario,
                 );
               }
             },
@@ -73,16 +65,14 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             title: Text("Sair"),
             onTap: () {
-              deslogar(context);
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .dispatch(LoggedOut());
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/loginScreen", (Route<dynamic> route) => false);
             },
           ),
         ],
       ),
     );
-  }
-
-  void deslogar(BuildContext context) {
-    _bloc.efetuarLogout();
-    replaceTo(context, LoginScreen());
   }
 }

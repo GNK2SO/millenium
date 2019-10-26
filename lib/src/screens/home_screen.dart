@@ -3,9 +3,9 @@ import 'package:millenium/src/components/app_bar.dart';
 import 'package:millenium/src/components/drawer.dart';
 import 'package:millenium/src/models/usuario.dart';
 
-class JogadorHomeScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   final Usuario _usuario;
-  JogadorHomeScreen({@required Usuario usuario})
+  HomeScreen({@required Usuario usuario})
       : assert(usuario != null),
         _usuario = usuario;
 
@@ -19,6 +19,13 @@ class JogadorHomeScreen extends StatelessWidget {
           usuario: this._usuario,
         ),
         body: Container(),
+        floatingActionButton: Visibility(
+          visible: this._usuario.isAdmin,
+          child: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ),
       ),
     );
   }

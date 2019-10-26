@@ -77,6 +77,31 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                           ),
                           AtributoRow(
                             isAdmin: isAdmin,
+                            text: "Agilidade",
+                            pontos: atributos.agility,
+                            adicionarPonto: () {
+                              if (atributos.pontosDistribuicao > 0) {
+                                atributos.agility++;
+                                atributos.pontosDistribuicao--;
+                                state.didChange(atributos);
+                              }
+                            },
+                            removerPonto: () {
+                              if (atributosBase.agility < atributos.agility &&
+                                  atributos.pontosDistribuicao <
+                                      atributosBase.pontosDistribuicao) {
+                                atributos.agility--;
+                                atributos.pontosDistribuicao++;
+                                state.didChange(atributos);
+                              }
+                            },
+                          ),
+                          CustomDivider(
+                            width: double.infinity,
+                            height: 1,
+                          ),
+                          AtributoRow(
+                            isAdmin: isAdmin,
                             text: "Destreza",
                             pontos: atributos.dexterity,
                             adicionarPonto: () {

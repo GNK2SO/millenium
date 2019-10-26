@@ -19,15 +19,15 @@ class PersonagemRepository {
         .setData(personagem.toJson());
   }
 
-  Stream<QuerySnapshot> obterMeusPersonagens(String uid) {
+  Future<QuerySnapshot> obterMeusPersonagens(String uid) {
     return _firestore
         .collection("personagens")
         .where("jogadorId", isEqualTo: uid)
-        .snapshots();
+        .getDocuments();
   }
 
-  Stream<QuerySnapshot> obterTodosPersonagens() {
-    return _firestore.collection("personagens").snapshots();
+  Future<QuerySnapshot> obterTodosPersonagens() {
+    return _firestore.collection("personagens").getDocuments();
   }
 
   Future<void> atualizar(Personagem personagem) async {

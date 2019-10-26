@@ -1,40 +1,32 @@
-import 'dart:async';
-
 mixin UsuarioValidator {
-  final isValidNome = StreamTransformer<String, String>.fromHandlers(
-    handleData: (nome, sink) {
-      if (nome.isEmpty || nome == null) {
-        sink.addError("Campo obrigatório!");
-      } else {
-        sink.add(nome);
-      }
-    },
-  );
+  String isValidNome(String nome) {
+    if (nome.isEmpty || nome == null) {
+      return ("Campo obrigatório!");
+    }
+    return null;
+  }
 
-  final isValidEmail = StreamTransformer<String, String>.fromHandlers(
-    handleData: (email, sink) {
-      final regExp = RegExp(r"^[a-zA-Z0-9]{3,61}@millenium.com$");
-      if (email.isEmpty) {
-        sink.addError("Campo obrigatório!");
-      } else if (!regExp.hasMatch(email)) {
-        sink.addError("E-mail inválido!");
-      } else {
-        sink.add(email);
-      }
-    },
-  );
+  String isValidEmail(email) {
+    final regExp = RegExp(r"^[a-zA-Z0-9]{3,61}@millenium.com$");
+    if (email.isEmpty) {
+      return "Campo obrigatório!";
+    } else if (!regExp.hasMatch(email)) {
+      return "E-mail inválido!";
+    } else {
+      return null;
+    }
+  }
 
-  final isValidSenha =
-      StreamTransformer<String, String>.fromHandlers(handleData: (senha, sink) {
+  String isValidSenha(senha) {
     final regExp = RegExp(r"^[a-zA-Z0-9]{6,16}$");
     if (senha.isEmpty) {
-      sink.addError("Campo obrigatório!");
+      return "Campo obrigatório!";
     } else if (senha.length < 6 || senha.length > 16) {
-      sink.addError("Tamanho entre 6 a 16 caracteres!");
+      return "Tamanho entre 6 a 16 caracteres!";
     } else if (!regExp.hasMatch(senha)) {
-      sink.addError("Senha não deve conter caracteres especiais!");
+      return "Senha não deve conter caracteres especiais!";
     } else {
-      sink.add(senha);
+      return null;
     }
-  });
+  }
 }

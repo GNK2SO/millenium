@@ -3,6 +3,7 @@ import 'dart:core';
 class AtributosCombate {
   int pontosDistribuicao;
   int strenght;
+  int agility;
   int dexterity;
   int vitality;
   int intelligence;
@@ -10,6 +11,7 @@ class AtributosCombate {
   AtributosCombate({
     this.pontosDistribuicao: 0,
     this.strenght: 0,
+    this.agility: 0,
     this.dexterity: 0,
     this.vitality: 0,
     this.intelligence: 0,
@@ -18,6 +20,7 @@ class AtributosCombate {
   AtributosCombate.fromJson(Map<String, dynamic> json) {
     pontosDistribuicao = json['pontosDistribuicao'];
     strenght = json['strenght'];
+    agility = json['agility'];
     dexterity = json['dexterity'];
     vitality = json['vitality'];
     intelligence = json['intelligence'];
@@ -27,6 +30,7 @@ class AtributosCombate {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['pontosDistribuicao'] = this.pontosDistribuicao;
     data['strenght'] = this.strenght;
+    data['agility'] = this.agility;
     data['dexterity'] = this.dexterity;
     data['vitality'] = this.vitality;
     data['intelligence'] = this.intelligence;
@@ -37,6 +41,7 @@ class AtributosCombate {
   String toString() {
     return '''{
         strength: ${this.strenght},
+        dexterity: ${this.agility},
         dexterity: ${this.dexterity},
         vitality: ${this.vitality},
         intelligence: ${this.intelligence},

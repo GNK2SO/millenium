@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
-import 'package:millenium/src/screens/personagem_screen/personagem_form.dart';
+import 'package:millenium/src/screens/todos_personagens/todos_personagens_form.dart';
 
-class PersonagemScreen extends StatelessWidget {
+///Tela onde o MESTRE visualiza todos os personagens de todos os players
+class TodosPersonagensScreen extends StatelessWidget {
   final PersonagemRepository _personagemRepository;
 
-  PersonagemScreen({
+  TodosPersonagensScreen({
     Key key,
     @required PersonagemRepository repository,
   })  : assert(repository != null),
@@ -18,12 +19,11 @@ class PersonagemScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List data = ModalRoute.of(context).settings.arguments;
-    final Personagem personagem = data[0];
-    final Usuario usuario = data[1];
+    final Usuario usuario = ModalRoute.of(context).settings.arguments;
     return BlocProvider<PersonagemBloc>(
-      builder: (context) => PersonagemBloc(repository: _personagemRepository),
-      child: PersonagemDetalheForm(usuario: usuario, personagem: personagem),
+      builder: (context) => PersonagemBloc(repository: _personagemRepository)
+        ..dispatch(ObterTodosPersonagens()),
+      child: TodosPersonagensForm(usuario: usuario),
     );
   }
 }

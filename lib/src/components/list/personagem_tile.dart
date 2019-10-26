@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/models/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/screens/personagem_screen/personagem_screen.dart';
-import 'package:millenium/src/util/util.dart';
 
 class PersonagemTile extends StatelessWidget {
   final Personagem personagem;
   final Usuario usuario;
+  final Function onPressed;
 
-  PersonagemTile({@required this.personagem, @required this.usuario});
+  PersonagemTile({
+    @required this.personagem,
+    @required this.usuario,
+    @required this.onPressed,
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,15 +35,7 @@ class PersonagemTile extends StatelessWidget {
                     "Energia: ${personagem.energiaAtual}/${personagem.energiaTotal()}"),
               ],
             ),
-            onTap: () {
-              navigateTo(
-                context,
-                PersonagemScreen(
-                  personagem: this.personagem,
-                  usuario: this.usuario,
-                ),
-              );
-            },
+            onTap: this.onPressed,
           )
         ],
       ),
