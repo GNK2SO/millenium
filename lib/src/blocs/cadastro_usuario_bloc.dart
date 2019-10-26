@@ -45,18 +45,27 @@ class CadastroUsuarioBloc extends BlocBase with UsuarioValidator {
   Sink<String> get confirmarSenhaSink => _confirmarSenhaController.sink;
   Sink<PageState> get stateSink => _stateController.sink;
 
+  Stream<bool> get isFormValidate => Observable.combineLatest4(
+      nomeStream,
+      emailStream,
+      senhaStream,
+      confirmarSenhaStream,
+      (nome, email, senha, confirmarSenha) => true);
+
   void salvarUsuario() async {
-    stateSink.add(PageState.LOADING);
-    final usuario = Usuario(
-      nome: _nomeController.value,
-      email: _emailController.value,
-      senha: _senhaController.value,
-    );
-    try {
-      await _usuarioRepository.salvar(usuario);
-      stateSink.add(PageState.SUCCESS);
-    } catch (_) {
-      stateSink.add(PageState.FAILED);
+    if (_stateController.value != PageState.LOADING) {
+      stateSink.add(PageState.LOADING);
+      final usuario = Usuario(
+        nome: _nomeController.value,
+        email: _emailController.value,
+        senha: _senhaController.value,
+      );
+      try {
+        await _usuarioRepository.salvar(usuario);
+        stateSink.add(PageState.SUCCESS);
+      } catch (_) {
+        stateSink.add(PageState.FAILED);
+      }
     }
   }
 

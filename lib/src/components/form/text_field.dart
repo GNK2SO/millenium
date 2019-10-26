@@ -35,6 +35,7 @@ class CustomTextField<T> extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               labelText: this.labelText,
+              errorText: snapshot.error,
               contentPadding: this.contentPadding ?? const EdgeInsets.all(0),
             ),
             keyboardType: TextInputType.emailAddress,

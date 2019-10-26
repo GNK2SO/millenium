@@ -3,7 +3,7 @@ import 'dart:async';
 mixin UsuarioValidator {
   final isValidNome = StreamTransformer<String, String>.fromHandlers(
     handleData: (nome, sink) {
-      if (nome.isEmpty) {
+      if (nome.isEmpty || nome == null) {
         sink.addError("Campo obrigatório!");
       } else {
         sink.add(nome);
@@ -26,9 +26,11 @@ mixin UsuarioValidator {
 
   final isValidSenha =
       StreamTransformer<String, String>.fromHandlers(handleData: (senha, sink) {
-    final regExp = RegExp(r"^[a-zA-Z0-9]{1,16}$");
+    final regExp = RegExp(r"^[a-zA-Z0-9]{6,16}$");
     if (senha.isEmpty) {
       sink.addError("Campo obrigatório!");
+    } else if (senha.length < 6 || senha.length > 16) {
+      sink.addError("Tamanho entre 6 a 16 caracteres!");
     } else if (!regExp.hasMatch(senha)) {
       sink.addError("Senha não deve conter caracteres especiais!");
     } else {

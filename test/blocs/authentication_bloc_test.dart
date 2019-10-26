@@ -22,8 +22,24 @@ main() {
     expect(bloc.senhaStream, emitsError("Campo obrigatório!"));
   });
 
+  test("Quando tamanho da senha é menor que 6, emite erro", () {
+    bloc.senhaSink.add("xxx12");
+    expect(
+      bloc.senhaStream,
+      emitsError("Tamanho entre 6 a 16 caracteres!"),
+    );
+  });
+
+  test("Quando tamanho da senha é maior que 16, emite erro", () {
+    bloc.senhaSink.add("1234567890xxxxxxx");
+    expect(
+      bloc.senhaStream,
+      emitsError("Tamanho entre 6 a 16 caracteres!"),
+    );
+  });
+
   test("Quando senha contém caracter especial, emite erro", () {
-    bloc.senhaSink.add("@");
+    bloc.senhaSink.add("sdfsd#AS21");
     expect(
       bloc.senhaStream,
       emitsError("Senha não deve conter caracteres especiais!"),

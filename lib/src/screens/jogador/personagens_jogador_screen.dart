@@ -28,7 +28,6 @@ class PersonagensJogadorScreen extends StatefulWidget {
 
 class _PersonagensJogadorScreenState extends State<PersonagensJogadorScreen> {
   final _bloc = BlocProvider.getBloc<PersonagemBloc>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -108,8 +107,6 @@ class _PersonagensJogadorScreenState extends State<PersonagensJogadorScreen> {
                   if (snapshot.hasData) {
                     return PersonagemForm(
                       bloc: _bloc,
-                      formKey: _formKey,
-                      state: snapshot.data.state,
                     );
                   }
                   return Center(
@@ -125,19 +122,16 @@ class _PersonagensJogadorScreenState extends State<PersonagensJogadorScreen> {
   }
 }
 
-class PersonagemForm extends StatelessWidget with UsuarioValidator {
+class PersonagemForm extends StatelessWidget {
   final PersonagemBloc bloc;
-  final GlobalKey<FormState> formKey;
-  final PageState state;
 
-  PersonagemForm({this.bloc, this.formKey, this.state});
+  PersonagemForm({this.bloc});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Novo Personagem"),
       content: Form(
-        key: formKey,
         child: CustomTextField(
           padding: EdgeInsets.all(0),
           stream: bloc.nomeStream,
@@ -157,27 +151,29 @@ class PersonagemForm extends StatelessWidget with UsuarioValidator {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
-          child: Text(
-            "Cadastrar",
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          onPressed: () {
-            _onFormSubmitted(context, state);
-          },
-        ),
+        StreamBuilder<bool>(
+            stream: bloc.isFormValidate,
+            builder: (context, snapshot) {
+              return FlatButton(
+                child: Text(
+                  "Cadastrar",
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                onPressed: snapshot.hasData
+                    ? () {
+                        _submitForm(context);
+                      }
+                    : null,
+              );
+            }),
       ],
     );
   }
 
-  void _onFormSubmitted(BuildContext context, PageState state) {
-    bool isFormValidate = formKey.currentState.validate();
-
-    if (state != PageState.LOADING && isFormValidate) {
-      Navigator.of(context).pop();
-      bloc.salvarPersonagem();
-    }
+  void _submitForm(BuildContext context) {
+    Navigator.of(context).pop();
+    bloc.submit();
   }
 }

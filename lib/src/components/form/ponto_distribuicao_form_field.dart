@@ -27,7 +27,9 @@ class PontosDitribuicaoFormField extends FormField<int> {
                       child: IconButton(
                         icon: Icon(Icons.remove),
                         onPressed: () {
-                          pontosDistribuicao--;
+                          if (pontosDistribuicao > 0) {
+                            pontosDistribuicao--;
+                          }
                           state.didChange(pontosDistribuicao);
                         },
                       ),

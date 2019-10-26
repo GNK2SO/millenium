@@ -46,12 +46,7 @@ class PersonagemRepository {
         .delete();
   }
 
-  Stream<DocumentSnapshot> obterPersonagem(String uid, String nome) {
-    return _firestore
-        .collection("jogadores")
-        .document(uid)
-        .collection("personagens")
-        .document(nome)
-        .snapshots();
+  Future<DocumentSnapshot> obterPersonagem(String idPersonagem) {
+    return _firestore.collection("personagens").document(idPersonagem).get();
   }
 }

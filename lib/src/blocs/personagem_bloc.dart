@@ -36,23 +36,30 @@ class PersonagemBloc extends BlocBase with UsuarioValidator {
   Sink<String> get nomeSink => _nomeController.sink;
   Sink<PageStateInfo> get stateSink => _stateController.sink;
 
-  void salvarPersonagem() async {
-    stateSink.add(PageStateInfo(state: PageState.LOADING));
-    final personagem = Personagem(
-      nome: _nomeController.value,
-      atributosCombate: AtributosCombate(),
-      atributosExploracao: AtributosExploracao(),
-    );
-    try {
-      await _personagemRepository.salvar(personagem);
-      stateSink.add(PageStateInfo(state: PageState.SUCCESS));
-    } catch (_) {
-      stateSink.add(
-        PageStateInfo(
-          state: PageState.LOADING,
-          message: "Falha ao criar personagem.\nVerifique sua conexao.",
-        ),
+  Stream<bool> get isFormValidate =>
+      Observable.combineLatest([nomeStream], (nome) => true);
+
+  void submit() async {
+    if (_stateController.value.state != PageState.LOADING) {
+      stateSink.add(PageStateInfo(state: PageState.LOADING));
+
+      final personagem = Personagem(
+        nome: _nomeController.value,
+        atributosCombate: AtributosCombate(),
+        atributosExploracao: AtributosExploracao(),
       );
+
+      try {
+        await _personagemRepository.salvar(personagem);
+        stateSink.add(PageStateInfo(state: PageState.SUCCESS));
+      } catch (_) {
+        stateSink.add(
+          PageStateInfo(
+            state: PageState.LOADING,
+            message: "Falha ao criar personagem.\nVerifique sua conexao.",
+          ),
+        );
+      }
     }
   }
 
@@ -64,8 +71,11 @@ class PersonagemBloc extends BlocBase with UsuarioValidator {
     return _personagemRepository.obterMeusPersonagens(uid);
   }
 
-  Stream<DocumentSnapshot> obterPersonagem(String uid, String nome) {
-    return _personagemRepository.obterPersonagem(uid, nome);
+  Future<Personagem> obterPersonagem(String idPersonagem) async {
+    DocumentSnapshot document =
+        await _personagemRepository.obterPersonagem(idPersonagem);
+    String data = json.encode(document.data);
+    return Personagem.fromJson(json.decode(data));
   }
 
   void atualizar(Personagem personagem) async {

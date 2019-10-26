@@ -71,10 +71,13 @@ class Personagem {
   }
 
   int vidaTotal() {
-    return this.vida + 5 * (this.atributosCombate.vitality / 5).floor();
+    return this.vida + 5 * this.atributosCombate.vitality;
   }
 
   int energiaTotal() {
-    return this.energia + 2 * (this.atributosCombate.vitality / 5).floor();
+    return this.energia + 2 * this.atributosCombate.vitality;
   }
+
+  @override
+  String toString() => "Personagem { id: $id}";
 }

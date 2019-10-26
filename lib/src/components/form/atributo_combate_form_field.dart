@@ -46,14 +46,28 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                               if (atributos.pontosDistribuicao > 0) {
                                 atributos.strenght++;
                                 atributos.pontosDistribuicao--;
-                                state.didChange(atributos);
+                                if (atributos.strenght % 5 == 0) {
+                                  atributos.strenght += 2;
+                                  state.didChange(atributos);
+                                } else {
+                                  state.didChange(atributos);
+                                }
                               }
                             },
                             removerPonto: () {
                               if (atributosBase.strenght < atributos.strenght) {
                                 atributos.strenght--;
                                 atributos.pontosDistribuicao++;
-                                state.didChange(atributos);
+
+                                if (atributos.strenght % 6 == 0) {
+                                  atributos.strenght -= 2;
+                                  if (atributos.strenght < 0) {
+                                    atributos.strenght = 0;
+                                  }
+                                  state.didChange(atributos);
+                                } else {
+                                  state.didChange(atributos);
+                                }
                               }
                             },
                           ),

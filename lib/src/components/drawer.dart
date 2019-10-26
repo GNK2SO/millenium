@@ -50,6 +50,9 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            title: Text("Loja"),
+          ),
+          ListTile(
             title: Text("História"),
           ),
           ListTile(
@@ -62,7 +65,7 @@ class CustomDrawer extends StatelessWidget {
             title: Text("Bestiário"),
           ),
           ListTile(
-            title: Text("Loja"),
+            title: Text("Regras do Jogo"),
           ),
           ListTile(
             title: Text("Minha Conta"),

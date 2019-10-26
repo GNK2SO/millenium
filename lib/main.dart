@@ -72,7 +72,14 @@ class _MilleniumState extends State<Millenium> {
                         );
                       }
                     } else if (snapshot.hasError) {
-                      return Container();
+                      return Scaffold(
+                        body: Container(
+                          color: Colors.white,
+                          child: Center(
+                            child: Text("Falha na conexão!"),
+                          ),
+                        ),
+                      );
                     } else {
                       return SplashScreen();
                     }

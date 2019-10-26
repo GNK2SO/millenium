@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:millenium/src/models/page_state.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 class AuthenticationBloc extends BlocBase with UsuarioValidator {
@@ -20,7 +21,7 @@ class AuthenticationBloc extends BlocBase with UsuarioValidator {
 
   //Streams
   Stream<String> get emailStream =>
-      _emailController.stream.transform(isValidNome);
+      _emailController.stream.transform(isValidEmail);
   Stream<String> get senhaStream =>
       _senhaController.stream.transform(isValidSenha);
   Stream<PageState> get stateStream => _stateController.stream;
@@ -29,6 +30,9 @@ class AuthenticationBloc extends BlocBase with UsuarioValidator {
   Sink<String> get emailSink => _emailController.sink;
   Sink<String> get senhaSink => _senhaController.sink;
   Sink<PageState> get stateSink => _stateController.sink;
+
+  Stream<bool> get isFormValidate => Observable.combineLatest2(
+      emailStream, senhaStream, (email, senha) => true);
 
   void appInitialization() async {
     try {
@@ -44,15 +48,17 @@ class AuthenticationBloc extends BlocBase with UsuarioValidator {
   }
 
   void efetuarLogin() async {
-    stateSink.add(PageState.LOADING);
-    try {
-      await _usuarioRepository.efetuarLogin(
-        email: _emailController.value,
-        senha: _senhaController.value,
-      );
-      stateSink.add(PageState.SUCCESS);
-    } catch (_) {
-      stateSink.add(PageState.FAILED);
+    if (_stateController.value != PageState.LOADING) {
+      stateSink.add(PageState.LOADING);
+      try {
+        await _usuarioRepository.efetuarLogin(
+          email: _emailController.value,
+          senha: _senhaController.value,
+        );
+        stateSink.add(PageState.SUCCESS);
+      } catch (_) {
+        stateSink.add(PageState.FAILED);
+      }
     }
   }
 

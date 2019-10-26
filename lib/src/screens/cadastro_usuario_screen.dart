@@ -21,7 +21,6 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
   final UsuarioBloc _userbloc = BlocProvider.getBloc<UsuarioBloc>();
   AnimationController _animationController;
 
-  final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -81,54 +80,54 @@ class _CadastroUsuarioScreenState extends State<CadastroUsuarioScreen>
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              CustomTextField(
-                stream: _bloc.nomeStream,
-                sink: _bloc.nomeSink,
-                labelText: "Nome",
-              ),
-              CustomTextField(
-                stream: _bloc.emailStream,
-                sink: _bloc.emailSink,
-                labelText: "Email",
-              ),
-              CustomTextField(
-                stream: _bloc.senhaStream,
-                sink: _bloc.senhaSink,
-                labelText: "Senha",
-                obscureText: true,
-              ),
-              CustomTextField(
-                stream: _bloc.confirmarSenhaStream,
-                sink: _bloc.confirmarSenhaSink,
-                labelText: "Confirmar Senha",
-                obscureText: true,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: AnimatedButton(
-                  text: "CADASTRAR",
-                  controller: _animationController.view,
-                  onPressed: () {
-                    _onFormSubmitted(state);
-                  },
-                ),
-              ),
-            ],
-          ),
+        child: Column(
+          children: <Widget>[
+            CustomTextField(
+              stream: _bloc.nomeStream,
+              sink: _bloc.nomeSink,
+              labelText: "Nome",
+            ),
+            CustomTextField(
+              stream: _bloc.emailStream,
+              sink: _bloc.emailSink,
+              labelText: "Email",
+            ),
+            CustomTextField(
+              stream: _bloc.senhaStream,
+              sink: _bloc.senhaSink,
+              labelText: "Senha",
+              obscureText: true,
+            ),
+            CustomTextField(
+              stream: _bloc.confirmarSenhaStream,
+              sink: _bloc.confirmarSenhaSink,
+              labelText: "Confirmar Senha",
+              obscureText: true,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: StreamBuilder<bool>(
+                  stream: _bloc.isFormValidate,
+                  builder: (context, snapshot) {
+                    return AnimatedButton(
+                      text: "CADASTRAR",
+                      controller: _animationController.view,
+                      onPressed: snapshot.hasData
+                          ? () {
+                              _onFormSubmitted();
+                            }
+                          : null,
+                    );
+                  }),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  void _onFormSubmitted(PageState state) {
-    bool isFormValidate = _formKey.currentState.validate();
-    if (state != PageState.LOADING && isFormValidate) {
-      _animationController.forward();
-      _bloc.salvarUsuario();
-    }
+  void _onFormSubmitted() {
+    _animationController.forward();
+    _bloc.salvarUsuario();
   }
 }

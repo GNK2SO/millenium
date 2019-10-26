@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen>
   final _userBloc = BlocProvider.getBloc<UsuarioBloc>();
   final _bloc = BlocProvider.getBloc<AuthenticationBloc>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
   AnimationController _animationController;
 
   @override
@@ -55,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen>
             key: _scaffoldKey,
             mensagem: "Erro ao autenticar.\nVerifique sua conexão.",
           );
+          _animationController.reset();
           break;
         default:
       }
@@ -82,59 +82,57 @@ class _LoginScreenState extends State<LoginScreen>
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Logo(),
-                      CustomTextField(
-                        stream: _bloc.emailStream,
-                        sink: _bloc.emailSink,
-                        labelText: "Email",
-                      ),
-                      CustomTextField(
-                        stream: _bloc.senhaStream,
-                        sink: _bloc.senhaSink,
-                        labelText: "Senha",
-                        obscureText: true,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: StreamBuilder<PageState>(
-                            stream: _bloc.stateStream,
-                            builder: (context, snapshot) {
-                              return AnimatedButton(
-                                text: "ENTRAR",
-                                controller: _animationController.view,
-                                onPressed: () {
-                                  _onFormSubmitted(snapshot.data);
-                                },
-                              );
-                            }),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(child: CustomDivider()),
-                          Expanded(
-                            child: Text(
-                              "ou",
-                              textAlign: TextAlign.center,
-                            ),
+                child: Column(
+                  children: <Widget>[
+                    Logo(),
+                    CustomTextField(
+                      stream: _bloc.emailStream,
+                      sink: _bloc.emailSink,
+                      labelText: "Email",
+                    ),
+                    CustomTextField(
+                      stream: _bloc.senhaStream,
+                      sink: _bloc.senhaSink,
+                      labelText: "Senha",
+                      obscureText: true,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: StreamBuilder<bool>(
+                          stream: _bloc.isFormValidate,
+                          builder: (context, snapshot) {
+                            return AnimatedButton(
+                              text: "ENTRAR",
+                              controller: _animationController.view,
+                              onPressed: snapshot.hasData
+                                  ? () {
+                                      _onFormSubmitted();
+                                    }
+                                  : null,
+                            );
+                          }),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(child: CustomDivider()),
+                        Expanded(
+                          child: Text(
+                            "ou",
+                            textAlign: TextAlign.center,
                           ),
-                          Expanded(child: CustomDivider())
-                        ],
-                      ),
-                      CircularButton(
-                        text: "CRIAR CONTA",
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed("/cadastroContaScreen");
-                        },
-                      ),
-                    ],
-                  ),
+                        ),
+                        Expanded(child: CustomDivider())
+                      ],
+                    ),
+                    CircularButton(
+                      text: "CRIAR CONTA",
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/cadastroContaScreen");
+                      },
+                    ),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -142,11 +140,8 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  void _onFormSubmitted(PageState state) {
-    bool isFormValidate = _formKey.currentState.validate();
-    if (state != PageState.LOADING && isFormValidate) {
-      _animationController.forward();
-      _bloc.efetuarLogin();
-    }
+  void _onFormSubmitted() {
+    _animationController.forward();
+    _bloc.efetuarLogin();
   }
 }

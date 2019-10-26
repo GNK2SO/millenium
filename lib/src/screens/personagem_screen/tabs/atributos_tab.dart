@@ -30,6 +30,8 @@ class _AtributosTabState extends State<AtributosTab>
   _AtributosTabState({@required this.personagem});
 
   final PersonagemBloc _bloc = BlocProvider.getBloc<PersonagemBloc>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AnimationController _animationController;
 
@@ -50,95 +52,99 @@ class _AtributosTabState extends State<AtributosTab>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(8),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: CircleAvatar(
-                radius: 64,
+    return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      onRefresh: _refresh,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: CircleAvatar(
+                  radius: 64,
+                ),
               ),
-            ),
-            Visibility(
-              visible: this.widget.usuario.isAdmin,
-              child: Card(
-                child: Container(
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: ExpansionTile(
-                    title: Text(
-                      "Pontos de distribuição",
-                      style: TextStyle(fontSize: 24),
+              Visibility(
+                visible: this.widget.usuario.isAdmin,
+                child: Card(
+                  child: Container(
+                    decoration: BoxDecoration(border: Border.all()),
+                    child: ExpansionTile(
+                      title: Text(
+                        "Pontos de distribuição",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      children: <Widget>[
+                        CustomDivider(
+                          height: 1,
+                          width: double.infinity,
+                        ),
+                        PontosDitribuicaoFormField(
+                          text: "Combate",
+                          pontosDistribuicao:
+                              personagem.atributosCombate.pontosDistribuicao,
+                          onSaved: (pontosDistribuicao) {
+                            if (pontosDistribuicao != null) {
+                              personagem.atributosCombate.pontosDistribuicao =
+                                  pontosDistribuicao;
+                            }
+                          },
+                        ),
+                        CustomDivider(
+                          height: 1,
+                          width: double.infinity,
+                        ),
+                        PontosDitribuicaoFormField(
+                          text: "Exploração",
+                          pontosDistribuicao:
+                              personagem.atributosExploracao.pontosDistribuicao,
+                          onSaved: (pontosDistribuicao) {
+                            if (pontosDistribuicao != null) {
+                              personagem.atributosExploracao
+                                  .pontosDistribuicao = pontosDistribuicao;
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    children: <Widget>[
-                      CustomDivider(
-                        height: 1,
-                        width: double.infinity,
-                      ),
-                      PontosDitribuicaoFormField(
-                        text: "Combate",
-                        pontosDistribuicao:
-                            personagem.atributosCombate.pontosDistribuicao,
-                        onSaved: (pontosDistribuicao) {
-                          if (pontosDistribuicao != null) {
-                            personagem.atributosCombate.pontosDistribuicao =
-                                pontosDistribuicao;
-                          }
-                        },
-                      ),
-                      CustomDivider(
-                        height: 1,
-                        width: double.infinity,
-                      ),
-                      PontosDitribuicaoFormField(
-                        text: "Exploração",
-                        pontosDistribuicao:
-                            personagem.atributosExploracao.pontosDistribuicao,
-                        onSaved: (pontosDistribuicao) {
-                          if (pontosDistribuicao != null) {
-                            personagem.atributosExploracao.pontosDistribuicao =
-                                pontosDistribuicao;
-                          }
-                        },
-                      ),
-                    ],
                   ),
                 ),
               ),
-            ),
-            InfoCard(personagem: personagem),
-            StatusCard(personagem: personagem),
-            AtributosCombateFormField(
-              isAdmin: this.widget.usuario.isAdmin,
-              atributos: personagem.atributosCombate,
-              atributosBase: AtributosCombate.fromJson(
-                  personagem.atributosCombate.toJson()),
-            ),
-            AtributosExploracaoFormField(
-              isAdmin: this.widget.usuario.isAdmin,
-              atributos: personagem.atributosExploracao,
-              atributosBase: AtributosExploracao.fromJson(
-                personagem.atributosExploracao.toJson(),
+              InfoCard(personagem: personagem),
+              StatusCard(personagem: personagem),
+              AtributosCombateFormField(
+                isAdmin: this.widget.usuario.isAdmin,
+                atributos: personagem.atributosCombate,
+                atributosBase: AtributosCombate.fromJson(
+                    personagem.atributosCombate.toJson()),
               ),
-            ),
-            StreamBuilder<PageStateInfo>(
-              stream: _bloc.stateStream,
-              builder: (context, snapshot) {
-                return AnimatedButton(
-                  controller: _animationController,
-                  text: "SALVAR",
-                  onPressed: () {
-                    if (snapshot.hasData) {
-                      setState(() {});
-                      _onFormSubmitted(snapshot.data.state);
-                    }
-                  },
-                );
-              },
-            ),
-          ],
+              AtributosExploracaoFormField(
+                isAdmin: this.widget.usuario.isAdmin,
+                atributos: personagem.atributosExploracao,
+                atributosBase: AtributosExploracao.fromJson(
+                  personagem.atributosExploracao.toJson(),
+                ),
+              ),
+              StreamBuilder<PageStateInfo>(
+                stream: _bloc.stateStream,
+                builder: (context, snapshot) {
+                  return AnimatedButton(
+                    controller: _animationController,
+                    text: "SALVAR",
+                    onPressed: () {
+                      if (snapshot.hasData) {
+                        setState(() {});
+                        _onFormSubmitted(snapshot.data.state);
+                      }
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -149,5 +155,10 @@ class _AtributosTabState extends State<AtributosTab>
       _formKey.currentState.save();
       _bloc.atualizar(personagem);
     }
+  }
+
+  Future<void> _refresh() async {
+    personagem = await _bloc.obterPersonagem(personagem.id);
+    setState(() {});
   }
 }
