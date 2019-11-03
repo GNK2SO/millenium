@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
-import 'package:millenium/src/models/atributos_combate.dart';
-import 'package:millenium/src/models/atributos_exploracao.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
+import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
 
 class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
@@ -52,6 +52,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
         await _personagemRepository.salvar(personagem);
         yield Success();
       } catch (e) {
+        print("\n\n$e\n\n");
         yield Failure(
             erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
       }
@@ -126,6 +127,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
           mensagem: "Alterações salvas com sucesso!",
         );
       } catch (e) {
+        print("\n\n$e\n\n");
         yield Failure(
             erro: "Erro ao atualizar personagem.\nVerifique sua conexão.");
       }

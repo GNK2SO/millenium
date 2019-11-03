@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class CustomTextField<T> extends StatelessWidget {
@@ -8,8 +6,10 @@ class CustomTextField<T> extends StatelessWidget {
   final String labelText;
   final bool obscureText;
   final TextEditingController controller;
-  final Stream stream;
-  final Sink sink;
+  final int maxLines;
+  final InputBorder border;
+  final TextInputType keyboardType;
+  final String hintText;
   final Function(String) onSaved;
   final Function(String) validator;
 
@@ -19,36 +19,32 @@ class CustomTextField<T> extends StatelessWidget {
     this.controller,
     this.labelText,
     this.obscureText: false,
-    this.stream,
-    this.sink,
+    this.keyboardType,
+    this.border,
+    this.maxLines,
+    this.hintText,
     this.onSaved,
     this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<T>(
-      stream: this.stream,
-      builder: (context, snapshot) {
-        return Padding(
-          padding: this.padding ?? const EdgeInsets.symmetric(vertical: 16),
-          child: TextFormField(
-            decoration: InputDecoration(
-              labelText: this.labelText,
-              errorText: snapshot.error,
-              contentPadding: this.contentPadding ?? const EdgeInsets.all(0),
-            ),
-            keyboardType: TextInputType.emailAddress,
-            controller: controller,
-            obscureText: this.obscureText,
-            onChanged: (value) {
-              this.sink.add(value);
-            },
-            onSaved: this.onSaved,
-            validator: this.validator,
-          ),
-        );
-      },
+    return Padding(
+      padding: this.padding ?? const EdgeInsets.symmetric(vertical: 16),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: this.hintText,
+          labelText: this.labelText,
+          contentPadding: this.contentPadding ?? const EdgeInsets.all(0),
+          border: this.border,
+        ),
+        maxLines: this.maxLines,
+        keyboardType: keyboardType ?? TextInputType.emailAddress,
+        controller: controller,
+        obscureText: this.obscureText,
+        onSaved: this.onSaved,
+        validator: this.validator,
+      ),
     );
   }
 }

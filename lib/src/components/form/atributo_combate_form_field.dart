@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/components/form/atributo_row.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
-import 'package:millenium/src/models/atributos_combate.dart';
+import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
 
 class AtributosCombateFormField extends FormField<AtributosCombate> {
   AtributosCombateFormField({
@@ -170,6 +170,35 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                                 atributos.intelligence--;
                                 atributos.pontosDistribuicao++;
                                 state.didChange(atributos);
+                              }
+                            },
+                          ),
+                          CustomDivider(
+                            width: double.infinity,
+                            height: 1,
+                          ),
+                          AtributoRow(
+                            isAdmin: isAdmin,
+                            text: "Magia",
+                            pontos: atributos.magia,
+                            adicionarPonto: () {
+                              if (atributos.isMagiaUnlocked) {
+                                if (atributos.pontosDistribuicao > 0) {
+                                  atributos.magia++;
+                                  atributos.pontosDistribuicao--;
+                                  state.didChange(atributos);
+                                }
+                              }
+                            },
+                            removerPonto: () {
+                              if (atributos.isMagiaUnlocked) {
+                                if (atributosBase.magia < atributos.magia &&
+                                    atributos.pontosDistribuicao <
+                                        atributosBase.pontosDistribuicao) {
+                                  atributos.magia--;
+                                  atributos.pontosDistribuicao++;
+                                  state.didChange(atributos);
+                                }
                               }
                             },
                           ),

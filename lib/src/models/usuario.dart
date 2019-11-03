@@ -1,4 +1,4 @@
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 
 class Usuario {
   String uid;

@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
-import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
 import 'package:millenium/src/components/app_bar.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/atributos_tab.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/equipamento_tab.dart';
@@ -67,7 +66,10 @@ class _PersonagemDetalheFormState extends State<PersonagemDetalheForm> {
                 personagem: personagem,
               ),
               HabilidadesTab(),
-              EquipamentoTab()
+              EquipamentoTab(
+                usuario: this.widget.usuario,
+                personagem: personagem,
+              )
             ],
           ),
         ),

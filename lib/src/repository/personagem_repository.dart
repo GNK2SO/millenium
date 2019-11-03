@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:uuid/uuid.dart';
 
 class PersonagemRepository {
@@ -13,6 +13,7 @@ class PersonagemRepository {
     _usuarioAtual = await _auth.currentUser();
     personagem.jogadorId = _usuarioAtual.uid;
     personagem.id = "${personagem.nome}_${Uuid().v1()}";
+    print(personagem.toJson());
     return _firestore
         .collection("personagens")
         .document(personagem.id)

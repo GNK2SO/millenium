@@ -10,11 +10,10 @@ import 'package:millenium/src/components/form/info_card.dart';
 import 'package:millenium/src/components/form/ponto_distribuicao_form_field.dart';
 import 'package:millenium/src/components/form/status_card.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
-import 'package:millenium/src/models/atributos_combate.dart';
-import 'package:millenium/src/models/atributos_exploracao.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
+import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/util/util.dart';
 
 class AtributosTab extends StatefulWidget {
   final Personagem personagem;
@@ -30,8 +29,7 @@ class _AtributosTabState extends State<AtributosTab>
   Personagem personagem;
   _AtributosTabState({@required this.personagem});
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AnimationController _animationController;
 
@@ -155,6 +153,7 @@ class _AtributosTabState extends State<AtributosTab>
     _formKey.currentState.save();
     BlocProvider.of<PersonagemBloc>(context)
         .dispatch(AtualizarPersonagem(personagem: personagem));
+    setState(() {});
   }
 
   Future<void> _refresh() async {

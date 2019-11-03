@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 
 @immutable
 abstract class PersonagemState extends Equatable {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 
 class PersonagemTile extends StatelessWidget {

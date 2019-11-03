@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
-import 'package:millenium/src/models/personagem.dart';
+import 'package:millenium/src/models/personagem/personagem.dart';
 
 class InfoCard extends StatelessWidget {
   final Personagem personagem;
