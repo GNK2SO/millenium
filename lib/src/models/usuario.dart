@@ -1,12 +1,9 @@
-import 'package:millenium/src/models/personagem/personagem.dart';
-
 class Usuario {
   String uid;
   String nome;
   String email;
   String senha;
   bool isAdmin;
-  List<Personagem> personagens;
 
   Usuario({
     this.uid,
@@ -14,7 +11,6 @@ class Usuario {
     this.email,
     this.senha,
     this.isAdmin,
-    this.personagens,
   });
 
   Usuario.fromJson(Map<String, dynamic> json) {
@@ -22,12 +18,6 @@ class Usuario {
     email = json['email'];
     senha = json['senha'];
     isAdmin = json['isAdmin'];
-    if (json['personagem'] != null) {
-      personagens = new List<Personagem>();
-      json['personagem'].forEach((personagem) {
-        personagens.add(new Personagem.fromJson(personagem));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -36,11 +26,6 @@ class Usuario {
     data['email'] = this.email;
     data['senha'] = this.senha;
     data['isAdmin'] = this.isAdmin;
-    if (this.personagens != null) {
-      data['personagens'] = this.personagens.map((personagem) {
-        return personagem.toJson();
-      }).toList();
-    }
     return data;
   }
 }

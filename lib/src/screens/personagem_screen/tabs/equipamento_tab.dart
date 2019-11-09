@@ -5,6 +5,8 @@ import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
 import 'package:millenium/src/components/form/text_field.dart';
 import 'package:millenium/src/components/list/bolsa_tile.dart';
+import 'package:millenium/src/components/list/equipamento_tile.dart';
+import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/consumivel/consumivel.dart';
 import 'package:millenium/src/models/equipamento/arma/arma.dart';
 import 'package:millenium/src/models/equipamento/armadura/armadura.dart';
@@ -66,96 +68,186 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                 } else if (state is Loading) {
                   return LoadingScreen();
                 } else {
-                  return BolsaTile(
-                    isNotAdmin: !usuario.isAdmin,
-                    bolsa: personagem.bolsa,
-                    onDismissed: (item) {
-                      personagem.bolsa.remove(item);
-                      BlocProvider.of<PersonagemBloc>(context).dispatch(
-                        AtualizarPersonagem(personagem: personagem),
-                      );
-                      setState(() {
-                        personagem = personagem;
-                      });
-                    },
-                    onEquiped: (item) {
-                      dynamic arma;
-                      personagem.equipamentos.forEach((itemEquiped) {
-                        if (itemEquiped.tipo == "Arma") {
-                          arma = itemEquiped;
-                        }
-                      });
-                      personagem.equipamentos.remove(arma);
-                      personagem.equipamentos.add(item);
-                      BlocProvider.of<PersonagemBloc>(context).dispatch(
-                        AtualizarPersonagem(personagem: personagem),
-                      );
-                      setState(() {
-                        personagem = personagem;
-                      });
-                    },
-                    onUtilizar: (item) {
-                      if (personagem.vidaTotal() <
-                          personagem.vidaAtual + item.vida) {
-                        personagem.vidaAtual = personagem.vidaTotal();
-                      } else {
-                        personagem.vidaAtual += item.vida;
-                      }
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Card(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              child: ExpansionTile(
+                                title: Text(
+                                  "Equipamento",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                children: <Widget>[
+                                  CustomDivider(
+                                    height: 1,
+                                    width: double.infinity,
+                                  ),
+                                  EquipamentoTile(
+                                    isNotAdmin: !usuario.isAdmin,
+                                    equipamentos: personagem.equipamentos,
+                                    onUnequipped: (item) {
+                                      personagem.equipamentos.remove(item);
+                                      personagem.bolsa.insert(0, item);
+                                      setState(() {
+                                        personagem = personagem;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            child: Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              child: ExpansionTile(
+                                title: Text(
+                                  "Mochila",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                children: <Widget>[
+                                  CustomDivider(
+                                    height: 1,
+                                    width: double.infinity,
+                                  ),
+                                  BolsaTile(
+                                    isNotAdmin: !usuario.isAdmin,
+                                    bolsa: personagem.bolsa,
+                                    onDismissed: (item) {
+                                      personagem.bolsa.remove(item);
+                                      setState(() {
+                                        personagem = personagem;
+                                      });
+                                    },
+                                    onEquipped: (item) {
+                                      dynamic _equipamento;
 
-                      if (personagem.energiaTotal() <
-                          personagem.energiaAtual + item.energia) {
-                        personagem.energiaAtual = personagem.energiaTotal();
-                      } else {
-                        personagem.energiaAtual += item.energia;
-                      }
+                                      if (item is Arma) {
+                                        personagem.equipamentos
+                                            .forEach((equipamento) {
+                                          if (equipamento is Arma) {
+                                            _equipamento = equipamento;
+                                            personagem.bolsa
+                                                .insert(0, equipamento);
+                                          }
+                                        });
+                                      }
 
-                      if (personagem.manaTotal() <
-                          personagem.manaAtual + item.mana) {
-                        personagem.manaAtual = personagem.manaTotal();
-                      } else {
-                        personagem.manaAtual += item.mana;
-                      }
+                                      if (item is Armadura) {
+                                        personagem.equipamentos
+                                            .forEach((equipamento) {
+                                          if (equipamento is Armadura &&
+                                              equipamento.parte == item.parte) {
+                                            _equipamento = equipamento;
+                                            personagem.bolsa
+                                                .insert(0, equipamento);
+                                          }
+                                        });
+                                      }
 
-                      personagem.bolsa.remove(item);
+                                      personagem.equipamentos
+                                          .remove(_equipamento);
 
-                      BlocProvider.of<PersonagemBloc>(context).dispatch(
-                        AtualizarPersonagem(personagem: personagem),
-                      );
-                      setState(() {
-                        personagem = personagem;
-                      });
-                    },
+                                      personagem.bolsa.remove(item);
+                                      personagem.equipamentos.insert(0, item);
+                                      setState(() {
+                                        personagem = personagem;
+                                      });
+                                    },
+                                    onUtilizar: (item) {
+                                      if (personagem.vidaTotal() <
+                                          personagem.vidaAtual + item.vida) {
+                                        personagem.vidaAtual =
+                                            personagem.vidaTotal();
+                                      } else {
+                                        personagem.vidaAtual += item.vida;
+                                      }
+
+                                      if (personagem.energiaTotal() <
+                                          personagem.energiaAtual +
+                                              item.energia) {
+                                        personagem.energiaAtual =
+                                            personagem.energiaTotal();
+                                      } else {
+                                        personagem.energiaAtual += item.energia;
+                                      }
+
+                                      if (personagem.manaTotal() <
+                                          personagem.manaAtual + item.mana) {
+                                        personagem.manaAtual =
+                                            personagem.manaTotal();
+                                      } else {
+                                        personagem.manaAtual += item.mana;
+                                      }
+
+                                      personagem.bolsa.remove(item);
+
+                                      BlocProvider.of<PersonagemBloc>(context)
+                                          .dispatch(
+                                        AtualizarPersonagem(
+                                            personagem: personagem),
+                                      );
+                                      setState(() {
+                                        personagem = personagem;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 }
               },
             ),
-            Visibility(
-              visible: this.usuario.isAdmin,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FloatingActionButton(
-                    child: Icon(Icons.add),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (contextMessage) {
-                          return FormCadastroItem(
-                            personagem: personagem,
-                            onSaved: (personagem) {
-                              BlocProvider.of<PersonagemBloc>(context).dispatch(
-                                AtualizarPersonagem(
-                                  personagem: this.personagem,
-                                ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: usuario.isAdmin
+                    ? FloatingActionButton(
+                        child: Icon(Icons.add),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (contextMessage) {
+                              return FormCadastroItem(
+                                personagem: personagem,
+                                onSaved: (personagem) {
+                                  BlocProvider.of<PersonagemBloc>(context)
+                                      .dispatch(
+                                    AtualizarPersonagem(
+                                      personagem: this.personagem,
+                                    ),
+                                  );
+                                },
                               );
                             },
                           );
                         },
-                      );
-                    },
-                  ),
-                ),
+                      )
+                    : FloatingActionButton(
+                        child: Icon(Icons.save),
+                        onPressed: () {
+                          BlocProvider.of<PersonagemBloc>(context).dispatch(
+                            AtualizarPersonagem(
+                              personagem: this.personagem,
+                            ),
+                          );
+                        },
+                      ),
               ),
             ),
           ],
@@ -184,10 +276,19 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
 
   _FormCadastroItemState({@required this.personagem, @required this.onSaved});
 
-  String dropdownItemValue = 'Item';
-  String dropdownEquipamentoValue = 'Médio';
+  String dropdownItemValue;
+  String dropdownEquipamentoValue;
+  String dropdownParteArmaduraValue;
   final tiposItem = ['Item', 'Arma', 'Armadura', 'Consumível'];
   final tiposEquipamento = ['Pesado', 'Médio', 'Leve'];
+  final partesArmadura = [
+    'Set',
+    'Elmo',
+    'Peitoral',
+    'Luvas',
+    'Grevas',
+    'Botas'
+  ];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -205,6 +306,9 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
     _vidaController.text = "0";
     _energiaController.text = "0";
     _manaController.text = "0";
+    dropdownItemValue = tiposItem.first;
+    dropdownEquipamentoValue = tiposEquipamento.first;
+    dropdownParteArmaduraValue = partesArmadura.first;
   }
 
   @override
@@ -337,6 +441,24 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                 );
               }).toList(),
             ),
+            DropdownButton<String>(
+              value: dropdownParteArmaduraValue,
+              onChanged: (String newValue) {
+                setState(() {
+                  dropdownParteArmaduraValue = newValue;
+                });
+              },
+              items:
+                  partesArmadura.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: SizedBox(
+                    width: 208,
+                    child: Text(value),
+                  ),
+                );
+              }).toList(),
+            ),
             CustomTextField(
               labelText: "Defesa",
               controller: _danoDefesaController,
@@ -397,14 +519,21 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
           personagem.bolsa.add(arma);
           break;
         case 'Armadura':
-          final Armadura armadura = Armadura(
-            nome: _nomeController.text,
-            descricao: _descricaoController.text,
-            tipo: dropdownItemValue,
-            tipoEquipamento: dropdownEquipamentoValue,
-            defesa: int.parse(_danoDefesaController.text),
-          );
-          personagem.bolsa.add(armadura);
+          if (dropdownParteArmaduraValue == 'Set') {
+            getFullSetArmadura().forEach((parteArmadura) {
+              personagem.bolsa.add(parteArmadura);
+            });
+          } else {
+            final Armadura armadura = Armadura(
+              nome: _nomeController.text,
+              descricao: _descricaoController.text,
+              tipo: dropdownItemValue,
+              tipoEquipamento: dropdownEquipamentoValue,
+              parte: dropdownParteArmaduraValue,
+              defesa: int.parse(_danoDefesaController.text),
+            );
+            personagem.bolsa.add(armadura);
+          }
           break;
         case 'Consumível':
           final Consumivel consumivel = Consumivel(
@@ -429,5 +558,53 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
 
       onSaved(personagem);
     }
+  }
+
+  List<Armadura> getFullSetArmadura() {
+    int defesa = int.parse(_danoDefesaController.text);
+    int resto = defesa % 5;
+    defesa -= resto;
+    return [
+      Armadura(
+        nome: "Elmo ${_nomeController.text}",
+        descricao: _descricaoController.text,
+        tipo: dropdownItemValue,
+        tipoEquipamento: dropdownEquipamentoValue,
+        parte: "Elmo",
+        defesa: defesa ~/ 5,
+      ),
+      Armadura(
+        nome: "Peitoral ${_nomeController.text}",
+        descricao: _descricaoController.text,
+        tipo: dropdownItemValue,
+        tipoEquipamento: dropdownEquipamentoValue,
+        parte: "Peitoral",
+        defesa: (defesa ~/ 5) + resto,
+      ),
+      Armadura(
+        nome: "Luvas ${_nomeController.text}",
+        descricao: _descricaoController.text,
+        tipo: dropdownItemValue,
+        tipoEquipamento: dropdownEquipamentoValue,
+        parte: "Luvas",
+        defesa: defesa ~/ 5,
+      ),
+      Armadura(
+        nome: "Grevas ${_nomeController.text}",
+        descricao: _descricaoController.text,
+        tipo: dropdownItemValue,
+        tipoEquipamento: dropdownEquipamentoValue,
+        parte: "Grevas",
+        defesa: defesa ~/ 5,
+      ),
+      Armadura(
+        nome: "Botas ${_nomeController.text}",
+        descricao: _descricaoController.text,
+        tipo: dropdownItemValue,
+        tipoEquipamento: dropdownEquipamentoValue,
+        parte: "Botas",
+        defesa: defesa ~/ 5,
+      )
+    ];
   }
 }

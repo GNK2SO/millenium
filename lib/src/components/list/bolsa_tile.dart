@@ -11,18 +11,19 @@ class BolsaTile extends StatelessWidget {
   final bool isNotAdmin;
   final List bolsa;
   final Callback onDismissed;
-  final Callback onEquiped;
+  final Callback onEquipped;
   final Callback onUtilizar;
   BolsaTile({
     @required this.isNotAdmin,
     @required this.bolsa,
     @required this.onDismissed,
-    @required this.onEquiped,
+    @required this.onEquipped,
     @required this.onUtilizar,
   });
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      shrinkWrap: true,
       itemCount: bolsa.length,
       itemBuilder: (context, index) {
         dynamic item = bolsa[index];
@@ -33,21 +34,22 @@ class BolsaTile extends StatelessWidget {
               item.nome,
               style: TextStyle(fontSize: 20),
             ),
-            trailing: item.tipo == "Arma" && isNotAdmin
-                ? FlatButton(
-                    child: Text("Equipar"),
-                    onPressed: () {
-                      onEquiped(item);
-                    },
-                  )
-                : item.tipo == "Consumível" && isNotAdmin
+            trailing:
+                (item.tipo == "Arma" || item.tipo == "Armadura") && isNotAdmin
                     ? FlatButton(
-                        child: Text("Utilizar"),
+                        child: Text("Equipar"),
                         onPressed: () {
-                          onUtilizar(item);
+                          onEquipped(item);
                         },
                       )
-                    : null,
+                    : item.tipo == "Consumível" && isNotAdmin
+                        ? FlatButton(
+                            child: Text("Utilizar"),
+                            onPressed: () {
+                              onUtilizar(item);
+                            },
+                          )
+                        : null,
             onTap: () {
               showDialog(
                 context: context,
@@ -138,6 +140,7 @@ class ArmaduraTile extends StatelessWidget {
       children: <Widget>[
         Text("Defesa: ${armadura.defesa}"),
         Text("Tipo: ${armadura.tipoEquipamento}"),
+        Text("Parte: ${armadura.parte}"),
         Text("\n${armadura.descricao}"),
       ],
     );

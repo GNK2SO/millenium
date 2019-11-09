@@ -6,9 +6,11 @@ part 'armadura.g.dart';
 @JsonSerializable()
 class Armadura extends Equipamento {
   int defesa;
+  String parte;
 
   Armadura({
     this.defesa,
+    this.parte,
     String nome,
     String descricao,
     String tipo,

@@ -9,6 +9,7 @@ part of 'armadura.dart';
 Armadura _$ArmaduraFromJson(Map<String, dynamic> json) {
   return Armadura(
     defesa: json['defesa'] as int,
+    parte: json['parte'] as String,
     nome: json['nome'] as String,
     descricao: json['descricao'] as String,
     tipo: json['tipo'] as String,
@@ -18,6 +19,7 @@ Armadura _$ArmaduraFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ArmaduraToJson(Armadura instance) => <String, dynamic>{
       'nome': instance.nome,
+      'parte': instance.parte,
       'descricao': instance.descricao,
       'tipo': instance.tipo,
       'tipoEquipamento': instance.tipoEquipamento,

@@ -67,7 +67,7 @@ class Personagem {
     int dano;
 
     equipamentos.forEach((item) {
-      if (item.tipo == "Arma") {
+      if (item is Arma) {
         dano = item.dano;
       }
     });
@@ -76,7 +76,14 @@ class Personagem {
   }
 
   int defesa() {
-    return 0;
+    int defesa = 0;
+
+    equipamentos.forEach((item) {
+      if (item is Armadura) {
+        defesa += item.defesa;
+      }
+    });
+    return defesa;
   }
 
   @override

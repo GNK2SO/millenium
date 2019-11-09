@@ -80,11 +80,13 @@ class _LoginFormState extends State<LoginForm>
                         CustomTextField(
                           labelText: "Email",
                           controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
                           validator: isValidEmail,
                         ),
                         CustomTextField(
                           labelText: "Senha",
                           controller: _senhaController,
+                          keyboardType: TextInputType.emailAddress,
                           validator: isValidSenha,
                           obscureText: true,
                         ),

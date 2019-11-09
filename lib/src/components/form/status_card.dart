@@ -27,6 +27,20 @@ class StatusCard extends StatelessWidget {
                     height: 1,
                   ),
                   _buildRow(
+                    "Dano",
+                    "${personagem.dano()}",
+                  ),
+                  CustomDivider(
+                    height: 1,
+                  ),
+                  _buildRow(
+                    "Defesa",
+                    "${personagem.defesa()}",
+                  ),
+                  CustomDivider(
+                    height: 1,
+                  ),
+                  _buildRow(
                     "Vida",
                     "${personagem.vidaAtual}/${personagem.vidaTotal()}",
                   ),
@@ -48,20 +62,6 @@ class StatusCard extends StatelessWidget {
                     height: 1,
                   ),
                   _buildRow("Fome", "${personagem.fome}"),
-                  CustomDivider(
-                    height: 1,
-                  ),
-                  _buildRow(
-                    "Dano",
-                    "${personagem.dano()}",
-                  ),
-                  CustomDivider(
-                    height: 1,
-                  ),
-                  _buildRow(
-                    "Defesa",
-                    "${personagem.defesa()}",
-                  ),
                 ],
               )
             ],
