@@ -65,9 +65,11 @@ class BolsaTile extends StatelessWidget {
           background: Container(
             color: Colors.red,
           ),
-          onDismissed: (_) {
-            onDismissed(item);
-          },
+          onDismissed: this.isNotAdmin
+              ? (_) {
+                  onDismissed(item);
+                }
+              : null,
         );
       },
       separatorBuilder: (context, index) {
@@ -106,6 +108,10 @@ class ItemTile extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        Text(
+          "Quantidade: ${item.quantidade}",
+          style: TextStyle(fontSize: 12),
+        ),
         Text("\n${item.descricao}"),
       ],
     );

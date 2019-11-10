@@ -19,9 +19,9 @@ Armadura _$ArmaduraFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ArmaduraToJson(Armadura instance) => <String, dynamic>{
       'nome': instance.nome,
-      'parte': instance.parte,
       'descricao': instance.descricao,
       'tipo': instance.tipo,
       'tipoEquipamento': instance.tipoEquipamento,
       'defesa': instance.defesa,
+      'parte': instance.parte,
     };

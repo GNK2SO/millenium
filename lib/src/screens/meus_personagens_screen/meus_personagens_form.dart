@@ -64,11 +64,10 @@ class _MeusPersonagensFormState extends State<MeusPersonagensForm> {
                       personagem: personagens[index],
                       usuario: this.widget._usuario,
                       onPressed: () async {
-                        await Navigator.of(context)
-                            .pushNamed("/personagemScreen", arguments: [
-                          personagens[index],
-                          this.widget._usuario
-                        ]);
+                        await Navigator.of(context).pushNamed(
+                          "/personagemScreen",
+                          arguments: personagens[index],
+                        );
                         BlocProvider.of<PersonagemBloc>(context).dispatch(
                           ObterMeusPersonagens(
                             uid: this.widget._usuario.uid,

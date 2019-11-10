@@ -10,6 +10,7 @@ part 'personagem.g.dart';
 
 @JsonSerializable()
 class Personagem {
+  String imagem;
   String jogadorId;
   String id;
   String nome;
@@ -28,6 +29,7 @@ class Personagem {
   List equipamentos;
 
   Personagem({
+    this.imagem,
     this.jogadorId,
     this.id,
     this.nome,

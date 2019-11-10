@@ -294,6 +294,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
 
   final _nomeController = TextEditingController();
   final _descricaoController = TextEditingController();
+  final _quantidadeController = TextEditingController();
   final _danoDefesaController = TextEditingController();
   final _vidaController = TextEditingController();
   final _energiaController = TextEditingController();
@@ -302,6 +303,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
   @override
   void initState() {
     super.initState();
+    _quantidadeController.text = "0";
     _danoDefesaController.text = "0";
     _vidaController.text = "0";
     _energiaController.text = "0";
@@ -315,6 +317,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
   void dispose() {
     _nomeController.dispose();
     _descricaoController.dispose();
+    _quantidadeController.dispose();
     _danoDefesaController.dispose();
     _vidaController.dispose();
     _energiaController.dispose();
@@ -377,6 +380,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                       "Salvar",
                       style: TextStyle(fontSize: 16),
                     ),
+                    color: Colors.blue,
                     onPressed: _onSalvarEquipamento,
                   )
                 ],
@@ -390,6 +394,13 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
 
   Widget _buildVariantsInputs(String value) {
     switch (value) {
+      case 'Item':
+        return CustomTextField(
+          labelText: "Quantidade",
+          controller: _quantidadeController,
+          keyboardType: TextInputType.number,
+          validator: EquipamentoValidator.isNotEmpty,
+        );
       case 'Arma':
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -549,6 +560,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
         case 'Item':
           final Item item = Item(
             nome: _nomeController.text,
+            quantidade: int.parse(_quantidadeController.text),
             descricao: _descricaoController.text,
             tipo: dropdownItemValue,
           );

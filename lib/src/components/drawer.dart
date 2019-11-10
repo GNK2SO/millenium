@@ -55,6 +55,9 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text("Bestiário"),
+            onTap: () {
+              Navigator.of(context).popAndPushNamed("/bestiarioScreen");
+            },
           ),
           ListTile(
             title: Text("Regras do Jogo"),

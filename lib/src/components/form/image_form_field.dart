@@ -1,100 +1,105 @@
-// import 'dart:io';
+import 'dart:convert';
+import 'dart:io';
 
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-// class ImageFormField extends FormField<String> {
-//   ImageFormField({
-//     @required BuildContext context,
-//     FormFieldSetter<String> onSaved,
-//     FormFieldValidator<String> validator,
-//     bool autoValidate: false,
-//     File image,
-//   }) : super(
-//           onSaved: onSaved,
-//           validator: validator,
-//           autovalidate: autoValidate,
-//           builder: (state) {
-//             return Column(
-//               children: <Widget>[
-//                 image == null
-//                     ? InkWell(
-//                         child: CircleAvatar(
-//                           radius: 64,
-//                           child: Icon(
-//                             Icons.person,
-//                             size: 80,
-//                             color: Colors.white,
-//                           ),
-//                         ),
-//                         onTap: () {
-//                           showModalBottomSheet(
-//                             context: context,
-//                             builder: (context) => ImageSourceSheet(
-//                               onImageSelected: (imagem) {
-//                                 image = imagem;
-//                                 state.didChange(image.path);
-//                                 Navigator.of(context).pop();
-//                               },
-//                             ),
-//                           );
-//                         },
-//                       )
-//                     : CircleAvatar(
-//                         radius: 64,
-//                         backgroundImage: AssetImage(image.path),
-//                       ),
-//                 state.hasError
-//                     ? Text(
-//                         state.errorText,
-//                         style: TextStyle(
-//                           color: Colors.red,
-//                           fontSize: 12,
-//                         ),
-//                       )
-//                     : Container(),
-//               ],
-//             );
-//           },
-//         );
-// }
+class ImageFormField extends StatefulWidget {
+  final String image;
+  final Function(String) onChanged;
 
-// class ImageSourceSheet extends StatelessWidget {
-//   final Function(File) onImageSelected;
+  ImageFormField({@required this.image, @required this.onChanged});
+  @override
+  _ImageFormFieldState createState() => _ImageFormFieldState(
+        image: this.image,
+        onChanged: onChanged,
+      );
+}
 
-//   ImageSourceSheet({this.onImageSelected});
+class _ImageFormFieldState extends State<ImageFormField> {
+  String image;
+  final Function(String) onChanged;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BottomSheet(
-//       onClosing: () {},
-//       builder: (context) => Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: <Widget>[
-//           FlatButton(
-//             child: Text("Câmera"),
-//             onPressed: () async {
-//               File image =
-//                   await ImagePicker.pickImage(source: ImageSource.camera);
-//               imageSelected(image);
-//             },
-//           ),
-//           FlatButton(
-//             child: Text("Galeria"),
-//             onPressed: () async {
-//               File image =
-//                   await ImagePicker.pickImage(source: ImageSource.gallery);
-//               imageSelected(image);
-//             },
-//           )
-//         ],
-//       ),
-//     );
-//   }
+  _ImageFormFieldState({
+    @required this.image,
+    @required this.onChanged,
+  });
 
-//   void imageSelected(File image) async {
-//     if (image != null) {
-//       onImageSelected(image);
-//     }
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        image == null
+            ? InkWell(
+                child: CircleAvatar(
+                  radius: 64,
+                  child: Icon(
+                    Icons.person,
+                    size: 80,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => ImageSourceSheet(
+                      onImageSelected: (imagem) {
+                        setState(() {
+                          image = imagem;
+                        });
+                        onChanged(image);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  );
+                },
+              )
+            : CircleAvatar(
+                radius: 64,
+                backgroundImage: MemoryImage(base64Decode(image)),
+              ),
+      ],
+    );
+  }
+}
+
+class ImageSourceSheet extends StatelessWidget {
+  final Function(String) onImageSelected;
+
+  ImageSourceSheet({this.onImageSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheet(
+      onClosing: () {},
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          FlatButton(
+            child: Text("Câmera"),
+            onPressed: () async {
+              File image =
+                  await ImagePicker.pickImage(source: ImageSource.camera);
+              imageSelected(base64Encode(image.readAsBytesSync()));
+            },
+          ),
+          FlatButton(
+            child: Text("Galeria"),
+            onPressed: () async {
+              File image =
+                  await ImagePicker.pickImage(source: ImageSource.gallery);
+              imageSelected(base64Encode(image.readAsBytesSync()));
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  void imageSelected(String image) async {
+    if (image != null) {
+      onImageSelected(image);
+    }
+  }
+}

@@ -8,22 +8,24 @@ import 'package:millenium/src/screens/todos_personagens/todos_personagens_form.d
 
 ///Tela onde o MESTRE visualiza todos os personagens de todos os players
 class TodosPersonagensScreen extends StatelessWidget {
+  final Usuario _usuario;
   final PersonagemRepository _personagemRepository;
 
   TodosPersonagensScreen({
     Key key,
+    @required Usuario usuario,
     @required PersonagemRepository repository,
-  })  : assert(repository != null),
+  })  : assert(repository != null && usuario != null),
+        _usuario = usuario,
         _personagemRepository = repository,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Usuario usuario = ModalRoute.of(context).settings.arguments;
     return BlocProvider<PersonagemBloc>(
       builder: (context) => PersonagemBloc(repository: _personagemRepository)
         ..dispatch(ObterTodosPersonagens()),
-      child: TodosPersonagensForm(usuario: usuario),
+      child: TodosPersonagensForm(usuario: _usuario),
     );
   }
 }

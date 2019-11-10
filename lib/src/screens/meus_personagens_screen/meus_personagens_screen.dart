@@ -7,21 +7,24 @@ import 'package:millenium/src/repository/personagem_repository.dart';
 import 'package:millenium/src/screens/meus_personagens_screen/meus_personagens_form.dart';
 
 class MeusPersonagensScreen extends StatelessWidget {
+  final Usuario _usuario;
   final PersonagemRepository _personagemRepository;
+
   MeusPersonagensScreen({
     Key key,
+    @required Usuario usuario,
     @required PersonagemRepository repository,
-  })  : assert(repository != null),
+  })  : assert(repository != null && usuario != null),
+        _usuario = usuario,
         _personagemRepository = repository,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Usuario usuario = ModalRoute.of(context).settings.arguments;
     return BlocProvider<PersonagemBloc>(
       builder: (context) => PersonagemBloc(repository: _personagemRepository)
-        ..dispatch(ObterMeusPersonagens(uid: usuario.uid)),
-      child: MeusPersonagensForm(usuario: usuario),
+        ..dispatch(ObterMeusPersonagens(uid: _usuario.uid)),
+      child: MeusPersonagensForm(usuario: _usuario),
     );
   }
 }

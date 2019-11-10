@@ -5,8 +5,11 @@ import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart
 import 'package:millenium/src/blocs/authentication_bloc/authentication_event.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_state.dart';
 import 'package:millenium/src/blocs/bloc_delegate.dart';
+import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/repository/bestiario_repository.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
+import 'package:millenium/src/screens/bestiario/bestiario_screen.dart';
 import 'package:millenium/src/screens/cadastro/cadastro_screen.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/home_screen.dart';
@@ -31,6 +34,7 @@ void main() {
 }
 
 class Millenium extends StatelessWidget {
+  Usuario usuario;
   final UsuarioRepository _usuarioRepository;
 
   Millenium({Key key, @required UsuarioRepository usuarioRepository})
@@ -51,7 +55,8 @@ class Millenium extends StatelessWidget {
               repository: _usuarioRepository,
             );
           } else if (state is Authenticated) {
-            return HomeScreen(usuario: state.usuario);
+            usuario = state.usuario;
+            return HomeScreen(usuario: this.usuario);
           } else {
             return ErroScreen();
           }
@@ -63,14 +68,21 @@ class Millenium extends StatelessWidget {
         "/cadastroContaScreen": (context) =>
             CadastroScreen(repository: _usuarioRepository),
         "/meusPersonagensScreen": (context) => MeusPersonagensScreen(
+              usuario: this.usuario,
               repository: PersonagemRepository(),
             ),
         "/personagemScreen": (context) => PersonagemScreen(
+              usuario: this.usuario,
               repository: PersonagemRepository(),
             ),
         "/todosPersonagemScreen": (context) => TodosPersonagensScreen(
+              usuario: this.usuario,
               repository: PersonagemRepository(),
-            )
+            ),
+        "/bestiarioScreen": (context) => BestiarioScreen(
+              usuario: this.usuario,
+              repository: BestiarioRepository(),
+            ),
       },
     );
   }

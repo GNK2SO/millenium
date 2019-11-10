@@ -13,7 +13,6 @@ class PersonagemRepository {
     _usuarioAtual = await _auth.currentUser();
     personagem.jogadorId = _usuarioAtual.uid;
     personagem.id = "${personagem.nome}_${Uuid().v1()}";
-    print(personagem.toJson());
     return _firestore
         .collection("personagens")
         .document(personagem.id)
