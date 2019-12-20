@@ -4,7 +4,8 @@ import 'package:millenium/src/models/besta/besta.dart';
 
 @immutable
 abstract class BestiarioEvent extends Equatable {
-  BestiarioEvent([List props = const []]) : super(props);
+  @override
+  List<Object> get props => [];
 }
 
 class ObterBestiario extends BestiarioEvent {
@@ -25,7 +26,10 @@ class SalvarBesta extends BestiarioEvent {
     @required this.descricao,
     @required this.localizacao,
     @required this.nivel,
-  }) : super([nome]);
+  });
+
+  @override
+  List<Object> get props => [nome, imagem, descricao, localizacao, nivel];
 
   @override
   String toString() =>
@@ -35,7 +39,10 @@ class SalvarBesta extends BestiarioEvent {
 class AtualizarBesta extends BestiarioEvent {
   final Besta besta;
 
-  AtualizarBesta({@required this.besta}) : super([besta]);
+  AtualizarBesta({@required this.besta});
+
+  @override
+  List<Object> get props => [besta];
 
   @override
   String toString() => 'AtualizarBesta { nome: ${besta.nome} }';
@@ -44,7 +51,10 @@ class AtualizarBesta extends BestiarioEvent {
 class RemoverBesta extends BestiarioEvent {
   final Besta besta;
 
-  RemoverBesta({@required this.besta}) : super([besta]);
+  RemoverBesta({@required this.besta});
+
+  @override
+  List<Object> get props => [besta];
 
   @override
   String toString() => 'RemoverBesta { nome: ${besta.nome} }';

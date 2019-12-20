@@ -22,8 +22,8 @@ class BestiarioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BestiarioBloc>(
-      builder: (context) => BestiarioBloc(repository: _bestiarioRepository)
-        ..dispatch(ObterBestiario()),
+      create: (context) => BestiarioBloc(repository: _bestiarioRepository)
+        ..add(ObterBestiario()),
       child: BestiarioForm(
         usuario: _usuario,
       ),

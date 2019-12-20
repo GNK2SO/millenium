@@ -4,13 +4,17 @@ import 'package:millenium/src/models/personagem/personagem.dart';
 
 @immutable
 abstract class PersonagemEvent extends Equatable {
-  PersonagemEvent([List props = const []]) : super(props);
+  @override
+  List<Object> get props => [];
 }
 
 class ObterPersonagem extends PersonagemEvent {
   final String idPersonagem;
 
-  ObterPersonagem({@required this.idPersonagem}) : super([idPersonagem]);
+  ObterPersonagem({@required this.idPersonagem});
+
+  @override
+  List<Object> get props => [this.idPersonagem];
 
   @override
   String toString() => 'ObterPersonagem { id: $idPersonagem }';
@@ -19,7 +23,10 @@ class ObterPersonagem extends PersonagemEvent {
 class ObterMeusPersonagens extends PersonagemEvent {
   final String uid;
 
-  ObterMeusPersonagens({@required this.uid}) : super([uid]);
+  ObterMeusPersonagens({@required this.uid});
+
+  @override
+  List<Object> get props => [this.uid];
 
   @override
   String toString() => 'ObterMeusPersonagens { uid: $uid }';
@@ -33,7 +40,10 @@ class ObterTodosPersonagens extends PersonagemEvent {
 class SalvarPersonagem extends PersonagemEvent {
   final String nome;
 
-  SalvarPersonagem({@required this.nome}) : super([nome]);
+  SalvarPersonagem({@required this.nome});
+
+  @override
+  List<Object> get props => [this.nome];
 
   @override
   String toString() => 'SalvarPersonagem { nome: $nome }';
@@ -42,7 +52,10 @@ class SalvarPersonagem extends PersonagemEvent {
 class AtualizarPersonagem extends PersonagemEvent {
   final Personagem personagem;
 
-  AtualizarPersonagem({@required this.personagem}) : super([personagem]);
+  AtualizarPersonagem({@required this.personagem});
+
+  @override
+  List<Object> get props => [this.personagem];
 
   @override
   String toString() => 'AtualizarPersonagem { nome: ${personagem.nome} }';
@@ -51,7 +64,10 @@ class AtualizarPersonagem extends PersonagemEvent {
 class RemoverPersonagem extends PersonagemEvent {
   final Personagem personagem;
 
-  RemoverPersonagem({@required this.personagem}) : super([personagem]);
+  RemoverPersonagem({@required this.personagem});
+
+  @override
+  List<Object> get props => [this.personagem];
 
   @override
   String toString() => 'RemoverPersonagem { nome: ${personagem.nome} }';

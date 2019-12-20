@@ -4,42 +4,52 @@ import 'package:millenium/src/models/besta/besta.dart';
 
 @immutable
 abstract class BestiarioState extends Equatable {
-  BestiarioState([List props = const []]) : super(props);
-}
-
-class Screen extends BestiarioState {
   @override
-  String toString() => 'Screen';
+  List<Object> get props => [];
 }
 
-class Loading extends BestiarioState {
+class BestiarioInitial extends BestiarioState {
   @override
-  String toString() => 'Loading';
+  String toString() => 'BestiarioInitial';
 }
 
-class Success extends BestiarioState {
+class BestiarioCarregando extends BestiarioState {
+  @override
+  String toString() => 'BestiarioCarregando';
+}
+
+class BestiarioSuccess extends BestiarioState {
   final String mensagem;
 
-  Success({this.mensagem}) : super([mensagem]);
+  BestiarioSuccess({this.mensagem});
 
   @override
-  String toString() => 'Success';
+  List<Object> get props => [mensagem];
+
+  @override
+  String toString() => 'BestiarioSuccess';
 }
 
-class Failure extends BestiarioState {
+class BestiarioFailure extends BestiarioState {
   final String erro;
 
-  Failure({@required this.erro}) : super([erro]);
+  BestiarioFailure({@required this.erro});
 
   @override
-  String toString() => 'Failure';
+  List<Object> get props => [erro];
+
+  @override
+  String toString() => 'BestiarioFailure';
 }
 
-class BestiarioLoaded extends BestiarioState {
+class BestiarioCarregado extends BestiarioState {
   final List<Besta> bestiario;
 
-  BestiarioLoaded({@required this.bestiario}) : super([bestiario]);
+  BestiarioCarregado({@required this.bestiario});
 
   @override
-  String toString() => 'BestiarioLoaded';
+  List<Object> get props => [bestiario];
+
+  @override
+  String toString() => 'BestiarioCarregado';
 }

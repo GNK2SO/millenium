@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm>
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is Success) {
+        if (state is LoginSuccess) {
           Usuario usuario = state.usuario;
           navigateTo(
             context,
@@ -56,7 +56,7 @@ class _LoginFormState extends State<LoginForm>
               usuario: usuario,
             ),
           );
-        } else if (state is Failure) {
+        } else if (state is LoginFailure) {
           showMessage(
             key: _scaffoldKey,
             mensagem: state.erro,
@@ -134,7 +134,7 @@ class _LoginFormState extends State<LoginForm>
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _animationController.forward();
-      BlocProvider.of<LoginBloc>(context).dispatch(Autenticar(
+      BlocProvider.of<LoginBloc>(context).add(Autenticar(
         email: _emailController.text,
         senha: _senhaController.text,
       ));

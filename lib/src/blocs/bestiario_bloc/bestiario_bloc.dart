@@ -17,7 +17,7 @@ class BestiarioBloc extends Bloc<BestiarioEvent, BestiarioState> {
         _bestiarioRepository = repository;
 
   @override
-  BestiarioState get initialState => Screen();
+  BestiarioState get initialState => BestiarioInitial();
 
   @override
   Stream<BestiarioState> mapEventToState(BestiarioEvent event) async* {
@@ -35,17 +35,16 @@ class BestiarioBloc extends Bloc<BestiarioEvent, BestiarioState> {
   Stream<BestiarioState> _mapSalvarBestaToState({
     String nomeBesta,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is BestiarioCarregando)) {
+      yield BestiarioCarregando();
       final besta = Besta(
         nome: nomeBesta,
       );
       try {
         await _bestiarioRepository.salvar(besta);
-        yield Success();
-      } catch (e) {
-        print("\n\n$e\n\n");
-        yield Failure(erro: "Erro ao cadastrar besta.\nVerifique sua conexão.");
+        yield BestiarioSuccess();
+      } catch (_) {
+        yield BestiarioFailure(erro: "Erro ao cadastrar besta.\nVerifique sua conexão.");
       }
     }
   }
@@ -53,16 +52,16 @@ class BestiarioBloc extends Bloc<BestiarioEvent, BestiarioState> {
   Stream<BestiarioState> _mapObterBestiarioToState({
     String uid,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is BestiarioCarregando)) {
+      yield BestiarioCarregando();
       try {
         QuerySnapshot document = await _bestiarioRepository.obterBestiario();
 
-        yield BestiarioLoaded(
+        yield BestiarioCarregado(
           bestiario: mapToList(documents: document.documents),
         );
       } catch (e) {
-        yield Failure(erro: "Erro ao obter bestiário.\nVerifique sua conexão.");
+        yield BestiarioFailure(erro: "Erro ao obter bestiário.\nVerifique sua conexão.");
       }
     }
   }
@@ -70,17 +69,16 @@ class BestiarioBloc extends Bloc<BestiarioEvent, BestiarioState> {
   Stream<BestiarioState> _mapAtualizarBestaToState({
     Besta besta,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is BestiarioCarregando)) {
+      yield BestiarioCarregando();
 
       try {
         await _bestiarioRepository.atualizar(besta);
-        yield Success(
+        yield BestiarioSuccess(
           mensagem: "Alterações salvas com sucesso!",
         );
-      } catch (e) {
-        print("\n\n$e\n\n");
-        yield Failure(erro: "Erro ao atualizar besta.\nVerifique sua conexão.");
+      } catch (_) {
+        yield BestiarioFailure(erro: "Erro ao atualizar besta.\nVerifique sua conexão.");
       }
     }
   }
@@ -88,13 +86,13 @@ class BestiarioBloc extends Bloc<BestiarioEvent, BestiarioState> {
   Stream<BestiarioState> _mapRemoverBestaToState({
     Besta besta,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is BestiarioCarregando)) {
+      yield BestiarioCarregando();
       try {
         await _bestiarioRepository.remover(besta);
-        yield Success(mensagem: "Besta removido com sucesso");
+        yield BestiarioSuccess(mensagem: "Besta removido com sucesso");
       } catch (e) {
-        yield Failure(erro: "Erro ao remover besta.\nVerifique sua conexão.");
+        yield BestiarioFailure(erro: "Erro ao remover besta.\nVerifique sua conexão.");
       }
     }
   }

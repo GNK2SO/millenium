@@ -39,7 +39,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
 
   Future<void> _refresh() async {
     BlocProvider.of<PersonagemBloc>(context)
-        .dispatch(ObterPersonagem(idPersonagem: personagem.id));
+        .add(ObterPersonagem(idPersonagem: personagem.id));
   }
 
   @override
@@ -48,9 +48,9 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
       listener: (context, state) {
         if (state is Success) {
           BlocProvider.of<PersonagemBloc>(context)
-              .dispatch(ObterPersonagem(idPersonagem: personagem.id));
+              .add(ObterPersonagem(idPersonagem: personagem.id));
         }
-        if (state is PersonagemLoaded) {
+        if (state is PersonagemCarregado) {
           setState(() {
             personagem = state.personagem;
           });
@@ -65,7 +65,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
               builder: (context, state) {
                 if (state is Failure) {
                   return ErroScreen();
-                } else if (state is Loading) {
+                } else if (state is PersonagemCarregando) {
                   return LoadingScreen();
                 } else {
                   return SingleChildScrollView(
@@ -192,7 +192,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                                       personagem.bolsa.remove(item);
 
                                       BlocProvider.of<PersonagemBloc>(context)
-                                          .dispatch(
+                                          .add(
                                         AtualizarPersonagem(
                                             personagem: personagem),
                                       );
@@ -227,7 +227,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                                 personagem: personagem,
                                 onSaved: (personagem) {
                                   BlocProvider.of<PersonagemBloc>(context)
-                                      .dispatch(
+                                      .add(
                                     AtualizarPersonagem(
                                       personagem: this.personagem,
                                     ),
@@ -241,7 +241,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                     : FloatingActionButton(
                         child: Icon(Icons.save),
                         onPressed: () {
-                          BlocProvider.of<PersonagemBloc>(context).dispatch(
+                          BlocProvider.of<PersonagemBloc>(context).add(
                             AtualizarPersonagem(
                               personagem: this.personagem,
                             ),

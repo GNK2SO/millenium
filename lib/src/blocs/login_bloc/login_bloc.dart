@@ -4,6 +4,8 @@ import 'package:millenium/src/blocs/login_bloc/login_event.dart';
 import 'package:millenium/src/blocs/login_bloc/login_state.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
 
+import 'login_state.dart';
+
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UsuarioRepository _usuarioRepository;
 
@@ -13,7 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         _usuarioRepository = repository;
 
   @override
-  LoginState get initialState => Screen();
+  LoginState get initialState => LoginInitial();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
@@ -24,15 +26,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapAutenticarToState(
       {String email, String senha}) async* {
-    yield Loading();
+    yield LoginCarregando();
     try {
       await _usuarioRepository.efetuarLogin(email: email, senha: senha);
-      yield Success(
+      yield LoginSuccess(
         usuario: await _usuarioRepository.obterUsuario(),
       );
-    } catch (e) {
-      print(e);
-      yield Failure(erro: "Erro ao autenticar.\nVerifique sua conexão.");
+    } catch (_) {
+      yield LoginFailure(erro: "Erro ao autenticar.\nVerifique sua conexão.");
     }
   }
 }

@@ -4,41 +4,51 @@ import 'package:millenium/src/models/personagem/personagem.dart';
 
 @immutable
 abstract class PersonagemState extends Equatable {
-  PersonagemState([List props = const []]) : super(props);
-}
-
-class Screen extends PersonagemState {
   @override
-  String toString() => 'Screen';
+  List<Object> get props => [];
 }
 
-class Loading extends PersonagemState {
+class PersonagemInitial extends PersonagemState {
   @override
-  String toString() => 'Loading';
+  String toString() => 'PersonagemInitial';
 }
 
-class PersonagemLoaded extends PersonagemState {
+class PersonagemCarregando extends PersonagemState {
+  @override
+  String toString() => 'PersonagemCarregando';
+}
+
+class PersonagemCarregado extends PersonagemState {
   final Personagem personagem;
 
-  PersonagemLoaded({@required this.personagem}) : super([personagem]);
+  PersonagemCarregado({@required this.personagem});
 
   @override
-  String toString() => 'PersonagemLoaded';
+  List<Object> get props => [this.personagem];
+
+  @override
+  String toString() => 'PersonagemCarregado';
 }
 
-class PersonagensLoaded extends PersonagemState {
+class PersonagensCarregado extends PersonagemState {
   final List<Personagem> personagens;
 
-  PersonagensLoaded({@required this.personagens}) : super([personagens]);
+  PersonagensCarregado({@required this.personagens});
 
   @override
-  String toString() => 'PersonagensLoaded';
+  List<Object> get props => [this.personagens];
+
+  @override
+  String toString() => 'PersonagensCarregado';
 }
 
 class Success extends PersonagemState {
   final String mensagem;
 
-  Success({this.mensagem: ""}) : super([mensagem]);
+  Success({this.mensagem: ""});
+
+  @override
+  List<Object> get props => [this.mensagem];
 
   @override
   String toString() => 'Success';
@@ -47,7 +57,10 @@ class Success extends PersonagemState {
 class Failure extends PersonagemState {
   final String erro;
 
-  Failure({@required this.erro}) : super([erro]);
+  Failure({@required this.erro});
+
+  @override
+  List<Object> get props => [this.erro];
 
   @override
   String toString() => 'Failure';

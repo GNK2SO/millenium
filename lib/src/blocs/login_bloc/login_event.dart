@@ -3,15 +3,18 @@ import 'package:flutter/cupertino.dart';
 
 @immutable
 abstract class LoginEvent extends Equatable {
-  LoginEvent([List props = const []]) : super(props);
+  @override
+  List<Object> get props => [];
 }
 
 class Autenticar extends LoginEvent {
   final String email;
   final String senha;
 
-  Autenticar({@required this.email, @required this.senha})
-      : super([email, senha]);
+  Autenticar({@required this.email, @required this.senha});
+
+  @override
+  List<Object> get props => [this.email, this.senha];
 
   @override
   String toString() => 'Autenticar { email: $email }';

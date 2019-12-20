@@ -31,7 +31,7 @@ class _BestiarioFormState extends State<BestiarioForm> {
         ),
         body: BlocBuilder<BestiarioBloc, BestiarioState>(
           builder: (context, state) {
-            if (state is BestiarioLoaded) {
+            if (state is BestiarioCarregado) {
               if (state.bestiario.isEmpty) {
                 return Center(
                   child: Text(
@@ -52,9 +52,9 @@ class _BestiarioFormState extends State<BestiarioForm> {
                   }),
                 );
               }
-            } else if (state is Loading) {
+            } else if (state is BestiarioCarregando) {
               return LoadingScreen();
-            } else if (state is Failure) {
+            } else if (state is BestiarioFailure) {
               return ErroScreen();
             } else {
               return Container();

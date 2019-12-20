@@ -4,33 +4,40 @@ import 'package:millenium/src/models/usuario.dart';
 
 @immutable
 abstract class LoginState extends Equatable {
-  LoginState([List props = const []]) : super(props);
-}
-
-class Screen extends LoginState {
   @override
-  String toString() => 'Screen';
+  List<Object> get props => [];
 }
 
-class Loading extends LoginState {
+class LoginInitial extends LoginState {
   @override
-  String toString() => 'Loading';
+  String toString() => 'LoginInitial';
 }
 
-class Success extends LoginState {
+class LoginCarregando extends LoginState {
+  @override
+  String toString() => 'LoginCarregando';
+}
+
+class LoginSuccess extends LoginState {
   final Usuario usuario;
 
-  Success({@required this.usuario}) : super([usuario]);
+  LoginSuccess({@required this.usuario});
 
   @override
-  String toString() => 'Success';
+  List<Object> get props => [this.usuario];
+
+  @override
+  String toString() => 'LoginSuccess';
 }
 
-class Failure extends LoginState {
+class LoginFailure extends LoginState {
   final String erro;
 
-  Failure({@required this.erro}) : super([erro]);
+  LoginFailure({@required this.erro});
 
   @override
-  String toString() => 'Failure';
+  List<Object> get props => [this.erro];
+
+  @override
+  String toString() => 'LoginFailure';
 }

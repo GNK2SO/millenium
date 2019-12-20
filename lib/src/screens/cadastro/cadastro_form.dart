@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:millenium/src/blocs/cadastro_bloc/cadastro_bloc.dart';
-import 'package:millenium/src/blocs/cadastro_bloc/cadastro_event.dart';
-import 'package:millenium/src/blocs/cadastro_bloc/cadastro_state.dart';
+import 'package:millenium/src/blocs/usuario_bloc/usuario_bloc.dart';
+import 'package:millenium/src/blocs/usuario_bloc/usuario_event.dart';
+import 'package:millenium/src/blocs/usuario_bloc/usuario_state.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/text_field.dart';
 import 'package:millenium/src/screens/home_screen.dart';
@@ -45,14 +45,14 @@ class _CadastroFormState extends State<CadastroForm>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CadastroBloc, CadastroState>(
+    return BlocListener<UsuarioBloc, UsuarioState>(
       listener: (context, state) {
-        if (state is Success) {
+        if (state is UsuarioSuccess) {
           replaceTo(
             context,
             HomeScreen(usuario: state.usuario),
           );
-        } else if (state is Failure) {
+        } else if (state is UsuarioFailure) {
           _animationController.reset();
           showMessage(
             key: _scaffoldKey,
@@ -114,7 +114,7 @@ class _CadastroFormState extends State<CadastroForm>
   void _onFormSubmitted() {
     if (_formKey.currentState.validate()) {
       _animationController.forward();
-      BlocProvider.of<CadastroBloc>(context).dispatch(SalvarUsuario(
+      BlocProvider.of<UsuarioBloc>(context).add(SalvarUsuario(
         nome: _nomeController.text,
         email: _emailController.text,
         senha: _senhaController.text,

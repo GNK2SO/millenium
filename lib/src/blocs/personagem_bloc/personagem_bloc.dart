@@ -10,6 +10,8 @@ import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.d
 import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
 
+import 'personagem_state.dart';
+
 class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   final PersonagemRepository _personagemRepository;
 
@@ -19,7 +21,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
         _personagemRepository = repository;
 
   @override
-  PersonagemState get initialState => Screen();
+  PersonagemState get initialState => PersonagemInitial();
 
   @override
   Stream<PersonagemState> mapEventToState(PersonagemEvent event) async* {
@@ -41,8 +43,8 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   Stream<PersonagemState> _mapSalvarPersonagemToState({
     String nomePersonagem,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is PersonagemCarregando)) {
+      yield PersonagemCarregando();
       final personagem = Personagem(
         nome: nomePersonagem,
         atributosCombate: AtributosCombate(),
@@ -51,8 +53,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
       try {
         await _personagemRepository.salvar(personagem);
         yield Success();
-      } catch (e) {
-        print("\n\n$e\n\n");
+      } catch (_) {
         yield Failure(
             erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
       }
@@ -62,13 +63,13 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   Stream<PersonagemState> _mapObterPersonagemToState({
     String idPersonagem,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is PersonagemCarregando)) {
+      yield PersonagemCarregando();
       try {
         DocumentSnapshot document =
             await _personagemRepository.obterPersonagem(idPersonagem);
         String data = json.encode(document.data);
-        yield PersonagemLoaded(
+        yield PersonagemCarregado(
             personagem: Personagem.fromJson(json.decode(data)));
       } catch (e) {
         yield Failure(
@@ -80,13 +81,13 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   Stream<PersonagemState> _mapObterMeusPersonagensToState({
     String uid,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is PersonagemCarregando)) {
+      yield PersonagemCarregando();
       try {
         QuerySnapshot document =
             await _personagemRepository.obterMeusPersonagens(uid);
 
-        yield PersonagensLoaded(
+        yield PersonagensCarregado(
           personagens: mapToList(documents: document.documents),
         );
       } catch (e) {
@@ -99,13 +100,13 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   Stream<PersonagemState> _mapObterTodosPersonagensToState({
     String uid,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is PersonagemCarregando)) {
+      yield PersonagemCarregando();
       try {
         QuerySnapshot document =
             await _personagemRepository.obterTodosPersonagens();
 
-        yield PersonagensLoaded(
+        yield PersonagensCarregado(
           personagens: mapToList(documents: document.documents),
         );
       } catch (e) {
@@ -118,16 +119,15 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   Stream<PersonagemState> _mapAtualizarPersonagemToState({
     Personagem personagem,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is PersonagemCarregando)) {
+      yield PersonagemCarregando();
 
       try {
         await _personagemRepository.atualizar(personagem);
         yield Success(
           mensagem: "Alterações salvas com sucesso!",
         );
-      } catch (e) {
-        print("\n\n$e\n\n");
+      } catch (_) {
         yield Failure(
             erro: "Erro ao atualizar personagem.\nVerifique sua conexão.");
       }
@@ -137,8 +137,8 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   Stream<PersonagemState> _mapRemoverPersonagemToState({
     Personagem personagem,
   }) async* {
-    if (!(state is Loading)) {
-      yield Loading();
+    if (!(state is PersonagemCarregando)) {
+      yield PersonagemCarregando();
       try {
         await _personagemRepository.remover(personagem);
         yield Success(mensagem: "Personagem removido com sucesso");

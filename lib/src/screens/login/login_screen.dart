@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
-      builder: (context) => LoginBloc(repository: _usuarioRepository),
+      create: (context) => LoginBloc(repository: _usuarioRepository),
       child: LoginForm(),
     );
   }

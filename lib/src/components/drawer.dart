@@ -29,15 +29,9 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               if (this._usuario.isAdmin) {
-                Navigator.of(context).pushNamed(
-                  "/todosPersonagemScreen",
-                  arguments: this._usuario,
-                );
+                Navigator.of(context).pushNamed("/todosPersonagemScreen");
               } else {
-                Navigator.of(context).pushNamed(
-                  "/meusPersonagensScreen",
-                  arguments: this._usuario,
-                );
+                Navigator.of(context).pushNamed("/meusPersonagensScreen");
               }
             },
           ),
@@ -69,7 +63,7 @@ class CustomDrawer extends StatelessWidget {
             title: Text("Sair"),
             onTap: () {
               BlocProvider.of<AuthenticationBloc>(context)
-                  .dispatch(LoggedOut());
+                  .add(LoggedOut());
               Navigator.of(context).pushNamedAndRemoveUntil(
                   "/loginScreen", (Route<dynamic> route) => false);
             },

@@ -52,7 +52,7 @@ class _AtributosTabState extends State<AtributosTab>
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
-        if (state is PersonagemLoaded) {
+        if (state is PersonagemCarregado) {
           setState(() {
             personagem = state.personagem;
           });
@@ -169,12 +169,12 @@ class _AtributosTabState extends State<AtributosTab>
   void _onFormSubmitted() {
     _formKey.currentState.save();
     BlocProvider.of<PersonagemBloc>(context)
-        .dispatch(AtualizarPersonagem(personagem: personagem));
+        .add(AtualizarPersonagem(personagem: personagem));
     setState(() {});
   }
 
   Future<void> _refresh() async {
     BlocProvider.of<PersonagemBloc>(context)
-        .dispatch(ObterPersonagem(idPersonagem: personagem.id));
+        .add(ObterPersonagem(idPersonagem: personagem.id));
   }
 }
