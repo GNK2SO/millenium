@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:millenium/src/blocs/authentication_bloc/authentication_event.dart';
+import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:millenium/src/blocs/login_bloc/login_bloc.dart';
 import 'package:millenium/src/blocs/login_bloc/login_event.dart';
 import 'package:millenium/src/blocs/login_bloc/login_state.dart';
@@ -8,7 +10,6 @@ import 'package:millenium/src/components/form/circular_button.dart';
 import 'package:millenium/src/components/form/text_input.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/logo.dart';
-import 'package:millenium/src/screens/home_screen.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
 
@@ -48,7 +49,7 @@ class _LoginFormState extends State<LoginForm>
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          navigateTo(context, HomeScreen(usuario: state.usuario));
+          BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
         } else if (state is LoginFailure) {
           showMessage(
             key: _scaffoldKey,
@@ -63,11 +64,9 @@ class _LoginFormState extends State<LoginForm>
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/wallpaper.jpeg")
-                )
-              ),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/images/wallpaper.jpeg"))),
             ),
             Container(
               decoration: BoxDecoration(
@@ -100,7 +99,8 @@ class _LoginFormState extends State<LoginForm>
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: AnimatedButton(
                             text: "ENTRAR",
-                            circularIndicatorProgressColor: Theme.of(context).primaryColor,
+                            circularIndicatorProgressColor:
+                                Theme.of(context).primaryColor,
                             controller: _animationController.view,
                             onPressed: () {
                               _onFormSubmitted();
@@ -109,7 +109,10 @@ class _LoginFormState extends State<LoginForm>
                         ),
                         Row(
                           children: <Widget>[
-                            Expanded(child: CustomDivider(color: Colors.white,)),
+                            Expanded(
+                                child: CustomDivider(
+                              color: Colors.white,
+                            )),
                             Expanded(
                               child: Text(
                                 "ou",
@@ -119,13 +122,17 @@ class _LoginFormState extends State<LoginForm>
                                 ),
                               ),
                             ),
-                            Expanded(child: CustomDivider(color: Colors.white,))
+                            Expanded(
+                                child: CustomDivider(
+                              color: Colors.white,
+                            ))
                           ],
                         ),
                         CircularButton(
                           text: "CRIAR CONTA",
                           onPressed: () {
-                            Navigator.of(context).pushNamed("/cadastroContaScreen");
+                            Navigator.of(context)
+                                .pushNamed("/cadastroContaScreen");
                           },
                         ),
                       ],
