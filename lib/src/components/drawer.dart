@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_event.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart';
+
+import 'utils/custom_divider.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Usuario _usuario;
@@ -39,6 +42,17 @@ class CustomDrawer extends StatelessWidget {
             title: Text("Loja"),
           ),
           ListTile(
+            title: Text("Meu Perfil"),
+          ),
+          CustomDivider(
+            color: Theme.of(context).primaryColor,
+            height: 1,
+            width: MediaQuery.of(context).size.width,
+          ),
+          ListTile(
+            title: Text("Informação", style: TextStyle(color: Colors.black54),),
+          ),
+          ListTile(
             title: Text("História"),
           ),
           ListTile(
@@ -55,9 +69,6 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text("Regras do Jogo"),
-          ),
-          ListTile(
-            title: Text("Minha Conta"),
           ),
           ListTile(
             title: Text("Sair"),

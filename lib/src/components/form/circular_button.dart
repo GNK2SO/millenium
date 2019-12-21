@@ -22,10 +22,11 @@ class CircularButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16),
       child: Container(
+        height: 50,
         width: double.infinity,
         child: RaisedButton(
           child: Text(
-            this.text,
+            text,
             style: TextStyle(fontSize: 16),
           ),
           color: color,

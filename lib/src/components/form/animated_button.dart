@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 
 class AnimatedButton extends StatelessWidget {
-  final AnimationController controller;
-  final Function onPressed;
-  final Animation<double> squeezeButton;
+  
   final Key key;
   final String text;
   final Color textColor;
+  final Color primaryColor;
   final Color circularIndicatorProgressColor;
+  final AnimationController controller;
+  final Function onPressed;
 
-  AnimatedButton(
-      {@required this.controller,
-      this.key,
-      this.text,
-      this.circularIndicatorProgressColor,
-      this.onPressed,
-      this.textColor})
-      : squeezeButton = Tween(
+  final Animation<double> squeezeButton;
+
+  AnimatedButton({
+    this.key,
+    this.text,
+    this.textColor,
+    this.primaryColor,
+    this.circularIndicatorProgressColor,
+    @required this.controller,
+    this.onPressed,
+  }) : squeezeButton = Tween(
           begin: 360.0,
           end: 50.0,
         ).animate(
@@ -24,7 +28,7 @@ class AnimatedButton extends StatelessWidget {
             parent: controller,
             curve: Interval(0, 0.15),
           ),
-        );
+        ) , super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +42,11 @@ class AnimatedButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
       child: Container(
-        width: this.squeezeButton.value,
+        width: squeezeButton.value,
         height: 50,
         child: RaisedButton(
-          key: key,
           textColor: textColor,
+          color: primaryColor,
           disabledColor: Theme.of(context).disabledColor,
           padding: EdgeInsets.all(14),
           shape: RoundedRectangleBorder(

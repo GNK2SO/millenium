@@ -5,6 +5,7 @@ import 'package:millenium/src/blocs/usuario_bloc/usuario_event.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_state.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/text_field.dart';
+import 'package:millenium/src/components/form/text_input.dart';
 import 'package:millenium/src/screens/home_screen.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
@@ -66,43 +67,51 @@ class _CadastroFormState extends State<CadastroForm>
           title: Text("Cadastro"),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
           child: Form(
             key: _formKey,
             child: Column(
               children: <Widget>[
-                CustomTextField(
+                TextInput(
                   labelText: "Nome",
                   controller: _nomeController,
                   validator: isValidNome,
+                  keyboardType: TextInputType.emailAddress,
+                  primaryColor: Theme.of(context).primaryColor,
                 ),
-                CustomTextField(
+                TextInput(
                   labelText: "Email",
                   controller: _emailController,
                   validator: isValidEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  primaryColor: Theme.of(context).primaryColor,
                 ),
-                CustomTextField(
+                TextInput(
                   labelText: "Senha",
                   controller: _senhaController,
                   validator: isValidSenha,
                   obscureText: true,
+                  keyboardType: TextInputType.emailAddress,
+                  primaryColor: Theme.of(context).primaryColor,
                 ),
-                CustomTextField(
+                TextInput(
                   labelText: "Confirmar Senha",
                   controller: _confirmarSenhaController,
                   validator: _isValidConfimarSenha,
                   obscureText: true,
+                  keyboardType: TextInputType.emailAddress,
+                  primaryColor: Theme.of(context).primaryColor,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: AnimatedButton(
-                    text: "CADASTRAR",
-                    controller: _animationController.view,
-                    onPressed: () {
-                      _onFormSubmitted();
-                    },
-                  ),
-                )
+                AnimatedButton(
+                  text: "CADASTRAR",
+                  controller: _animationController.view,
+                  primaryColor: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  circularIndicatorProgressColor: Colors.white,
+                  onPressed: () {
+                    _onFormSubmitted();
+                  },
+                ),
               ],
             ),
           ),

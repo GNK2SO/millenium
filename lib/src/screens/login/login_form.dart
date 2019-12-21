@@ -5,10 +5,9 @@ import 'package:millenium/src/blocs/login_bloc/login_event.dart';
 import 'package:millenium/src/blocs/login_bloc/login_state.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/circular_button.dart';
+import 'package:millenium/src/components/form/text_input.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/logo.dart';
-import 'package:millenium/src/components/form/text_field.dart';
-import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/home_screen.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
@@ -49,13 +48,7 @@ class _LoginFormState extends State<LoginForm>
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          Usuario usuario = state.usuario;
-          navigateTo(
-            context,
-            HomeScreen(
-              usuario: usuario,
-            ),
-          );
+          navigateTo(context, HomeScreen(usuario: state.usuario));
         } else if (state is LoginFailure) {
           showMessage(
             key: _scaffoldKey,
@@ -66,24 +59,37 @@ class _LoginFormState extends State<LoginForm>
       },
       child: Scaffold(
         key: _scaffoldKey,
-        body: Center(
-          child: SingleChildScrollView(
-            child: Stack(
-              children: <Widget>[
-                Padding(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/images/wallpaper.jpeg")
+                )
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Color(0xDD012F4F),
+              ),
+            ),
+            Center(
+              child: SingleChildScrollView(
+                child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
                         Logo(),
-                        CustomTextField(
+                        TextInput(
                           labelText: "Email",
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: isValidEmail,
                         ),
-                        CustomTextField(
+                        TextInput(
                           labelText: "Senha",
                           controller: _senhaController,
                           keyboardType: TextInputType.emailAddress,
@@ -94,6 +100,7 @@ class _LoginFormState extends State<LoginForm>
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: AnimatedButton(
                             text: "ENTRAR",
+                            circularIndicatorProgressColor: Theme.of(context).primaryColor,
                             controller: _animationController.view,
                             onPressed: () {
                               _onFormSubmitted();
@@ -102,30 +109,32 @@ class _LoginFormState extends State<LoginForm>
                         ),
                         Row(
                           children: <Widget>[
-                            Expanded(child: CustomDivider()),
+                            Expanded(child: CustomDivider(color: Colors.white,)),
                             Expanded(
                               child: Text(
                                 "ou",
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                            Expanded(child: CustomDivider())
+                            Expanded(child: CustomDivider(color: Colors.white,))
                           ],
                         ),
                         CircularButton(
                           text: "CRIAR CONTA",
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed("/cadastroContaScreen");
+                            Navigator.of(context).pushNamed("/cadastroContaScreen");
                           },
                         ),
                       ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

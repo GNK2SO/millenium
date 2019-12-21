@@ -17,6 +17,7 @@ import 'package:millenium/src/screens/home_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
 import 'package:millenium/src/screens/login/login_screen.dart';
 import 'package:millenium/src/screens/meus_personagens_screen/meus_personagens_screen.dart';
+import 'package:millenium/src/screens/splash_screen.dart';
 import 'package:millenium/src/screens/todos_personagens/todos_personagens_screen.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
 
@@ -49,10 +50,13 @@ class Millenium extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Color(0xFF012F4F),  
+        ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is Uninitialized) {
-              return LoadingScreen();
+              return SplashScreen();
             } else if (state is Unauthenticated) {
               return LoginScreen(
                 repository: UsuarioRepository(),

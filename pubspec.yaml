@@ -19,6 +19,8 @@ dependencies:
   equatable: ^1.0.1
   json_annotation: ^3.0.0
   image_picker: ^0.6.2+3
+  font_awesome_flutter: ^8.5.0
+  flutter_svg: ^0.15.0
 
 dev_dependencies:
   flutter_test:
@@ -37,9 +39,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  assets:
+   - assets/images/wallpaper.jpeg
 
 
   fonts:

@@ -9,6 +9,7 @@ class Logo extends StatelessWidget {
       style: TextStyle(
         fontFamily: 'pentagrams_malefissent',
         fontSize: 72,
+        color: Colors.white,
       ),
     );
   }
