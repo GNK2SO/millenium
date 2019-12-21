@@ -24,11 +24,11 @@ class MeusPersonagensScreen extends StatefulWidget {
         _usuario = usuario;
 
   @override
-  _MeusPersonagensScreenState createState() => _MeusPersonagensScreenState( usuario: this._usuario);
+  _MeusPersonagensScreenState createState() =>
+      _MeusPersonagensScreenState(usuario: this._usuario);
 }
 
 class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
-  
   final Usuario usuario;
   _MeusPersonagensScreenState({@required this.usuario});
 
@@ -37,7 +37,8 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<PersonagemBloc>(context).add(ObterMeusPersonagens(uid: usuario.uid));
+    BlocProvider.of<PersonagemBloc>(context)
+        .add(ObterMeusPersonagens(uid: usuario.uid));
   }
 
   @override
@@ -59,7 +60,7 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        appBar: CustomAppBar(),
+        appBar: AppBar(title: Text("Personagens")),
         drawer: CustomDrawer(usuario: usuario),
         body: BlocBuilder<PersonagemBloc, PersonagemState>(
           builder: (context, state) {
@@ -75,10 +76,11 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
                       usuario: usuario,
                       onPressed: () async {
                         await Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => PersonagemScreen(
-                            usuario: usuario,
-                            personagem: personagens[index],
-                          )),
+                          MaterialPageRoute(
+                              builder: (context) => PersonagemScreen(
+                                    usuario: usuario,
+                                    personagem: personagens[index],
+                                  )),
                         );
                         BlocProvider.of<PersonagemBloc>(context).add(
                           ObterMeusPersonagens(
@@ -109,6 +111,7 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.add),
           onPressed: () {
             showDialog(

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:millenium/src/models/usuario.dart';
 
 @immutable
 abstract class UsuarioEvent extends Equatable {
@@ -19,4 +20,16 @@ class SalvarUsuario extends UsuarioEvent {
 
   @override
   String toString() => 'SalvarUsuario { nome: $nome, email: $email }';
+}
+
+class AtualizarUsuario extends UsuarioEvent {
+  final Usuario usuario;
+
+  AtualizarUsuario({@required this.usuario});
+
+  @override
+  List<Object> get props => [usuario];
+
+  @override
+  String toString() => 'AtualizarUsuario';
 }

@@ -18,6 +18,18 @@ class UsuarioCarregando extends UsuarioState {
   String toString() => 'UsuarioCarregando';
 }
 
+class UsuarioAtualizado extends UsuarioState {
+  final Usuario usuario;
+
+  UsuarioAtualizado({@required this.usuario});
+
+  @override
+  List<Object> get props => [usuario];
+
+  @override
+  String toString() => 'UsuarioAtualizado';
+}
+
 class UsuarioSuccess extends UsuarioState {
   final Usuario usuario;
 

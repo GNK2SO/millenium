@@ -21,6 +21,8 @@ class UsuarioBloc extends Bloc<UsuarioEvent, UsuarioState> {
     if (event is SalvarUsuario) {
       yield* this._mapSalvarUsuarioToState(
           nome: event.nome, email: event.email, senha: event.senha);
+    } else if (event is AtualizarUsuario) {
+      yield* this._mapAtualizarUsuarioToState(usuario: event.usuario);
     }
   }
 
@@ -41,7 +43,21 @@ class UsuarioBloc extends Bloc<UsuarioEvent, UsuarioState> {
           usuario: await _usuarioRepository.obterUsuario(),
         );
       } catch (e) {
-        yield UsuarioFailure(erro: "Erro ao cadastrar.\nVerifique sua conexão.");
+        yield UsuarioFailure(
+            erro: "Erro ao cadastrar.\nVerifique sua conexão.");
+      }
+    }
+  }
+
+  Stream<UsuarioState> _mapAtualizarUsuarioToState({Usuario usuario}) async* {
+    if (!(state is UsuarioCarregando)) {
+      yield UsuarioCarregando();
+      try {
+        await _usuarioRepository.atualizar(usuario);
+        yield UsuarioAtualizado(usuario: usuario);
+      } catch (e) {
+        yield UsuarioFailure(
+            erro: "Erro ao atualizar.\nVerifique sua conexão.");
       }
     }
   }

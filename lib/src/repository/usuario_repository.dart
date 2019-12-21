@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:millenium/src/models/usuario.dart';
 
 class UsuarioRepository {
+  Firestore firestore = Firestore.instance;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> efetuarLogin({
@@ -49,10 +50,22 @@ class UsuarioRepository {
 
   Future<Usuario> obterUsuario() async {
     FirebaseUser usuarioAtual = await _firebaseAuth.currentUser();
+    bool isAdmin = await verifyPermissions(usuarioAtual.uid);
+    String foto = await getFoto(usuarioAtual.uid);
+    return Usuario(
+      uid: usuarioAtual.uid,
+      nome: usuarioAtual.displayName,
+      email: usuarioAtual.email,
+      foto: foto,
+      isAdmin: isAdmin,
+    );
+  }
+
+  Future<bool> verifyPermissions(String uid) async {
     bool isAdmin;
     await Firestore.instance
         .collection("administradores")
-        .document(usuarioAtual.uid)
+        .document(uid)
         .get()
         .then(
       (doc) {
@@ -63,12 +76,34 @@ class UsuarioRepository {
         }
       },
     );
+    return isAdmin;
+  }
 
-    return Usuario(
-      uid: usuarioAtual.uid,
-      nome: usuarioAtual.displayName,
-      email: usuarioAtual.email,
-      isAdmin: isAdmin,
-    );
+  Future<void> atualizar(Usuario usuario) async {
+    UserUpdateInfo updateData = UserUpdateInfo();
+    updateData.displayName = usuario.nome;
+    _firebaseAuth.currentUser().then((user) {
+      user.updateProfile(updateData);
+    });
+
+    if (usuario.foto != null) {
+      await atualizarImagem(usuario.uid, usuario.foto);
+    }
+  }
+
+  Future<void> atualizarImagem(String uid, String imagem) async {
+    await firestore
+        .collection("jogadores")
+        .document(uid)
+        .setData({"foto": imagem});
+  }
+
+  Future<String> getFoto(String uid) async {
+    DocumentSnapshot document =
+        await firestore.collection("jogadores").document(uid).get();
+    if (document.data != null) {
+      return document.data["foto"];
+    }
+    return null;
   }
 }

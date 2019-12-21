@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:millenium/src/blocs/authentication_bloc/authentication_event.dart';
+import 'package:millenium/src/blocs/login_bloc/login_bloc.dart';
+import 'package:millenium/src/blocs/login_bloc/login_event.dart';
+import 'package:millenium/src/blocs/login_bloc/login_state.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_bloc.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_event.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_state.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
-import 'package:millenium/src/components/form/text_field.dart';
 import 'package:millenium/src/components/form/text_input.dart';
-import 'package:millenium/src/screens/home_screen.dart';
+import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:millenium/src/util/util.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
 
@@ -46,21 +49,35 @@ class _CadastroFormState extends State<CadastroForm>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UsuarioBloc, UsuarioState>(
-      listener: (context, state) {
-        if (state is UsuarioSuccess) {
-          replaceTo(
-            context,
-            HomeScreen(usuario: state.usuario),
-          );
-        } else if (state is UsuarioFailure) {
-          _animationController.reset();
-          showMessage(
-            key: _scaffoldKey,
-            mensagem: state.erro,
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<UsuarioBloc, UsuarioState>(
+          listener: (context, state) {
+            if (state is UsuarioSuccess) {
+              BlocProvider.of<LoginBloc>(context).add(
+                Autenticar(
+                  email: _emailController.text,
+                  senha: _senhaController.text,
+                ),
+              );
+            } else if (state is UsuarioFailure) {
+              _animationController.reset();
+              showMessage(
+                key: _scaffoldKey,
+                mensagem: state.erro,
+              );
+            }
+          },
+        ),
+        BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginSuccess) {
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(

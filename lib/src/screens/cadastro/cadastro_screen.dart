@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:millenium/src/blocs/usuario_bloc/usuario_bloc.dart';
+import 'package:millenium/src/blocs/login_bloc/login_bloc.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/cadastro/cadastro_form.dart';
 
@@ -14,8 +14,8 @@ class CadastroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UsuarioBloc>(
-      create: (context) => UsuarioBloc(repository: _usuarioRepository),
+    return BlocProvider<LoginBloc>(
+      create: (context) => LoginBloc(repository: _usuarioRepository),
       child: CadastroForm(),
     );
   }
