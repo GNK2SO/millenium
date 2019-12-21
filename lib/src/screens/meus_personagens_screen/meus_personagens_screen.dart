@@ -45,10 +45,12 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
+        if (state is PersonagemRemovido) {
+          showMessage(key: _scaffoldKey, mensagem: state.mensagem);
+          BlocProvider.of<PersonagemBloc>(context)
+              .add(ObterMeusPersonagens(uid: usuario.uid));
+        }
         if (state is Success) {
-          if (state.mensagem.isNotEmpty) {
-            showMessage(key: _scaffoldKey, mensagem: state.mensagem);
-          }
           BlocProvider.of<PersonagemBloc>(context)
               .add(ObterMeusPersonagens(uid: usuario.uid));
         } else if (state is Failure) {
@@ -77,10 +79,11 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
                       onPressed: () async {
                         await Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => PersonagemScreen(
-                                    usuario: usuario,
-                                    personagem: personagens[index],
-                                  )),
+                            builder: (context) => PersonagemScreen(
+                              usuario: usuario,
+                              personagem: personagens[index],
+                            ),
+                          ),
                         );
                         BlocProvider.of<PersonagemBloc>(context).add(
                           ObterMeusPersonagens(

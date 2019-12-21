@@ -141,7 +141,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
       yield PersonagemCarregando();
       try {
         await _personagemRepository.remover(personagem);
-        yield Success(mensagem: "Personagem removido com sucesso");
+        yield PersonagemRemovido(mensagem: "Personagem removido com sucesso");
       } catch (e) {
         yield Failure(
             erro: "Erro ao remover personagem.\nVerifique sua conexão.");

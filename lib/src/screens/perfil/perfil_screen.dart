@@ -91,6 +91,8 @@ class _PerfilScreenState extends State<PerfilScreen>
                 ImageFormField(
                   context: context,
                   imagem: usuario.foto,
+                  size: 96,
+                  icon: Icon(Icons.photo_camera, size: 64),
                   onChanged: (imagem) {
                     if (imagem is String) {
                       usuario.foto = imagem;

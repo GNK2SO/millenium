@@ -9,6 +9,8 @@ class ImageFormField extends FormField<dynamic> {
     FormFieldValidator<dynamic> validator,
     bool autoValidate: false,
     Function(dynamic) onChanged,
+    double size,
+    Icon icon,
   }) : super(
           validator: validator,
           initialValue: imagem,
@@ -19,8 +21,8 @@ class ImageFormField extends FormField<dynamic> {
                 InkWell(
                   child: ImagemPerfil(
                     imagem: imagem,
-                    radius: 96,
-                    icon: Icon(Icons.photo_camera, size: 64),
+                    radius: size,
+                    icon: icon,
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   onTap: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:millenium/src/components/form/imagem_perfil.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 
@@ -14,31 +15,47 @@ class PersonagemTile extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(
-              radius: 40,
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ImagemPerfil(
+                imagem: personagem.imagem,
+                backgroundColor: Theme.of(context).primaryColor,
+                radius: 32,
+                icon: Icon(
+                  Icons.person_outline,
+                  size: 40,
+                ),
+              ),
             ),
-            title: Text(
-              personagem.nome,
-              style: TextStyle(fontSize: 20),
-            ),
-            subtitle: Column(
-              mainAxisSize: MainAxisSize.min,
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("Vida: ${personagem.vidaAtual}/${personagem.vidaTotal()}"),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Text(
+                    personagem.nome + "asfdafasdfasdfasdfasdfasdfasdfasdfsd",
+                    style: TextStyle(fontSize: 24),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
                 Text(
-                    "Energia: ${personagem.energiaAtual}/${personagem.energiaTotal()}"),
+                  "Vida: ${personagem.vidaAtual}/${personagem.vidaTotal()}",
+                ),
+                Text(
+                  "Energia: ${personagem.energiaAtual}/${personagem.energiaTotal()}",
+                ),
               ],
-            ),
-            onTap: this.onPressed,
-          )
-        ],
+            )
+          ],
+        ),
       ),
+      onTap: this.onPressed,
     );
   }
 }

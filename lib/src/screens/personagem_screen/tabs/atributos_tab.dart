@@ -5,6 +5,7 @@ import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
 import 'package:millenium/src/components/form/atributo_combate_form_field.dart';
 import 'package:millenium/src/components/form/atributo_exploracao_form_field.dart.dart';
+import 'package:millenium/src/components/form/image_form_field.dart';
 import 'package:millenium/src/components/form/info_card.dart';
 import 'package:millenium/src/components/form/ponto_distribuicao_form_field.dart';
 import 'package:millenium/src/components/form/status_card.dart';
@@ -68,6 +69,20 @@ class _AtributosTabState extends State<AtributosTab>
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ImageFormField(
+                        context: context,
+                        imagem: personagem.imagem,
+                        size: 64,
+                        icon: Icon(Icons.person, size: 80),
+                        onChanged: (imagem) {
+                          if (imagem is String) {
+                            personagem.imagem = imagem;
+                          }
+                        },
+                      ),
+                    ),
                     Visibility(
                       visible: this.widget.usuario.isAdmin,
                       child: Card(
@@ -140,6 +155,7 @@ class _AtributosTabState extends State<AtributosTab>
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FloatingActionButton(
+                  backgroundColor: Theme.of(context).primaryColor,
                   child: Icon(Icons.save),
                   onPressed: () {
                     _onFormSubmitted();
