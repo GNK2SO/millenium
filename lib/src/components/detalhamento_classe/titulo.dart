@@ -12,7 +12,7 @@ class Titulo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          padding: const EdgeInsets.only(bottom: 4.0),
           child: Text(
             titulo,
             style: TextStyle(

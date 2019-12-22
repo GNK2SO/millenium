@@ -37,11 +37,11 @@ class PersonagemTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   child: Text(
-                    personagem.nome + "asfdafasdfasdfasdfasdfasdfasdfasdfsd",
+                    personagem.nome,
                     style: TextStyle(fontSize: 24),
-                    overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.fade,
                   ),
                 ),
                 Text(

@@ -218,6 +218,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                 padding: const EdgeInsets.all(16.0),
                 child: usuario.isAdmin
                     ? FloatingActionButton(
+                        backgroundColor: Theme.of(context).primaryColor,
                         child: Icon(Icons.add),
                         onPressed: () {
                           showDialog(
@@ -226,8 +227,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                               return FormCadastroItem(
                                 personagem: personagem,
                                 onSaved: (personagem) {
-                                  BlocProvider.of<PersonagemBloc>(context)
-                                      .add(
+                                  BlocProvider.of<PersonagemBloc>(context).add(
                                     AtualizarPersonagem(
                                       personagem: this.personagem,
                                     ),
@@ -239,6 +239,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                         },
                       )
                     : FloatingActionButton(
+                        backgroundColor: Theme.of(context).primaryColor,
                         child: Icon(Icons.save),
                         onPressed: () {
                           BlocProvider.of<PersonagemBloc>(context).add(
