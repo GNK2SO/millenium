@@ -13,6 +13,7 @@ import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/alterar_senha/alterar_senha_screen.dart';
 import 'package:millenium/src/screens/bestiario/bestiario_screen.dart';
 import 'package:millenium/src/screens/cadastro/cadastro_screen.dart';
+import 'package:millenium/src/screens/classes_screen/classes_screen.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/home_screen.dart';
 import 'package:millenium/src/screens/login/login_screen.dart';
@@ -75,6 +76,7 @@ class Millenium extends StatelessWidget {
           },
         ),
         routes: {
+          "/classesScreen": (context) => ClassesScreen(usuario: usuario),
           "/perfilScreen": (context) => PerfilScreen(usuario: usuario),
           "/alterarSenhaScreen": (context) => AlterarSenhaScreen(),
           "/loginScreen": (context) =>

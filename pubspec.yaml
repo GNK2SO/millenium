@@ -41,6 +41,12 @@ flutter:
   assets:
    - assets/images/wallpaper.jpeg
    
+  #Icones
+   - assets/icons/swords.svg
+   - assets/icons/crossbow.svg
+   - assets/icons/axe.svg
+   - assets/icons/dagger.svg
+   - assets/icons/sceptre.svg
 
    - assets/icons/personagens.svg
    - assets/icons/beer.svg
@@ -49,6 +55,7 @@ flutter:
    - assets/icons/class.svg
    - assets/icons/bestiario.svg
    - assets/icons/rules.svg
+
    - assets/icons/viking-ship.svg
 
 
