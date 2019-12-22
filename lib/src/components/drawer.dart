@@ -84,7 +84,10 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: SvgPicture.asset("assets/icons/rules.svg",
                 width: 24, semanticsLabel: 'Regras do jogo'),
-            title: Text("Regras do Jogo"),
+            title: Text("Como funciona?"),
+            onTap: () {
+              Navigator.of(context).popAndPushNamed("/regrasScreen");
+            },
           ),
           ListTile(
             leading: SvgPicture.asset("assets/icons/viking-ship.svg",

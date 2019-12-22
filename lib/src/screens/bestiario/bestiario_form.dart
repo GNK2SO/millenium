@@ -61,12 +61,6 @@ class _BestiarioFormState extends State<BestiarioForm> {
             }
           },
         ),
-        floatingActionButton: usuario.isAdmin
-            ? FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {},
-              )
-            : Container(),
       ),
     );
   }
