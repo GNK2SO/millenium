@@ -94,9 +94,9 @@ class CustomDrawer extends StatelessWidget {
                 width: 24, semanticsLabel: 'Sair'),
             title: Text("Sair"),
             onTap: () {
-              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
               Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/loginScreen", (Route<dynamic> route) => false);
+                  "/", (Route<dynamic> route) => false);
+              BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
             },
           ),
         ],

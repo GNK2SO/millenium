@@ -23,7 +23,7 @@ class _CadastroFormState extends State<CadastroForm>
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
-  final _confirmarSenhaController = TextEditingController();
+
   AnimationController _animationController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -42,7 +42,6 @@ class _CadastroFormState extends State<CadastroForm>
     _nomeController.dispose();
     _emailController.dispose();
     _senhaController.dispose();
-    _confirmarSenhaController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -60,7 +59,8 @@ class _CadastroFormState extends State<CadastroForm>
                   senha: _senhaController.text,
                 ),
               );
-            } else if (state is UsuarioFailure) {
+            }
+            if (state is UsuarioFailure) {
               _animationController.reset();
               showMessage(
                 key: _scaffoldKey,
@@ -94,14 +94,12 @@ class _CadastroFormState extends State<CadastroForm>
                   controller: _nomeController,
                   validator: isValidNome,
                   keyboardType: TextInputType.emailAddress,
-                  primaryColor: Theme.of(context).primaryColor,
                 ),
                 TextInput(
                   labelText: "Email",
                   controller: _emailController,
                   validator: isValidEmail,
                   keyboardType: TextInputType.emailAddress,
-                  primaryColor: Theme.of(context).primaryColor,
                 ),
                 TextInput(
                   labelText: "Senha",
@@ -109,15 +107,12 @@ class _CadastroFormState extends State<CadastroForm>
                   validator: isValidSenha,
                   obscureText: true,
                   keyboardType: TextInputType.emailAddress,
-                  primaryColor: Theme.of(context).primaryColor,
                 ),
                 TextInput(
                   labelText: "Confirmar Senha",
-                  controller: _confirmarSenhaController,
                   validator: _isValidConfimarSenha,
                   obscureText: true,
                   keyboardType: TextInputType.emailAddress,
-                  primaryColor: Theme.of(context).primaryColor,
                 ),
                 AnimatedButton(
                   text: "CADASTRAR",

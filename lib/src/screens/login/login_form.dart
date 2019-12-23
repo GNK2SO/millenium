@@ -7,7 +7,7 @@ import 'package:millenium/src/blocs/login_bloc/login_event.dart';
 import 'package:millenium/src/blocs/login_bloc/login_state.dart';
 import 'package:millenium/src/components/form/animated_button.dart';
 import 'package:millenium/src/components/form/circular_button.dart';
-import 'package:millenium/src/components/form/text_input.dart';
+import 'package:millenium/src/components/form/login_text_input.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/logo.dart';
 import 'package:millenium/src/util/util.dart';
@@ -51,10 +51,7 @@ class _LoginFormState extends State<LoginForm>
         if (state is LoginSuccess) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
         } else if (state is LoginFailure) {
-          showMessage(
-            key: _scaffoldKey,
-            mensagem: state.erro,
-          );
+          showMessage(key: _scaffoldKey, mensagem: state.erro);
           _animationController.reset();
         }
       },
@@ -64,9 +61,11 @@ class _LoginFormState extends State<LoginForm>
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/images/wallpaper.jpeg"))),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/images/wallpaper.jpeg"),
+                ),
+              ),
             ),
             Container(
               decoration: BoxDecoration(
@@ -82,13 +81,13 @@ class _LoginFormState extends State<LoginForm>
                     child: Column(
                       children: <Widget>[
                         Logo(),
-                        TextInput(
+                        LoginTextInput(
                           labelText: "Email",
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: isValidEmail,
                         ),
-                        TextInput(
+                        LoginTextInput(
                           labelText: "Senha",
                           controller: _senhaController,
                           keyboardType: TextInputType.emailAddress,
@@ -110,22 +109,18 @@ class _LoginFormState extends State<LoginForm>
                         Row(
                           children: <Widget>[
                             Expanded(
-                                child: CustomDivider(
-                              color: Colors.white,
-                            )),
+                              child: CustomDivider(color: Colors.white),
+                            ),
                             Expanded(
                               child: Text(
                                 "ou",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                             Expanded(
-                                child: CustomDivider(
-                              color: Colors.white,
-                            ))
+                              child: CustomDivider(color: Colors.white),
+                            )
                           ],
                         ),
                         CircularButton(

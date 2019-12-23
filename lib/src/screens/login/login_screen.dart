@@ -7,10 +7,9 @@ import 'package:millenium/src/screens/login/login_form.dart';
 class LoginScreen extends StatelessWidget {
   final UsuarioRepository _usuarioRepository;
 
-  LoginScreen({Key key, @required UsuarioRepository repository})
+  LoginScreen({@required UsuarioRepository repository})
       : assert(repository != null),
-        _usuarioRepository = repository,
-        super(key: key);
+        _usuarioRepository = repository;
 
   @override
   Widget build(BuildContext context) {

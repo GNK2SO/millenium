@@ -155,7 +155,6 @@ class _AtributosTabState extends State<AtributosTab>
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).primaryColor,
                   child: Icon(Icons.save),
                   onPressed: () {
                     _onFormSubmitted();

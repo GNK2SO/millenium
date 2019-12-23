@@ -47,7 +47,6 @@ class _AlterarSenhaScreenState extends State<AlterarSenhaScreen>
                 controller: _senhaController,
                 obscureText: true,
                 keyboardType: TextInputType.emailAddress,
-                primaryColor: Theme.of(context).primaryColor,
               ),
               TextInput(
                 labelText: "Nova senha",
@@ -55,14 +54,12 @@ class _AlterarSenhaScreenState extends State<AlterarSenhaScreen>
                 controller: _novaSenhaController,
                 obscureText: true,
                 keyboardType: TextInputType.emailAddress,
-                primaryColor: Theme.of(context).primaryColor,
               ),
               TextInput(
                 labelText: "Confirmar nova senha",
                 validator: _isValidConfimarSenha,
                 obscureText: true,
                 keyboardType: TextInputType.emailAddress,
-                primaryColor: Theme.of(context).primaryColor,
               ),
               AnimatedButton(
                 text: "ALTERAR SENHA",

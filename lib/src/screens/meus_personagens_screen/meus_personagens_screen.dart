@@ -113,7 +113,6 @@ class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.add),
           onPressed: () {
             showDialog(

@@ -104,7 +104,6 @@ class _PerfilScreenState extends State<PerfilScreen>
                   controller: _nomeController,
                   validator: isValidNome,
                   keyboardType: TextInputType.emailAddress,
-                  primaryColor: Theme.of(context).primaryColor,
                 ),
                 FlatButton(
                   child: Text(
