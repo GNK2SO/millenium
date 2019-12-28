@@ -23,11 +23,11 @@ class TodosPersonagensScreen extends StatefulWidget {
         _usuario = usuario;
 
   @override
-  _TodosPersonagensFormState createState() => _TodosPersonagensFormState(usuario: this._usuario);
+  _TodosPersonagensFormState createState() =>
+      _TodosPersonagensFormState(usuario: this._usuario);
 }
 
 class _TodosPersonagensFormState extends State<TodosPersonagensScreen> {
-  
   final Usuario usuario;
   _TodosPersonagensFormState({@required this.usuario});
 
@@ -43,13 +43,12 @@ class _TodosPersonagensFormState extends State<TodosPersonagensScreen> {
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
-        if (state is Success) {
+        if (state is PersonagemSuccess) {
           if (state.mensagem.isNotEmpty) {
             showMessage(key: _scaffoldKey, mensagem: state.mensagem);
           }
-          BlocProvider.of<PersonagemBloc>(context)
-              .add(ObterTodosPersonagens());
-        } else if (state is Failure) {
+          BlocProvider.of<PersonagemBloc>(context).add(ObterTodosPersonagens());
+        } else if (state is PersonagemFailure) {
           showMessage(
             key: _scaffoldKey,
             mensagem: state.erro,
@@ -74,11 +73,12 @@ class _TodosPersonagensFormState extends State<TodosPersonagensScreen> {
                     usuario: usuario,
                     onPressed: () async {
                       await Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => PersonagemScreen(
-                            usuario: usuario,
-                            personagem: personagens[index],
-                          )),
-                        );
+                        MaterialPageRoute(
+                            builder: (context) => PersonagemScreen(
+                                  usuario: usuario,
+                                  personagem: personagens[index],
+                                )),
+                      );
                       BlocProvider.of<PersonagemBloc>(context)
                           .add(ObterTodosPersonagens());
                     },

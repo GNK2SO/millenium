@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:millenium/src/components/drawer.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/util/regras_millenium.dart';
 

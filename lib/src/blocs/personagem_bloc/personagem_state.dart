@@ -54,26 +54,26 @@ class PersonagemRemovido extends PersonagemState {
   String toString() => 'PersonagemRemovido';
 }
 
-class Success extends PersonagemState {
+class PersonagemSuccess extends PersonagemState {
   final String mensagem;
 
-  Success({this.mensagem: ""});
+  PersonagemSuccess({this.mensagem: ""});
 
   @override
   List<Object> get props => [this.mensagem];
 
   @override
-  String toString() => 'Success';
+  String toString() => 'PersonagemSuccess';
 }
 
-class Failure extends PersonagemState {
+class PersonagemFailure extends PersonagemState {
   final String erro;
 
-  Failure({@required this.erro});
+  PersonagemFailure({@required this.erro});
 
   @override
   List<Object> get props => [this.erro];
 
   @override
-  String toString() => 'Failure';
+  String toString() => 'PersonagemFailure';
 }

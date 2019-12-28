@@ -52,9 +52,9 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
       );
       try {
         await _personagemRepository.salvar(personagem);
-        yield Success();
+        yield PersonagemSuccess();
       } catch (_) {
-        yield Failure(
+        yield PersonagemFailure(
             erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
       }
     }
@@ -72,7 +72,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
         yield PersonagemCarregado(
             personagem: Personagem.fromJson(json.decode(data)));
       } catch (e) {
-        yield Failure(
+        yield PersonagemFailure(
             erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
       }
     }
@@ -91,7 +91,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
           personagens: mapToList(documents: document.documents),
         );
       } catch (e) {
-        yield Failure(
+        yield PersonagemFailure(
             erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
       }
     }
@@ -110,7 +110,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
           personagens: mapToList(documents: document.documents),
         );
       } catch (e) {
-        yield Failure(
+        yield PersonagemFailure(
             erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
       }
     }
@@ -124,11 +124,11 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
 
       try {
         await _personagemRepository.atualizar(personagem);
-        yield Success(
+        yield PersonagemSuccess(
           mensagem: "Alterações salvas com sucesso!",
         );
       } catch (_) {
-        yield Failure(
+        yield PersonagemFailure(
             erro: "Erro ao atualizar personagem.\nVerifique sua conexão.");
       }
     }
@@ -143,7 +143,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
         await _personagemRepository.remover(personagem);
         yield PersonagemRemovido(mensagem: "Personagem removido com sucesso");
       } catch (e) {
-        yield Failure(
+        yield PersonagemFailure(
             erro: "Erro ao remover personagem.\nVerifique sua conexão.");
       }
     }

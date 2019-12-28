@@ -48,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocProvider.of<PersonagemBloc>(context)
               .add(ObterMeusPersonagens(uid: usuario.uid));
         }
-        if (state is Success) {
+        if (state is PersonagemSuccess) {
           BlocProvider.of<PersonagemBloc>(context)
               .add(ObterMeusPersonagens(uid: usuario.uid));
-        } else if (state is Failure) {
+        } else if (state is PersonagemFailure) {
           showMessage(
             key: _scaffoldKey,
             mensagem: state.erro,

@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_bloc.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_event.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_state.dart';
-import 'package:millenium/src/components/drawer.dart';
 import 'package:millenium/src/models/habilidade/habilidade.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/repository/classe_repository.dart';

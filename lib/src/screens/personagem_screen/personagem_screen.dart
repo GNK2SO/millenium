@@ -36,11 +36,11 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
-        if (state is Success) {
+        if (state is PersonagemSuccess) {
           if (state.mensagem.isNotEmpty) {
             showMessage(key: _scaffoldKey, mensagem: state.mensagem);
           }
-        } else if (state is Failure) {
+        } else if (state is PersonagemFailure) {
           showMessage(
             key: _scaffoldKey,
             mensagem: state.erro,

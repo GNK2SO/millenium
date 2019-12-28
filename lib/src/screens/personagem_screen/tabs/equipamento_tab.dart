@@ -46,7 +46,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
-        if (state is Success) {
+        if (state is PersonagemSuccess) {
           BlocProvider.of<PersonagemBloc>(context)
               .add(ObterPersonagem(idPersonagem: personagem.id));
         }
@@ -63,7 +63,7 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
           children: <Widget>[
             BlocBuilder<PersonagemBloc, PersonagemState>(
               builder: (context, state) {
-                if (state is Failure) {
+                if (state is PersonagemFailure) {
                   return ErroScreen();
                 } else if (state is PersonagemCarregando) {
                   return LoadingScreen();
