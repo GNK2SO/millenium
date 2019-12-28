@@ -12,13 +12,13 @@ import 'package:millenium/src/screens/bestiario/bestiario_screen.dart';
 import 'package:millenium/src/screens/cadastro/cadastro_screen.dart';
 import 'package:millenium/src/screens/classes_screen/classes_screen.dart';
 import 'package:millenium/src/screens/error_screen.dart';
+import 'package:millenium/src/screens/home_screen_admin/todos_personagens_screen.dart';
 import 'package:millenium/src/screens/login/login_screen.dart';
 import 'package:millenium/src/screens/home_screen/home_screen.dart';
 import 'package:millenium/src/screens/perfil/perfil_screen.dart';
 import 'package:millenium/src/screens/regras_screen/regras_screen.dart';
 import 'package:millenium/src/screens/splash_screen.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
-import 'package:millenium/src/screens/todos_personagens/todos_personagens_screen.dart';
 import 'package:millenium/src/util/theme.dart';
 
 class Millenium extends StatefulWidget {
@@ -58,6 +58,9 @@ class _MilleniumState extends State<Millenium> {
               if (usuario == null) {
                 usuario = state.usuario;
               }
+              if (usuario.isAdmin) {
+                return HomeScreenAdmin(usuario: usuario);
+              }
               return HomeScreen(usuario: usuario);
             } else {
               return ErroScreen();
@@ -73,8 +76,6 @@ class _MilleniumState extends State<Millenium> {
               LoginScreen(repository: UsuarioRepository()),
           "/cadastroContaScreen": (context) =>
               CadastroScreen(repository: UsuarioRepository()),
-          "/todosPersonagemScreen": (context) =>
-              TodosPersonagensScreen(usuario: usuario),
           "/bestiarioScreen": (context) => BestiarioScreen(
               usuario: usuario, repository: BestiarioRepository()),
         },

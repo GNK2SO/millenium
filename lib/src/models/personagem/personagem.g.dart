@@ -13,14 +13,10 @@ Personagem _$PersonagemFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     nome: json['nome'] as String,
     vida: json['vida'] as int,
-    vidaAtual: json['vidaAtual'] as int,
     energia: json['energia'] as int,
-    energiaAtual: json['energiaAtual'] as int,
     mana: json['mana'] as int,
-    manaAtual: json['manaAtual'] as int,
     fome: json['fome'] as int,
-    level: json['level'] as int,
-    xp: json['xp'] as int,
+    karma: json['karma'] as bool,
     atributosCombate: json['atributosCombate'] == null
         ? null
         : AtributosCombate.fromJson(
@@ -61,14 +57,10 @@ Map<String, dynamic> _$PersonagemToJson(Personagem instance) =>
       'id': instance.id,
       'nome': instance.nome,
       'vida': instance.vida,
-      'vidaAtual': instance.vidaAtual,
       'energia': instance.energia,
-      'energiaAtual': instance.energiaAtual,
       'mana': instance.mana,
-      'manaAtual': instance.manaAtual,
       'fome': instance.fome,
-      'level': instance.level,
-      'xp': instance.xp,
+      'karma': instance.karma,
       'atributosCombate': instance.atributosCombate.toJson(),
       'atributosExploracao': instance.atributosExploracao.toJson(),
       'bolsa': instance.bolsa != null

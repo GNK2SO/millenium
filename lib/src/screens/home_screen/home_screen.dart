@@ -35,8 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<PersonagemBloc>(context)
-        .add(ObterMeusPersonagens(uid: usuario.uid));
+    BlocProvider.of<PersonagemBloc>(context).add(
+      ObterMeusPersonagens(uid: usuario.uid),
+    );
   }
 
   @override
@@ -45,17 +46,17 @@ class _HomeScreenState extends State<HomeScreen> {
       listener: (context, state) {
         if (state is PersonagemRemovido) {
           showMessage(key: _scaffoldKey, mensagem: state.mensagem);
-          BlocProvider.of<PersonagemBloc>(context)
-              .add(ObterMeusPersonagens(uid: usuario.uid));
+          BlocProvider.of<PersonagemBloc>(context).add(
+            ObterMeusPersonagens(uid: usuario.uid),
+          );
         }
         if (state is PersonagemSuccess) {
-          BlocProvider.of<PersonagemBloc>(context)
-              .add(ObterMeusPersonagens(uid: usuario.uid));
-        } else if (state is PersonagemFailure) {
-          showMessage(
-            key: _scaffoldKey,
-            mensagem: state.erro,
+          BlocProvider.of<PersonagemBloc>(context).add(
+            ObterMeusPersonagens(uid: usuario.uid),
           );
+        }
+        if (state is PersonagemFailure) {
+          showMessage(key: _scaffoldKey, mensagem: state.erro);
         }
       },
       child: Scaffold(
@@ -84,9 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         );
                         BlocProvider.of<PersonagemBloc>(context).add(
-                          ObterMeusPersonagens(
-                            uid: usuario.uid,
-                          ),
+                          ObterMeusPersonagens(uid: usuario.uid),
                         );
                       },
                     ),
@@ -117,9 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             showDialog(
               context: context,
               builder: (dialogContext) {
-                return PersonagemForm(
-                  contextPage: context,
-                );
+                return PersonagemForm(contextPage: context);
               },
             );
           },

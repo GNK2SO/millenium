@@ -10,8 +10,6 @@ class AtributosCombate {
   int dexterity;
   int vitality;
   int intelligence;
-  int magia;
-  bool isMagiaUnlocked;
 
   AtributosCombate({
     this.pontosDistribuicao: 0,
@@ -20,8 +18,6 @@ class AtributosCombate {
     this.dexterity: 0,
     this.vitality: 0,
     this.intelligence: 0,
-    this.magia: 0,
-    this.isMagiaUnlocked: false,
   });
 
   factory AtributosCombate.fromJson(Map<String, dynamic> json) =>
@@ -37,7 +33,6 @@ class AtributosCombate {
         dexterity: ${this.dexterity},
         vitality: ${this.vitality},
         intelligence: ${this.intelligence},
-        magia: ${this.magia},
       }
     ''';
   }

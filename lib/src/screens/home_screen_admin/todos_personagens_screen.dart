@@ -11,25 +11,23 @@ import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
-import 'package:millenium/src/util/util.dart';
 
 import '../personagem_screen/personagem_screen.dart';
 
-class TodosPersonagensScreen extends StatefulWidget {
+class HomeScreenAdmin extends StatefulWidget {
   final Usuario _usuario;
 
-  TodosPersonagensScreen({@required Usuario usuario})
+  HomeScreenAdmin({@required Usuario usuario})
       : assert(usuario != null),
         _usuario = usuario;
 
   @override
-  _TodosPersonagensFormState createState() =>
-      _TodosPersonagensFormState(usuario: this._usuario);
+  _HomeScreenAdmin createState() => _HomeScreenAdmin(usuario: this._usuario);
 }
 
-class _TodosPersonagensFormState extends State<TodosPersonagensScreen> {
+class _HomeScreenAdmin extends State<HomeScreenAdmin> {
   final Usuario usuario;
-  _TodosPersonagensFormState({@required this.usuario});
+  _HomeScreenAdmin({@required this.usuario});
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -44,15 +42,7 @@ class _TodosPersonagensFormState extends State<TodosPersonagensScreen> {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
         if (state is PersonagemSuccess) {
-          if (state.mensagem.isNotEmpty) {
-            showMessage(key: _scaffoldKey, mensagem: state.mensagem);
-          }
           BlocProvider.of<PersonagemBloc>(context).add(ObterTodosPersonagens());
-        } else if (state is PersonagemFailure) {
-          showMessage(
-            key: _scaffoldKey,
-            mensagem: state.erro,
-          );
         }
       },
       child: Scaffold(
@@ -71,16 +61,15 @@ class _TodosPersonagensFormState extends State<TodosPersonagensScreen> {
                   return PersonagemTile(
                     personagem: personagens[index],
                     usuario: usuario,
-                    onPressed: () async {
-                      await Navigator.of(context).push(
+                    onPressed: () {
+                      Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (context) => PersonagemScreen(
-                                  usuario: usuario,
-                                  personagem: personagens[index],
-                                )),
+                          builder: (context) => PersonagemScreen(
+                            usuario: usuario,
+                            personagem: personagens[index],
+                          ),
+                        ),
                       );
-                      BlocProvider.of<PersonagemBloc>(context)
-                          .add(ObterTodosPersonagens());
                     },
                   );
                 },

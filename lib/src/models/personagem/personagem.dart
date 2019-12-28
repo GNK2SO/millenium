@@ -5,12 +5,12 @@ import 'package:millenium/src/models/consumivel/consumivel.dart';
 import 'package:millenium/src/models/equipamento/arma/arma.dart';
 import 'package:millenium/src/models/equipamento/armadura/armadura.dart';
 import 'package:millenium/src/models/item/item.dart';
+import 'package:millenium/src/util/constantes.dart';
 
 part 'personagem.g.dart';
 
 @JsonSerializable()
 class Personagem {
-  String imagem;
   String jogadorId;
   String id;
   String nome;
@@ -21,8 +21,8 @@ class Personagem {
   int mana;
   int manaAtual;
   int fome;
-  int level;
-  int xp;
+  bool karma;
+  String imagem;
   AtributosCombate atributosCombate;
   AtributosExploracao atributosExploracao;
   List bolsa;
@@ -34,14 +34,10 @@ class Personagem {
     this.id,
     this.nome,
     this.vida: 20,
-    this.vidaAtual: 20,
     this.energia: 6,
-    this.energiaAtual: 6,
     this.mana: 0,
-    this.manaAtual: 0,
     this.fome: 5,
-    this.level: 1,
-    this.xp: 0,
+    this.karma,
     this.atributosCombate,
     this.atributosExploracao,
     this.bolsa: const [],
@@ -54,15 +50,15 @@ class Personagem {
   Map<String, dynamic> toJson() => _$PersonagemToJson(this);
 
   int vidaTotal() {
-    return this.vida + 5 * this.atributosCombate.vitality;
+    return vidaBase + 5 * this.atributosCombate.vitality;
   }
 
   int energiaTotal() {
-    return this.energia + 2 * (this.atributosCombate.vitality / 5).floor();
+    return energiaBase + 2 * (this.atributosCombate.vitality / 5).floor();
   }
 
   int manaTotal() {
-    return this.mana;
+    return 5 * (this.atributosCombate.intelligence / 5).floor();
   }
 
   int dano() {
@@ -86,6 +82,16 @@ class Personagem {
       }
     });
     return defesa;
+  }
+
+  int resistenciaFrio() {
+    int resistenciaFrio = 0;
+
+    return resistenciaFrio;
+  }
+
+  bool isMagiaUnlocked() {
+    return this.atributosExploracao.magia >= 10;
   }
 
   @override

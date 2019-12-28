@@ -7,6 +7,7 @@ import 'package:millenium/src/components/form/atributo_combate_form_field.dart';
 import 'package:millenium/src/components/form/atributo_exploracao_form_field.dart.dart';
 import 'package:millenium/src/components/form/image_form_field.dart';
 import 'package:millenium/src/components/form/info_card.dart';
+import 'package:millenium/src/components/form/karma_form_field.dart';
 import 'package:millenium/src/components/form/ponto_distribuicao_form_field.dart';
 import 'package:millenium/src/components/form/status_card.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
@@ -18,7 +19,9 @@ import 'package:millenium/src/models/usuario.dart';
 class AtributosTab extends StatefulWidget {
   final Personagem personagem;
   final Usuario usuario;
+
   AtributosTab({@required this.personagem, @required this.usuario});
+
   @override
   _AtributosTabState createState() =>
       _AtributosTabState(personagem: personagem);
@@ -32,6 +35,8 @@ class _AtributosTabState extends State<AtributosTab>
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AnimationController _animationController;
+
+  Widget iconFloatingButton = Icon(Icons.save);
 
   @override
   void initState() {
@@ -52,9 +57,9 @@ class _AtributosTabState extends State<AtributosTab>
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
-        if (state is PersonagemCarregado) {
+        if (state is PersonagemSuccess) {
           setState(() {
-            personagem = state.personagem;
+            iconFloatingButton = Icon(Icons.save);
           });
         }
       },
@@ -90,7 +95,7 @@ class _AtributosTabState extends State<AtributosTab>
                           decoration: BoxDecoration(border: Border.all()),
                           child: ExpansionTile(
                             title: Text(
-                              "Pontos de distribuição",
+                              "Admin",
                               style: TextStyle(fontSize: 24),
                             ),
                             children: <Widget>[
@@ -99,7 +104,7 @@ class _AtributosTabState extends State<AtributosTab>
                                 width: double.infinity,
                               ),
                               PontosDitribuicaoFormField(
-                                text: "Combate",
+                                text: "Pts. Combate",
                                 pontosDistribuicao: personagem
                                     .atributosCombate.pontosDistribuicao,
                                 onSaved: (pontosDistribuicao) {
@@ -115,7 +120,7 @@ class _AtributosTabState extends State<AtributosTab>
                                 width: double.infinity,
                               ),
                               PontosDitribuicaoFormField(
-                                text: "Exploração",
+                                text: "Pts. Exploração",
                                 pontosDistribuicao: personagem
                                     .atributosExploracao.pontosDistribuicao,
                                 onSaved: (pontosDistribuicao) {
@@ -124,6 +129,17 @@ class _AtributosTabState extends State<AtributosTab>
                                             .pontosDistribuicao =
                                         pontosDistribuicao;
                                   }
+                                },
+                              ),
+                              CustomDivider(
+                                height: 1,
+                                width: double.infinity,
+                              ),
+                              KarmaFormField(
+                                text: "Karma",
+                                karma: personagem.karma,
+                                onSaved: (karma) {
+                                  personagem.karma = karma;
                                 },
                               ),
                             ],
@@ -135,9 +151,12 @@ class _AtributosTabState extends State<AtributosTab>
                     StatusCard(personagem: personagem),
                     AtributosCombateFormField(
                       isAdmin: this.widget.usuario.isAdmin,
+                      isKarmaUnlocked: this.personagem.karma,
+                      isMagiaUnlocked: this.personagem.isMagiaUnlocked(),
                       atributos: personagem.atributosCombate,
                       atributosBase: AtributosCombate.fromJson(
-                          personagem.atributosCombate.toJson()),
+                        personagem.atributosCombate.toJson(),
+                      ),
                     ),
                     AtributosExploracaoFormField(
                       isAdmin: this.widget.usuario.isAdmin,
@@ -155,7 +174,7 @@ class _AtributosTabState extends State<AtributosTab>
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FloatingActionButton(
-                  child: Icon(Icons.save),
+                  child: iconFloatingButton,
                   onPressed: () {
                     _onFormSubmitted();
                   },
@@ -169,14 +188,22 @@ class _AtributosTabState extends State<AtributosTab>
   }
 
   void _onFormSubmitted() {
+    setState(() {
+      iconFloatingButton = CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Colors.white),
+      );
+    });
+
     _formKey.currentState.save();
-    BlocProvider.of<PersonagemBloc>(context)
-        .add(AtualizarPersonagem(personagem: personagem));
-    setState(() {});
+
+    BlocProvider.of<PersonagemBloc>(context).add(
+      AtualizarPersonagem(personagem: personagem),
+    );
   }
 
   Future<void> _refresh() async {
-    BlocProvider.of<PersonagemBloc>(context)
-        .add(ObterPersonagem(idPersonagem: personagem.id));
+    BlocProvider.of<PersonagemBloc>(context).add(
+      ObterPersonagem(idPersonagem: personagem.id),
+    );
   }
 }

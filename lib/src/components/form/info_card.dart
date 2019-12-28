@@ -26,14 +26,6 @@ class InfoCard extends StatelessWidget {
                   CustomDivider(
                     height: 1,
                   ),
-                  _buildRow("XP", "${personagem.xp} / 25"),
-                  CustomDivider(
-                    height: 1,
-                  ),
-                  _buildRow("Level", "${personagem.level}"),
-                  CustomDivider(
-                    height: 1,
-                  ),
                   _buildRow("Raça", "Humano"),
                   CustomDivider(
                     height: 1,

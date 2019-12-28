@@ -41,6 +41,13 @@ class StatusCard extends StatelessWidget {
                     height: 1,
                   ),
                   _buildRow(
+                    "Res. Frio",
+                    "${personagem.resistenciaFrio()}",
+                  ),
+                  CustomDivider(
+                    height: 1,
+                  ),
+                  _buildRow(
                     "Vida",
                     "${personagem.vidaAtual}/${personagem.vidaTotal()}",
                   ),
@@ -76,15 +83,21 @@ class StatusCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(children: <Widget>[
         Expanded(
+          flex: 1,
+          child: Container(),
+        ),
+        Expanded(
+          flex: 5,
           child: Text(
             text,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 24,
             ),
           ),
         ),
         Expanded(
+          flex: 3,
           child: Text(
             valor,
             textAlign: TextAlign.center,
@@ -92,6 +105,10 @@ class StatusCard extends StatelessWidget {
               fontSize: 24,
             ),
           ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(),
         ),
       ]),
     );

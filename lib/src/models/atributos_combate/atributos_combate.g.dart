@@ -14,8 +14,6 @@ AtributosCombate _$AtributosCombateFromJson(Map<String, dynamic> json) {
     dexterity: json['dexterity'] as int,
     vitality: json['vitality'] as int,
     intelligence: json['intelligence'] as int,
-    magia: json['magia'] as int,
-    isMagiaUnlocked: json['isMagiaUnlocked'] as bool,
   );
 }
 
@@ -27,6 +25,4 @@ Map<String, dynamic> _$AtributosCombateToJson(AtributosCombate instance) =>
       'dexterity': instance.dexterity,
       'vitality': instance.vitality,
       'intelligence': instance.intelligence,
-      'magia': instance.magia,
-      'isMagiaUnlocked': instance.isMagiaUnlocked,
     };

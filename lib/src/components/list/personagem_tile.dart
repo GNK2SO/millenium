@@ -26,7 +26,7 @@ class PersonagemTile extends StatelessWidget {
               child: ImagemPerfil(
                 imagem: personagem.imagem,
                 backgroundColor: Theme.of(context).primaryColor,
-                radius: 32,
+                radius: 40,
                 icon: Icon(
                   Icons.person_outline,
                   size: 40,
@@ -49,6 +49,9 @@ class PersonagemTile extends StatelessWidget {
                 ),
                 Text(
                   "Energia: ${personagem.energiaAtual}/${personagem.energiaTotal()}",
+                ),
+                Text(
+                  "Mana: ${personagem.manaAtual}/${personagem.manaTotal()}",
                 ),
               ],
             )
