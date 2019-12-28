@@ -15,21 +15,20 @@ import 'package:millenium/src/util/util.dart';
 
 import '../personagem_screen/personagem_screen.dart';
 
-class MeusPersonagensScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   final Usuario _usuario;
 
-  MeusPersonagensScreen({@required Usuario usuario})
+  HomeScreen({@required Usuario usuario})
       : assert(usuario != null),
         _usuario = usuario;
 
   @override
-  _MeusPersonagensScreenState createState() =>
-      _MeusPersonagensScreenState(usuario: this._usuario);
+  _HomeScreenState createState() => _HomeScreenState(usuario: this._usuario);
 }
 
-class _MeusPersonagensScreenState extends State<MeusPersonagensScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final Usuario usuario;
-  _MeusPersonagensScreenState({@required this.usuario});
+  _HomeScreenState({@required this.usuario});
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 

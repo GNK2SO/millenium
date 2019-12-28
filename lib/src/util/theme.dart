@@ -36,3 +36,7 @@ final temaNorte = ThemeData(
     backgroundColor: primaryColor,
   ),
 );
+
+final textSecondary = TextStyle(
+  color: Colors.white,
+);

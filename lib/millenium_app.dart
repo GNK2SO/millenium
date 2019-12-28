@@ -4,14 +4,21 @@ import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart
 import 'package:millenium/src/blocs/authentication_bloc/authentication_state.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_bloc.dart';
 import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/repository/bestiario_repository.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
+import 'package:millenium/src/screens/alterar_senha/alterar_senha_screen.dart';
+import 'package:millenium/src/screens/bestiario/bestiario_screen.dart';
+import 'package:millenium/src/screens/cadastro/cadastro_screen.dart';
+import 'package:millenium/src/screens/classes_screen/classes_screen.dart';
 import 'package:millenium/src/screens/error_screen.dart';
-import 'package:millenium/src/screens/home_screen.dart';
 import 'package:millenium/src/screens/login/login_screen.dart';
+import 'package:millenium/src/screens/home_screen/home_screen.dart';
+import 'package:millenium/src/screens/perfil/perfil_screen.dart';
+import 'package:millenium/src/screens/regras_screen/regras_screen.dart';
 import 'package:millenium/src/screens/splash_screen.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
-import 'package:millenium/src/util/rotas.dart';
+import 'package:millenium/src/screens/todos_personagens/todos_personagens_screen.dart';
 import 'package:millenium/src/util/theme.dart';
 
 class Millenium extends StatefulWidget {
@@ -45,6 +52,7 @@ class _MilleniumState extends State<Millenium> {
             if (state is Uninitialized) {
               return SplashScreen();
             } else if (state is Unauthenticated) {
+              usuario = null;
               return LoginScreen(repository: UsuarioRepository());
             } else if (state is Authenticated) {
               if (usuario == null) {
@@ -56,7 +64,20 @@ class _MilleniumState extends State<Millenium> {
             }
           },
         ),
-        routes: Routes.getRoutes(usuario),
+        routes: {
+          "/regrasScreen": (context) => RegrasScreen(usuario: usuario),
+          "/classesScreen": (context) => ClassesScreen(usuario: usuario),
+          "/perfilScreen": (context) => PerfilScreen(usuario: usuario),
+          "/alterarSenhaScreen": (context) => AlterarSenhaScreen(),
+          "/loginScreen": (context) =>
+              LoginScreen(repository: UsuarioRepository()),
+          "/cadastroContaScreen": (context) =>
+              CadastroScreen(repository: UsuarioRepository()),
+          "/todosPersonagemScreen": (context) =>
+              TodosPersonagensScreen(usuario: usuario),
+          "/bestiarioScreen": (context) => BestiarioScreen(
+              usuario: usuario, repository: BestiarioRepository()),
+        },
       ),
     );
   }

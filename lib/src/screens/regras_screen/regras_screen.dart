@@ -12,7 +12,6 @@ class RegrasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Como funciona?")),
-      drawer: CustomDrawer(usuario: usuario),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -101,7 +101,6 @@ class _BodyState extends State<Body> {
                   tabs: tabs.map((tab) => Tab(child: tab)).toList(),
                 ),
               ),
-              drawer: CustomDrawer(usuario: usuario),
               body: TabBarView(
                 children: <Widget>[
                   GuerreiroTab(
