@@ -7,7 +7,9 @@ import 'package:millenium/src/components/app_bar.dart';
 import 'package:millenium/src/components/list/bestiario_tile.dart';
 import 'package:millenium/src/components/search.dart';
 import 'package:millenium/src/models/besta/besta.dart';
+import 'package:millenium/src/models/filtro_bestiario.dart';
 import 'package:millenium/src/models/usuario.dart';
+import 'package:millenium/src/screens/bestiario/filtro_bestiario_form.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
 
@@ -23,6 +25,7 @@ class _BestiarioListState extends State<BestiarioList> {
   final Usuario usuario;
   _BestiarioListState({@required this.usuario});
 
+  FiltroBestiario filtro;
   String resultadoPesquisa = "";
 
   @override
@@ -36,6 +39,10 @@ class _BestiarioListState extends State<BestiarioList> {
             IconButton(
               icon: Icon(FontAwesomeIcons.search),
               onPressed: onSearch,
+            ),
+            IconButton(
+              icon: Icon(FontAwesomeIcons.filter),
+              onPressed: onFilter,
             ),
           ],
         ),
@@ -66,12 +73,40 @@ class _BestiarioListState extends State<BestiarioList> {
     setState(() {});
   }
 
+  void onFilter() async {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => FiltroBestiarioForm(
+        filtro: filtro,
+        onChanged: (filtro) {
+          if (filtro == null) {
+            setState(() {
+              this.filtro = filtro;
+              resultadoPesquisa = "";
+            });
+          } else {
+            setState(() {
+              this.filtro = filtro;
+            });
+          }
+        },
+      ),
+    );
+  }
+
   List<Besta> filtrar(List<Besta> bestiario) {
     if (resultadoPesquisa.isNotEmpty) {
       return bestiario
-          .where((besta) => besta.nome.contains(resultadoPesquisa))
+          .where((besta) => besta.nome
+              .toLowerCase()
+              .contains(resultadoPesquisa.toLowerCase()))
           .toList();
     }
+
+    if (filtro != null) {
+      return filtro.filtrar(bestiario);
+    }
+
     return bestiario;
   }
 }
