@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
+import 'package:millenium/src/components/card/admin_card.dart';
 import 'package:millenium/src/components/card/info_card.dart';
 import 'package:millenium/src/components/card/status_card.dart';
 import 'package:millenium/src/components/form/atributos/atributo_combate_form_field.dart';
@@ -24,13 +25,14 @@ class AtributosTab extends StatefulWidget {
 
   @override
   _AtributosTabState createState() =>
-      _AtributosTabState(personagem: personagem);
+      _AtributosTabState(usuario: usuario, personagem: personagem);
 }
 
 class _AtributosTabState extends State<AtributosTab>
     with SingleTickerProviderStateMixin {
+  Usuario usuario;
   Personagem personagem;
-  _AtributosTabState({@required this.personagem});
+  _AtributosTabState({@required this.usuario, @required this.personagem});
 
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -88,69 +90,11 @@ class _AtributosTabState extends State<AtributosTab>
                         },
                       ),
                     ),
-                    Visibility(
-                      visible: this.widget.usuario.isAdmin,
-                      child: Card(
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          child: ExpansionTile(
-                            title: Text(
-                              "Admin",
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            children: <Widget>[
-                              CustomDivider(
-                                height: 1,
-                                width: double.infinity,
-                              ),
-                              PontosDitribuicaoFormField(
-                                text: "Pts. Combate",
-                                pontosDistribuicao: personagem
-                                    .atributosCombate.pontosDistribuicao,
-                                onSaved: (pontosDistribuicao) {
-                                  if (pontosDistribuicao != null) {
-                                    personagem.atributosCombate
-                                            .pontosDistribuicao =
-                                        pontosDistribuicao;
-                                  }
-                                },
-                              ),
-                              CustomDivider(
-                                height: 1,
-                                width: double.infinity,
-                              ),
-                              PontosDitribuicaoFormField(
-                                text: "Pts. Exploração",
-                                pontosDistribuicao: personagem
-                                    .atributosExploracao.pontosDistribuicao,
-                                onSaved: (pontosDistribuicao) {
-                                  if (pontosDistribuicao != null) {
-                                    personagem.atributosExploracao
-                                            .pontosDistribuicao =
-                                        pontosDistribuicao;
-                                  }
-                                },
-                              ),
-                              CustomDivider(
-                                height: 1,
-                                width: double.infinity,
-                              ),
-                              KarmaFormField(
-                                text: "Karma",
-                                karma: personagem.karma,
-                                onSaved: (karma) {
-                                  personagem.karma = karma;
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    AdminCard(isAdmin: usuario.isAdmin, personagem: personagem),
                     InfoCard(personagem: personagem),
                     StatusCard(personagem: personagem),
                     AtributosCombateFormField(
-                      isAdmin: this.widget.usuario.isAdmin,
+                      isAdmin: usuario.isAdmin,
                       isKarmaUnlocked: this.personagem.karma,
                       isMagiaUnlocked: this.personagem.isMagiaUnlocked(),
                       atributos: personagem.atributosCombate,
@@ -159,7 +103,7 @@ class _AtributosTabState extends State<AtributosTab>
                       ),
                     ),
                     AtributosExploracaoFormField(
-                      isAdmin: this.widget.usuario.isAdmin,
+                      isAdmin: usuario.isAdmin,
                       atributos: personagem.atributosExploracao,
                       atributosBase: AtributosExploracao.fromJson(
                         personagem.atributosExploracao.toJson(),
