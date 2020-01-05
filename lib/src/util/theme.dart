@@ -4,10 +4,9 @@ final primaryColor = Color(0xFF012F4F);
 
 final temaNorte = ThemeData(
   primaryColor: primaryColor,
+  primarySwatch: primaryColor,
   primaryTextTheme: TextTheme(
-    body1: TextStyle(
-      color: primaryColor,
-    ),
+    body1: TextStyle(color: primaryColor),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: primaryColor,

@@ -52,7 +52,7 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
         child: Scaffold(
           key: _scaffoldKey,
           appBar: CustomAppBar(
-            personagemNome: personagem.nome,
+            titulo: personagem.nome,
             tabBar: TabBar(
               tabs: _tabs.map((tab) {
                 return Tab(text: tab);

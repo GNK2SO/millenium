@@ -4,7 +4,7 @@ import 'package:millenium/src/blocs/bestiario_bloc/bestiario_bloc.dart';
 import 'package:millenium/src/blocs/bestiario_bloc/bestiario_event.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/repository/bestiario_repository.dart';
-import 'package:millenium/src/screens/bestiario/bestiario_form.dart';
+import 'package:millenium/src/screens/bestiario/bestiario_list.dart';
 
 class BestiarioScreen extends StatelessWidget {
   final Usuario _usuario;
@@ -22,11 +22,12 @@ class BestiarioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BestiarioBloc>(
-      create: (context) => BestiarioBloc(repository: _bestiarioRepository)
-        ..add(ObterBestiario()),
-      child: BestiarioForm(
-        usuario: _usuario,
-      ),
+      create: (context) {
+        return BestiarioBloc(
+          repository: _bestiarioRepository,
+        )..add(ObterBestiario());
+      },
+      child: BestiarioList(usuario: _usuario),
     );
   }
 }

@@ -8,6 +8,7 @@ class Besta {
   String imagem;
   String nome;
   int nivel;
+  String classificacao;
   List<String> localizacao;
   String descricao;
 
@@ -16,6 +17,7 @@ class Besta {
     this.imagem,
     this.nome,
     this.nivel,
+    this.classificacao,
     this.localizacao,
     this.descricao,
   });

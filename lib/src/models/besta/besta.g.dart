@@ -12,6 +12,7 @@ Besta _$BestaFromJson(Map<String, dynamic> json) {
     imagem: json['imagem'] as String,
     nome: json['nome'] as String,
     nivel: json['nivel'] as int,
+    classificacao: json['classificacao'] as String,
     localizacao:
         (json['localizacao'] as List)?.map((e) => e as String)?.toList(),
     descricao: json['descricao'] as String,
@@ -23,6 +24,7 @@ Map<String, dynamic> _$BestaToJson(Besta instance) => <String, dynamic>{
       'imagem': instance.imagem,
       'nome': instance.nome,
       'nivel': instance.nivel,
+      'classificacao': instance.classificacao,
       'localizacao': instance.localizacao,
       'descricao': instance.descricao,
     };
