@@ -166,28 +166,27 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
                                     },
                                     onUtilizar: (item) {
                                       if (personagem.vidaTotal() <
-                                          personagem.vidaAtual + item.vida) {
-                                        personagem.vidaAtual =
+                                          personagem.vida + item.vida) {
+                                        personagem.vida =
                                             personagem.vidaTotal();
                                       } else {
-                                        personagem.vidaAtual += item.vida;
+                                        personagem.vida += item.vida;
                                       }
 
                                       if (personagem.energiaTotal() <
-                                          personagem.energiaAtual +
-                                              item.energia) {
-                                        personagem.energiaAtual =
+                                          personagem.energia + item.energia) {
+                                        personagem.energia =
                                             personagem.energiaTotal();
                                       } else {
-                                        personagem.energiaAtual += item.energia;
+                                        personagem.energia += item.energia;
                                       }
 
                                       if (personagem.manaTotal() <
-                                          personagem.manaAtual + item.mana) {
-                                        personagem.manaAtual =
+                                          personagem.mana + item.mana) {
+                                        personagem.mana =
                                             personagem.manaTotal();
                                       } else {
-                                        personagem.manaAtual += item.mana;
+                                        personagem.mana += item.mana;
                                       }
 
                                       personagem.bolsa.remove(item);

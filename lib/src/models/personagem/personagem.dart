@@ -14,12 +14,10 @@ class Personagem {
   String jogadorId;
   String id;
   String nome;
+  String titulo;
   int vida;
-  int vidaAtual;
   int energia;
-  int energiaAtual;
   int mana;
-  int manaAtual;
   int fome;
   bool karma;
   String imagem;
@@ -29,15 +27,16 @@ class Personagem {
   List equipamentos;
 
   Personagem({
-    this.imagem,
     this.jogadorId,
     this.id,
     this.nome,
-    this.vida: 20,
-    this.energia: 6,
+    this.titulo: "",
+    this.vida: vidaBase,
+    this.energia: energiaBase,
     this.mana: 0,
     this.fome: 5,
-    this.karma,
+    this.karma: false,
+    this.imagem,
     this.atributosCombate,
     this.atributosExploracao,
     this.bolsa: const [],
@@ -90,10 +89,18 @@ class Personagem {
     return resistenciaFrio;
   }
 
+  int chanceEsquiva() {
+    return (this.atributosCombate.agility / 5).floor();
+  }
+
+  int chanceAcertoCritico() {
+    return (this.atributosCombate.dexterity / 5).floor();
+  }
+
   bool isMagiaUnlocked() {
     return this.atributosExploracao.magia >= 10;
   }
 
   @override
-  String toString() => "Personagem { id: $id}";
+  String toString() => "Personagem { id: $id, nome: $nome }";
 }
