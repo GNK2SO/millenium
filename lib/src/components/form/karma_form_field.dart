@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:millenium/src/util/theme.dart';
 
 class KarmaFormField extends FormField<bool> {
   KarmaFormField({
@@ -21,14 +21,16 @@ class KarmaFormField extends FormField<bool> {
                     ),
                   ),
                   Expanded(
-                    child: IconButton(
-                      icon: karma
-                          ? Icon(FontAwesomeIcons.solidCircle)
-                          : Icon(FontAwesomeIcons.circle),
-                      onPressed: () {
-                        karma = !karma;
-                        state.didChange(karma);
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                      child: Switch(
+                        activeColor: primaryColor,
+                        value: karma,
+                        onChanged: (newValue) {
+                          karma = newValue;
+                          state.didChange(karma);
+                        },
+                      ),
                     ),
                   ),
                 ],
