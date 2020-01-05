@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
+import 'package:millenium/src/components/form/input/text_input.dart';
 import 'package:millenium/src/components/list/personagem_tile.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/drawer.dart';
-import 'package:millenium/src/components/form/input/text_field.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
+import 'package:millenium/src/util/theme.dart';
 import 'package:millenium/src/util/util.dart';
 
 import '../personagem_screen/personagem_screen.dart';
@@ -139,16 +140,11 @@ class PersonagemForm extends StatelessWidget {
       title: Text("Novo Personagem"),
       content: Form(
         key: _formKey,
-        child: CustomTextField(
-          padding: EdgeInsets.all(0),
+        child: TextInput(
+          padding: const EdgeInsets.all(0),
           labelText: "Nome",
           controller: _nomeController,
-          validator: (nome) {
-            if (nome.isEmpty) {
-              return "Campo obrigatório!";
-            }
-            return null;
-          },
+          validator: isValidNome,
         ),
       ),
       actions: <Widget>[
@@ -157,13 +153,15 @@ class PersonagemForm extends StatelessWidget {
             "Cancelar",
             style: TextStyle(
               fontSize: 16,
+              color: primaryColor,
             ),
           ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        RaisedButton(
+          color: primaryColor,
           child: Text(
             "Cadastrar",
             style: TextStyle(
@@ -184,5 +182,12 @@ class PersonagemForm extends StatelessWidget {
       BlocProvider.of<PersonagemBloc>(context)
           .add(SalvarPersonagem(nome: _nomeController.text));
     }
+  }
+
+  String isValidNome(String nomePersonagen) {
+    if (nomePersonagen == null || nomePersonagen.isEmpty) {
+      return "Campo obrigatório!";
+    }
+    return null;
   }
 }

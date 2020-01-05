@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
-import 'package:millenium/src/components/form/input/text_field.dart';
+import 'package:millenium/src/components/form/input/descricao_text_input.dart';
+import 'package:millenium/src/components/form/input/text_input.dart';
 import 'package:millenium/src/components/list/bolsa_tile.dart';
 import 'package:millenium/src/components/list/equipamento_tile.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
@@ -16,6 +16,7 @@ import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
+import 'package:millenium/src/util/theme.dart';
 import 'package:millenium/src/validators/equipamento_validator.dart';
 
 class EquipamentoTab extends StatefulWidget {
@@ -328,6 +329,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Novo Item"),
+      contentPadding: const EdgeInsets.all(8),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -350,16 +352,14 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                   );
                 }).toList(),
               ),
-              CustomTextField(
+              TextInput(
                 labelText: "Nome",
                 controller: _nomeController,
                 validator: EquipamentoValidator.isNotEmpty,
               ),
               _buildVariantsInputs(dropdownItemValue),
-              CustomTextField(
+              DescricaoTextInput(
                 hintText: "Descrição",
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(8),
                 maxLines: 5,
                 controller: _descricaoController,
               ),
@@ -368,7 +368,10 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                   FlatButton(
                     child: Text(
                       "Voltar",
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: primaryColor,
+                      ),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -379,7 +382,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                       "Salvar",
                       style: TextStyle(fontSize: 16),
                     ),
-                    color: Colors.blue,
+                    color: primaryColor,
                     onPressed: _onSalvarEquipamento,
                   )
                 ],
@@ -394,7 +397,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
   Widget _buildVariantsInputs(String value) {
     switch (value) {
       case 'Item':
-        return CustomTextField(
+        return TextInput(
           labelText: "Quantidade",
           controller: _quantidadeController,
           keyboardType: TextInputType.number,
@@ -422,7 +425,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                 );
               }).toList(),
             ),
-            CustomTextField(
+            TextInput(
               labelText: "Dano",
               controller: _danoDefesaController,
               keyboardType: TextInputType.number,
@@ -469,7 +472,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                 );
               }).toList(),
             ),
-            CustomTextField(
+            TextInput(
               labelText: "Defesa",
               controller: _danoDefesaController,
               keyboardType: TextInputType.number,
@@ -481,7 +484,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
         return Row(
           children: [
             Expanded(
-              child: CustomTextField(
+              child: TextInput(
                 labelText: "Vida",
                 controller: _vidaController,
                 keyboardType: TextInputType.number,
@@ -490,7 +493,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
             ),
             SizedBox(width: 24),
             Expanded(
-              child: CustomTextField(
+              child: TextInput(
                 labelText: "Energia",
                 controller: _energiaController,
                 keyboardType: TextInputType.number,
@@ -499,7 +502,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
             ),
             SizedBox(width: 24),
             Expanded(
-              child: CustomTextField(
+              child: TextInput(
                 labelText: "Mana",
                 controller: _manaController,
                 keyboardType: TextInputType.number,
