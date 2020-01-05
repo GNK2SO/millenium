@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:millenium/src/components/form/atributos/atributo_row.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
+import 'package:millenium/src/util/descricao_atributos_combate.dart';
 
 class AtributosCombateFormField extends FormField<AtributosCombate> {
   AtributosCombateFormField({
@@ -41,6 +42,7 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                       ),
                       AtributoRow(
                         text: "Força",
+                        descricao: descricao_forca,
                         isAdmin: isAdmin,
                         pontos: atributos.strenght,
                         adicionarPonto: () {
@@ -90,6 +92,7 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                       AtributoRow(
                         isAdmin: isAdmin,
                         text: "Agilidade",
+                        descricao: descricao_agilidade,
                         pontos: atributos.agility,
                         adicionarPonto: () {
                           bool shouldUpgrade = false;
@@ -122,6 +125,7 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                       AtributoRow(
                         isAdmin: isAdmin,
                         text: "Destreza",
+                        descricao: descricao_destreza,
                         pontos: atributos.dexterity,
                         adicionarPonto: () {
                           bool shouldUpgrade = false;
@@ -154,6 +158,7 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                       AtributoRow(
                         isAdmin: isAdmin,
                         text: "Vitalidade",
+                        descricao: descricao_vitalidade,
                         pontos: atributos.vitality,
                         adicionarPonto: () {
                           bool shouldUpgrade = false;
@@ -186,6 +191,7 @@ class AtributosCombateFormField extends FormField<AtributosCombate> {
                       AtributoRow(
                         isAdmin: isAdmin,
                         text: "Inteligência",
+                        descricao: descricao_inteligencia,
                         pontos: atributos.intelligence,
                         adicionarPonto: () {
                           bool shouldUpgrade = false;
