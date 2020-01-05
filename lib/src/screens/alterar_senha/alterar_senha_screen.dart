@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:millenium/src/components/form/animated_button.dart';
-import 'package:millenium/src/components/form/text_input.dart';
+import 'package:millenium/src/components/buttons/animated_button.dart';
+import 'package:millenium/src/components/form/input/text_input.dart';
 import 'package:millenium/src/validators/usuario_validator.dart';
 
 class AlterarSenhaScreen extends StatefulWidget {

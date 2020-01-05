@@ -6,7 +6,7 @@ import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
 import 'package:millenium/src/components/list/personagem_tile.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/drawer.dart';
-import 'package:millenium/src/components/form/text_field.dart';
+import 'package:millenium/src/components/form/input/text_field.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/error_screen.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:millenium/src/components/form/image_source_sheet.dart';
-import 'package:millenium/src/components/form/imagem_perfil.dart';
+import 'package:millenium/src/components/form/imagem/image_source_sheet.dart';
+import 'package:millenium/src/components/form/imagem/imagem_perfil.dart';
 
 class ImageFormField extends FormField<dynamic> {
   ImageFormField({

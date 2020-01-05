@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:millenium/src/components/form/atributo_row.dart';
+import 'package:millenium/src/components/form/atributos/atributo_row.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
 

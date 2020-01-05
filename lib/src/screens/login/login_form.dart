@@ -5,9 +5,9 @@ import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart
 import 'package:millenium/src/blocs/login_bloc/login_bloc.dart';
 import 'package:millenium/src/blocs/login_bloc/login_event.dart';
 import 'package:millenium/src/blocs/login_bloc/login_state.dart';
-import 'package:millenium/src/components/form/animated_button.dart';
-import 'package:millenium/src/components/form/circular_button.dart';
-import 'package:millenium/src/components/form/login_text_input.dart';
+import 'package:millenium/src/components/buttons/animated_button.dart';
+import 'package:millenium/src/components/buttons/circular_button.dart';
+import 'package:millenium/src/components/form/input/login_text_input.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/logo.dart';
 import 'package:millenium/src/util/util.dart';

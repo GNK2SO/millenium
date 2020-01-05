@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:millenium/src/components/form/imagem_perfil.dart';
+import 'package:millenium/src/components/form/imagem/imagem_perfil.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 

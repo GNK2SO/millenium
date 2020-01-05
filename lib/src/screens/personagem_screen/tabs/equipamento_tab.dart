@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
-import 'package:millenium/src/components/form/text_field.dart';
+import 'package:millenium/src/components/form/input/text_field.dart';
 import 'package:millenium/src/components/list/bolsa_tile.dart';
 import 'package:millenium/src/components/list/equipamento_tile.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';

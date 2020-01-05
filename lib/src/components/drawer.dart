@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_event.dart';
-import 'package:millenium/src/components/form/imagem_perfil.dart';
+import 'package:millenium/src/components/form/imagem/imagem_perfil.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:millenium/src/util/theme.dart';
