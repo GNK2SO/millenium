@@ -56,6 +56,14 @@ class _AtributosTabState extends State<AtributosTab>
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
       listener: (context, state) {
+        if (state is PersonagemCarregando) {
+          setState(() {
+            iconFloatingButton = CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.white),
+            );
+          });
+        }
+
         if (state is PersonagemSuccess) {
           setState(() {
             iconFloatingButton = Icon(Icons.check);
@@ -129,12 +137,6 @@ class _AtributosTabState extends State<AtributosTab>
   }
 
   void _onFormSubmitted() {
-    setState(() {
-      iconFloatingButton = CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Colors.white),
-      );
-    });
-
     _formKey.currentState.save();
 
     BlocProvider.of<PersonagemBloc>(context).add(

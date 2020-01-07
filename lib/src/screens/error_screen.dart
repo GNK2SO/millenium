@@ -19,7 +19,8 @@ class ErroScreen extends StatelessWidget {
               color: primaryColor.withOpacity(0.5),
             ),
             Text(
-              erro ?? "Falha na conexão!",
+              erro ?? "Estado inválido.\nReclame com o programador.",
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24,
                 color: primaryColor.withOpacity(0.5),

@@ -29,6 +29,9 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
 
   final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
+  AnimatedIconData iconFloatingButtonAdmin = AnimatedIcons.menu_close;
+  Widget iconFloatingButtonPlayer = Icon(Icons.check);
+
   void atualizarPersonagem() {
     BlocProvider.of<PersonagemBloc>(context).add(
       AtualizarPersonagem(personagem: this.personagem),
@@ -49,6 +52,11 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
     );
   }
 
+  bool isLoading() {
+    return BlocProvider.of<PersonagemBloc>(context).state
+        is PersonagemCarregando;
+  }
+
   Future<void> refresh() async {
     BlocProvider.of<PersonagemBloc>(context).add(
       ObterPersonagem(idPersonagem: personagem.id),
@@ -60,14 +68,19 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
     return Scaffold(
       body: BlocListener<PersonagemBloc, PersonagemState>(
         listener: (context, state) {
-          if (state is PersonagemSuccess) {
-            BlocProvider.of<PersonagemBloc>(context).add(
-              ObterPersonagem(idPersonagem: personagem.id),
-            );
-          }
-          if (state is PersonagemCarregado) {
+          if (state is PersonagemCarregando) {
             setState(() {
-              personagem = state.personagem;
+              iconFloatingButtonAdmin = null;
+              iconFloatingButtonPlayer = CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.white),
+              );
+            });
+          }
+
+          if (state is PersonagemSuccess) {
+            setState(() {
+              iconFloatingButtonAdmin = AnimatedIcons.menu_close;
+              iconFloatingButtonPlayer = Icon(Icons.check);
             });
           }
         },
@@ -90,11 +103,12 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
       ),
       floatingActionButton: usuario.isAdmin
           ? _FloatingAdminButton(
+              animatedIcon: iconFloatingButtonAdmin,
               onSalvar: atualizarPersonagem,
               onAdicionar: exibirPopupCadastroItem,
             )
           : FloatingActionButton(
-              child: Icon(Icons.save),
+              child: iconFloatingButtonPlayer,
               onPressed: atualizarPersonagem,
             ),
     );
@@ -102,15 +116,23 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
 }
 
 class _FloatingAdminButton extends StatelessWidget {
+  final AnimatedIconData animatedIcon;
   final Function onSalvar;
   final Function onAdicionar;
 
-  _FloatingAdminButton({@required this.onSalvar, @required this.onAdicionar});
+  _FloatingAdminButton({
+    @required this.animatedIcon,
+    @required this.onSalvar,
+    @required this.onAdicionar,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
-      animatedIcon: AnimatedIcons.menu_close,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Colors.white),
+      ),
+      animatedIcon: animatedIcon,
       animatedIconTheme: IconThemeData(size: 22.0),
       closeManually: false,
       curve: Curves.bounceIn,

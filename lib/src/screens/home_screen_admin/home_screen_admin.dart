@@ -48,52 +48,45 @@ class _HomeScreenAdmin extends State<HomeScreenAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PersonagemBloc, PersonagemState>(
-      listener: (context, state) {
-        if (state is PersonagemSuccess) {
-          obterTodosPersonagens();
-        }
-      },
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: CustomAppBar(),
-        drawer: CustomDrawer(usuario: usuario),
-        body: RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: refresh,
-          child: BlocBuilder<PersonagemBloc, PersonagemState>(
-            builder: (context, state) {
-              if (state is PersonagensCarregado) {
-                List<Personagem> personagens = state.personagens;
-                return ListView.separated(
-                  itemCount: personagens.length,
-                  itemBuilder: (context, index) {
-                    return PersonagemTile(
-                      personagem: personagens[index],
-                      usuario: usuario,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => PersonagemScreen(
-                              usuario: usuario,
-                              personagem: personagens[index],
-                            ),
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: CustomAppBar(),
+      drawer: CustomDrawer(usuario: usuario),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: refresh,
+        child: BlocBuilder<PersonagemBloc, PersonagemState>(
+          builder: (context, state) {
+            if (state is PersonagensCarregado) {
+              List<Personagem> personagens = state.personagens;
+              return ListView.separated(
+                itemCount: personagens.length,
+                itemBuilder: (context, index) {
+                  return PersonagemTile(
+                    personagem: personagens[index],
+                    usuario: usuario,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PersonagemScreen(
+                            usuario: usuario,
+                            personagem: personagens[index],
                           ),
-                        );
-                      },
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return CustomDivider(height: 1);
-                  },
-                );
-              } else if (state is PersonagemCarregando) {
-                return LoadingScreen();
-              } else {
-                return ErroScreen();
-              }
-            },
-          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return CustomDivider(height: 1);
+                },
+              );
+            } else if (state is PersonagemCarregando) {
+              return LoadingScreen();
+            } else {
+              return ErroScreen();
+            }
+          },
         ),
       ),
     );
