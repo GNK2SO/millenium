@@ -7,7 +7,7 @@ import 'package:millenium/src/components/app_bar.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/atributos_tab.dart';
-import 'package:millenium/src/screens/personagem_screen/tabs/equipamento_tab.dart';
+import 'package:millenium/src/screens/personagem_screen/tabs/equipamento_tab/equipamento_tab.dart';
 import 'package:millenium/src/screens/personagem_screen/tabs/habilidades_tab.dart';
 import 'package:millenium/src/util/util.dart';
 

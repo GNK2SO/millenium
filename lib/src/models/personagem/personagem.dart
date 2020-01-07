@@ -4,6 +4,7 @@ import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.d
 import 'package:millenium/src/models/consumivel/consumivel.dart';
 import 'package:millenium/src/models/equipamento/arma/arma.dart';
 import 'package:millenium/src/models/equipamento/armadura/armadura.dart';
+import 'package:millenium/src/models/equipamento/capa/capa.dart';
 import 'package:millenium/src/models/item/item.dart';
 import 'package:millenium/src/util/constantes.dart';
 
@@ -61,7 +62,7 @@ class Personagem {
   }
 
   int dano() {
-    int dano;
+    int dano = 0;
 
     equipamentos.forEach((item) {
       if (item is Arma) {
@@ -69,7 +70,7 @@ class Personagem {
       }
     });
 
-    return dano ?? 0;
+    return dano;
   }
 
   int defesa() {
@@ -85,6 +86,12 @@ class Personagem {
 
   int resistenciaFrio() {
     int resistenciaFrio = 0;
+
+    equipamentos.forEach((item) {
+      if (item is Capa) {
+        resistenciaFrio = item.resistenciaFrio;
+      }
+    });
 
     return resistenciaFrio;
   }

@@ -12,7 +12,7 @@ import 'package:millenium/src/screens/bestiario/bestiario_screen.dart';
 import 'package:millenium/src/screens/cadastro/cadastro_screen.dart';
 import 'package:millenium/src/screens/classes_screen/classes_screen.dart';
 import 'package:millenium/src/screens/error_screen.dart';
-import 'package:millenium/src/screens/home_screen_admin/todos_personagens_screen.dart';
+import 'package:millenium/src/screens/home_screen_admin/home_screen_admin.dart';
 import 'package:millenium/src/screens/login/login_screen.dart';
 import 'package:millenium/src/screens/home_screen/home_screen.dart';
 import 'package:millenium/src/screens/perfil/perfil_screen.dart';

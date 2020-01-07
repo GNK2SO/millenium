@@ -1,266 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
-import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
 import 'package:millenium/src/components/form/input/descricao_text_input.dart';
 import 'package:millenium/src/components/form/input/text_input.dart';
-import 'package:millenium/src/components/list/bolsa_tile.dart';
-import 'package:millenium/src/components/list/equipamento_tile.dart';
-import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/consumivel/consumivel.dart';
 import 'package:millenium/src/models/equipamento/arma/arma.dart';
 import 'package:millenium/src/models/equipamento/armadura/armadura.dart';
+import 'package:millenium/src/models/equipamento/capa/capa.dart';
 import 'package:millenium/src/models/item/item.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
-import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
-import 'package:millenium/src/screens/error_screen.dart';
-import 'package:millenium/src/screens/loading_screen.dart';
 import 'package:millenium/src/util/theme.dart';
 import 'package:millenium/src/validators/equipamento_validator.dart';
 
-class EquipamentoTab extends StatefulWidget {
-  final Usuario usuario;
-  final Personagem personagem;
-
-  EquipamentoTab({@required this.usuario, @required this.personagem});
-
-  @override
-  _EquipamentoTabState createState() =>
-      _EquipamentoTabState(usuario: usuario, personagem: personagem);
-}
-
-class _EquipamentoTabState extends State<EquipamentoTab> {
-  final Usuario usuario;
-  Personagem personagem;
-
-  _EquipamentoTabState({@required this.usuario, @required this.personagem});
-
-  final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-
-  Future<void> _refresh() async {
-    BlocProvider.of<PersonagemBloc>(context)
-        .add(ObterPersonagem(idPersonagem: personagem.id));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<PersonagemBloc, PersonagemState>(
-      listener: (context, state) {
-        if (state is PersonagemSuccess) {
-          BlocProvider.of<PersonagemBloc>(context)
-              .add(ObterPersonagem(idPersonagem: personagem.id));
-        }
-        if (state is PersonagemCarregado) {
-          setState(() {
-            personagem = state.personagem;
-          });
-        }
-      },
-      child: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: _refresh,
-        child: Stack(
-          children: <Widget>[
-            BlocBuilder<PersonagemBloc, PersonagemState>(
-              builder: (context, state) {
-                if (state is PersonagemFailure) {
-                  return ErroScreen();
-                } else if (state is PersonagemCarregando) {
-                  return LoadingScreen();
-                } else {
-                  return SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            child: Container(
-                              decoration: BoxDecoration(border: Border.all()),
-                              child: ExpansionTile(
-                                title: Text(
-                                  "Equipamento",
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                                children: <Widget>[
-                                  CustomDivider(
-                                    height: 1,
-                                    width: double.infinity,
-                                  ),
-                                  EquipamentoTile(
-                                    isNotAdmin: !usuario.isAdmin,
-                                    equipamentos: personagem.equipamentos,
-                                    onUnequipped: (item) {
-                                      personagem.equipamentos.remove(item);
-                                      personagem.bolsa.insert(0, item);
-                                      setState(() {
-                                        personagem = personagem;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Card(
-                            child: Container(
-                              decoration: BoxDecoration(border: Border.all()),
-                              child: ExpansionTile(
-                                title: Text(
-                                  "Mochila",
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                                children: <Widget>[
-                                  CustomDivider(
-                                    height: 1,
-                                    width: double.infinity,
-                                  ),
-                                  BolsaTile(
-                                    isNotAdmin: !usuario.isAdmin,
-                                    bolsa: personagem.bolsa,
-                                    onDismissed: (item) {
-                                      personagem.bolsa.remove(item);
-                                      setState(() {
-                                        personagem = personagem;
-                                      });
-                                    },
-                                    onEquipped: (item) {
-                                      dynamic _equipamento;
-
-                                      if (item is Arma) {
-                                        personagem.equipamentos
-                                            .forEach((equipamento) {
-                                          if (equipamento is Arma) {
-                                            _equipamento = equipamento;
-                                            personagem.bolsa
-                                                .insert(0, equipamento);
-                                          }
-                                        });
-                                      }
-
-                                      if (item is Armadura) {
-                                        personagem.equipamentos
-                                            .forEach((equipamento) {
-                                          if (equipamento is Armadura &&
-                                              equipamento.parte == item.parte) {
-                                            _equipamento = equipamento;
-                                            personagem.bolsa
-                                                .insert(0, equipamento);
-                                          }
-                                        });
-                                      }
-
-                                      personagem.equipamentos
-                                          .remove(_equipamento);
-
-                                      personagem.bolsa.remove(item);
-                                      personagem.equipamentos.insert(0, item);
-                                      setState(() {
-                                        personagem = personagem;
-                                      });
-                                    },
-                                    onUtilizar: (item) {
-                                      if (personagem.vidaTotal() <
-                                          personagem.vida + item.vida) {
-                                        personagem.vida =
-                                            personagem.vidaTotal();
-                                      } else {
-                                        personagem.vida += item.vida;
-                                      }
-
-                                      if (personagem.energiaTotal() <
-                                          personagem.energia + item.energia) {
-                                        personagem.energia =
-                                            personagem.energiaTotal();
-                                      } else {
-                                        personagem.energia += item.energia;
-                                      }
-
-                                      if (personagem.manaTotal() <
-                                          personagem.mana + item.mana) {
-                                        personagem.mana =
-                                            personagem.manaTotal();
-                                      } else {
-                                        personagem.mana += item.mana;
-                                      }
-
-                                      personagem.bolsa.remove(item);
-
-                                      BlocProvider.of<PersonagemBloc>(context)
-                                          .add(
-                                        AtualizarPersonagem(
-                                            personagem: personagem),
-                                      );
-                                      setState(() {
-                                        personagem = personagem;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: usuario.isAdmin
-                    ? FloatingActionButton(
-                        child: Icon(Icons.add),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (contextMessage) {
-                              return FormCadastroItem(
-                                personagem: personagem,
-                                onSaved: (personagem) {
-                                  BlocProvider.of<PersonagemBloc>(context).add(
-                                    AtualizarPersonagem(
-                                      personagem: this.personagem,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      )
-                    : FloatingActionButton(
-                        child: Icon(Icons.save),
-                        onPressed: () {
-                          BlocProvider.of<PersonagemBloc>(context).add(
-                            AtualizarPersonagem(
-                              personagem: this.personagem,
-                            ),
-                          );
-                        },
-                      ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-typedef PersonagemCallback(Personagem personagem);
-
 class FormCadastroItem extends StatefulWidget {
   final Personagem personagem;
-  final PersonagemCallback onSaved;
+  final Function(Personagem) onSaved;
 
   FormCadastroItem({@required this.personagem, @required this.onSaved});
 
@@ -271,14 +23,15 @@ class FormCadastroItem extends StatefulWidget {
 
 class _FormCadastroItemState extends State<FormCadastroItem> {
   final Personagem personagem;
-  final PersonagemCallback onSaved;
+  final Function(Personagem) onSaved;
 
   _FormCadastroItemState({@required this.personagem, @required this.onSaved});
 
   String dropdownItemValue;
   String dropdownEquipamentoValue;
   String dropdownParteArmaduraValue;
-  final tiposItem = ['Item', 'Arma', 'Armadura', 'Consumível'];
+
+  final tiposItem = ['Item', 'Arma', 'Armadura', 'Consumível', 'Capa'];
   final tiposEquipamento = ['Pesado', 'Médio', 'Leve'];
   final partesArmadura = [
     'Set',
@@ -286,7 +39,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
     'Peitoral',
     'Luvas',
     'Grevas',
-    'Botas'
+    'Botas',
   ];
 
   final _formKey = GlobalKey<FormState>();
@@ -295,6 +48,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
   final _descricaoController = TextEditingController();
   final _quantidadeController = TextEditingController();
   final _danoDefesaController = TextEditingController();
+  final _resistenciaFrioController = TextEditingController();
   final _vidaController = TextEditingController();
   final _energiaController = TextEditingController();
   final _manaController = TextEditingController();
@@ -304,6 +58,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
     super.initState();
     _quantidadeController.text = "0";
     _danoDefesaController.text = "0";
+    _resistenciaFrioController.text = "0";
     _vidaController.text = "0";
     _energiaController.text = "0";
     _manaController.text = "0";
@@ -318,6 +73,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
     _descricaoController.dispose();
     _quantidadeController.dispose();
     _danoDefesaController.dispose();
+    _resistenciaFrioController.dispose();
     _vidaController.dispose();
     _energiaController.dispose();
     _manaController.dispose();
@@ -479,6 +235,19 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
             ),
           ],
         );
+      case 'Capa':
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextInput(
+              labelText: "Resistência Frio",
+              controller: _resistenciaFrioController,
+              keyboardType: TextInputType.number,
+              validator: EquipamentoValidator.isNotEmpty,
+            ),
+          ],
+        );
+
       case 'Consumível':
         return Row(
           children: [
@@ -546,6 +315,15 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
             );
             personagem.bolsa.add(armadura);
           }
+          break;
+        case 'Capa':
+          final Capa capa = Capa(
+            nome: _nomeController.text,
+            descricao: _descricaoController.text,
+            tipo: dropdownItemValue,
+            resistenciaFrio: int.parse(_resistenciaFrioController.text),
+          );
+          personagem.bolsa.add(capa);
           break;
         case 'Consumível':
           final Consumivel consumivel = Consumivel(

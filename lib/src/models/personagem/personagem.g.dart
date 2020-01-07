@@ -27,25 +27,31 @@ Personagem _$PersonagemFromJson(Map<String, dynamic> json) {
         : AtributosExploracao.fromJson(
             json['atributosExploracao'] as Map<String, dynamic>),
     bolsa: json['bolsa'].map((item) {
-      if (item['tipo'] == "Arma") {
-        return Arma.fromJson(item);
-      } else if (item['tipo'] == "Armadura") {
-        return Armadura.fromJson(item);
-      } else if (item['tipo'] == "Consumivel") {
-        return Consumivel.fromJson(item);
-      } else {
-        return Item.fromJson(item);
+      switch (item['tipo']) {
+        case 'Arma':
+          return Arma.fromJson(item);
+        case 'Armadura':
+          return Armadura.fromJson(item);
+        case 'Consumível':
+          return Consumivel.fromJson(item);
+        case 'Capa':
+          return Capa.fromJson(item);
+        default:
+          return Item.fromJson(item);
       }
     }).toList(),
     equipamentos: json['equipamentos'].map((item) {
-      if (item['tipo'] == "Arma") {
-        return Arma.fromJson(item);
-      } else if (item['tipo'] == "Armadura") {
-        return Armadura.fromJson(item);
-      } else if (item['tipo'] == "Consumivel") {
-        return Consumivel.fromJson(item);
-      } else {
-        return Item.fromJson(item);
+      switch (item['tipo']) {
+        case 'Arma':
+          return Arma.fromJson(item);
+        case 'Armadura':
+          return Armadura.fromJson(item);
+        case 'Consumível':
+          return Consumivel.fromJson(item);
+        case 'Capa':
+          return Capa.fromJson(item);
+        default:
+          return Item.fromJson(item);
       }
     }).toList(),
   );

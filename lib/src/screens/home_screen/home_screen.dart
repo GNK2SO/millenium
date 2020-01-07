@@ -4,7 +4,7 @@ import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
 import 'package:millenium/src/components/form/input/text_input.dart';
-import 'package:millenium/src/components/list/personagem_tile.dart';
+import 'package:millenium/src/components/tiles/personagem_tile.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/drawer.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';

@@ -35,7 +35,7 @@ class _AtributosTabState extends State<AtributosTab>
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AnimationController _animationController;
 
-  Widget iconFloatingButton = Icon(Icons.save);
+  Widget iconFloatingButton = Icon(Icons.check);
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _AtributosTabState extends State<AtributosTab>
       listener: (context, state) {
         if (state is PersonagemSuccess) {
           setState(() {
-            iconFloatingButton = Icon(Icons.save);
+            iconFloatingButton = Icon(Icons.check);
           });
         }
       },

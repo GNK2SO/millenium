@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:millenium/src/blocs/bestiario_bloc/bestiario_bloc.dart';
 import 'package:millenium/src/blocs/bestiario_bloc/bestiario_state.dart';
 import 'package:millenium/src/components/app_bar.dart';
-import 'package:millenium/src/components/list/bestiario_tile.dart';
+import 'package:millenium/src/components/tiles/bestiario_tile.dart';
 import 'package:millenium/src/components/search.dart';
 import 'package:millenium/src/models/besta/besta.dart';
 import 'package:millenium/src/models/filtro_bestiario.dart';
