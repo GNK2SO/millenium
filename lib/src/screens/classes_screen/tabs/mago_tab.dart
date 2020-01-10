@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/components/detalhamento_classe/habilidades.dart';
 import 'package:millenium/src/components/detalhamento_classe/titulo.dart';
-import 'package:millenium/src/models/habilidade/habilidade.dart';
+import 'package:millenium/src/models/classe/classe.dart';
 
 class MagoTab extends StatelessWidget {
-  final List<Habilidade> habilidades;
-  final List<Habilidade> habilidadesAprendizagem;
+  final Classe classe;
 
-  MagoTab({this.habilidades, this.habilidadesAprendizagem});
+  MagoTab({@required this.classe});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +17,11 @@ class MagoTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Titulo(
-              titulo: "Mago",
-              subTitulo: "Especialista em magias.",
+              titulo: classe.nome,
+              subTitulo: classe.descricao,
             ),
-            Habilidades(habilidades: habilidades),
-            HabilidadeAprendizagem(habilidades: habilidadesAprendizagem),
+            Habilidades(habilidades: classe.habilidades),
+            HabilidadeAprendizagem(habilidades: classe.habilidadesAprendizagem),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:millenium/src/models/classe/classe.dart';
 
 @immutable
 abstract class ClasseState extends Equatable {
@@ -42,7 +43,7 @@ class ClasseFailure extends ClasseState {
 }
 
 class ClassesCarregadas extends ClasseState {
-  final Map classes;
+  final List<Classe> classes;
 
   ClassesCarregadas({@required this.classes});
 
@@ -50,5 +51,5 @@ class ClassesCarregadas extends ClasseState {
   List<Object> get props => [classes];
 
   @override
-  String toString() => 'ClasseCarregada';
+  String toString() => 'ClassesCarregadas';
 }

@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_bloc.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_event.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_state.dart';
-import 'package:millenium/src/models/habilidade/habilidade.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/repository/classe_repository.dart';
 import 'package:millenium/src/screens/classes_screen/tabs/assassino_tab.dart';
@@ -103,54 +102,24 @@ class _BodyState extends State<Body> {
               body: TabBarView(
                 children: <Widget>[
                   GuerreiroTab(
-                    habilidades: mapToListHabilidade(
-                      state.classes,
-                      "guerreiro",
-                    ),
-                    habilidadesAprendizagem: mapToListHabilidadeAprendizagem(
-                      state.classes,
-                      "guerreiro",
-                    ),
+                    classe: state.classes
+                        .singleWhere((classe) => classe.nome == "Guerreiro"),
                   ),
                   CacadorTab(
-                    habilidades: mapToListHabilidade(
-                      state.classes,
-                      "cacador",
-                    ),
-                    habilidadesAprendizagem: mapToListHabilidadeAprendizagem(
-                      state.classes,
-                      "cacador",
-                    ),
+                    classe: state.classes
+                        .singleWhere((classe) => classe.nome == "Caçador"),
                   ),
                   BarbaroTab(
-                    habilidades: mapToListHabilidade(
-                      state.classes,
-                      "barbaro",
-                    ),
-                    habilidadesAprendizagem: mapToListHabilidadeAprendizagem(
-                      state.classes,
-                      "barbaro",
-                    ),
+                    classe: state.classes
+                        .singleWhere((classe) => classe.nome == "Bárbaro"),
                   ),
                   AssassinoTab(
-                    habilidades: mapToListHabilidade(
-                      state.classes,
-                      "assassino",
-                    ),
-                    habilidadesAprendizagem: mapToListHabilidadeAprendizagem(
-                      state.classes,
-                      "assassino",
-                    ),
+                    classe: state.classes
+                        .singleWhere((classe) => classe.nome == "Assassino"),
                   ),
                   MagoTab(
-                    habilidades: mapToListHabilidade(
-                      state.classes,
-                      "mago",
-                    ),
-                    habilidadesAprendizagem: mapToListHabilidadeAprendizagem(
-                      state.classes,
-                      "mago",
-                    ),
+                    classe: state.classes
+                        .singleWhere((classe) => classe.nome == "Mago"),
                   ),
                 ],
               ),
@@ -163,41 +132,5 @@ class _BodyState extends State<Body> {
         }
       },
     );
-  }
-
-  List<Habilidade> mapToListHabilidade(
-    Map<String, dynamic> classes,
-    String classe,
-  ) {
-    List<Habilidade> habilidades = [];
-
-    classes[classe]["habilidades"].forEach((habilidade) {
-      habilidades.add(Habilidade(
-        titulo: habilidade["titulo"],
-        tipo: habilidade["tipo"],
-        custo: habilidade["custo"],
-        descricao: habilidade["descricao"],
-      ));
-    });
-
-    return habilidades;
-  }
-
-  List<Habilidade> mapToListHabilidadeAprendizagem(
-    Map<String, dynamic> classes,
-    String classe,
-  ) {
-    List<Habilidade> habilidades = [];
-
-    classes[classe]["habilidadesAprendizagem"].forEach((habilidade) {
-      habilidades.add(Habilidade(
-        titulo: habilidade["titulo"],
-        tipo: habilidade["tipo"],
-        custo: habilidade["custo"],
-        descricao: habilidade["descricao"],
-      ));
-    });
-
-    return habilidades;
   }
 }

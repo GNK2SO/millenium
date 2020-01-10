@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/components/detalhamento_classe/habilidades.dart';
 import 'package:millenium/src/components/detalhamento_classe/titulo.dart';
-import 'package:millenium/src/models/habilidade/habilidade.dart';
+import 'package:millenium/src/models/classe/classe.dart';
 
 class AssassinoTab extends StatelessWidget {
-  final List<Habilidade> habilidades;
-  final List<Habilidade> habilidadesAprendizagem;
+  final Classe classe;
 
-  AssassinoTab({this.habilidades, this.habilidadesAprendizagem});
+  AssassinoTab({@required this.classe});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +17,11 @@ class AssassinoTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Titulo(
-              titulo: "Assassino",
-              subTitulo:
-                  "Especialista com armas leves, venenos e assassinatos.",
+              titulo: classe.nome,
+              subTitulo: classe.descricao,
             ),
-            Habilidades(habilidades: habilidades),
-            HabilidadeAprendizagem(habilidades: habilidadesAprendizagem),
+            Habilidades(habilidades: classe.habilidades),
+            HabilidadeAprendizagem(habilidades: classe.habilidadesAprendizagem),
           ],
         ),
       ),
