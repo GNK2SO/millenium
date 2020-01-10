@@ -96,7 +96,7 @@ class _AtributosTabState extends State<AtributosTab>
                       ),
                     ),
                     AdminCard(isAdmin: usuario.isAdmin, personagem: personagem),
-                    InfoCard(personagem: personagem),
+                    InfoCard(isAdmin: usuario.isAdmin, personagem: personagem),
                     StatusCard(personagem: personagem),
                     AtributosCombateFormField(
                       isAdmin: usuario.isAdmin,

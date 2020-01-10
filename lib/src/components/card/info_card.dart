@@ -9,7 +9,8 @@ import 'package:millenium/src/util/theme.dart';
 
 class InfoCard extends StatelessWidget {
   final Personagem personagem;
-  InfoCard({@required this.personagem});
+  final bool isAdmin;
+  InfoCard({@required this.personagem, @required this.isAdmin});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,24 +29,16 @@ class InfoCard extends StatelessWidget {
               Column(
                 children: [
                   CardRow(text: "Raça", valor: "Humano"),
-                  CardRow(text: "Classe", valor: "-"),
                   GestureDetector(
-                    child: CardRow(
-                        text: "Título",
-                        valor: personagem.titulo.isEmpty
-                            ? "-"
-                            : personagem.titulo),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (dialogContext) {
-                          return _TituloForm(
-                            contextPage: context,
-                            personagem: personagem,
-                          );
-                        },
-                      );
-                    },
+                    child: CardRow(text: "Classe", valor: "-"),
+                  ),
+                  GestureDetector(
+                    child: CardRow(text: "Título", valor: _getTitulo()),
+                    onTap: isAdmin
+                        ? () {
+                            _exibirPopupTituloForm(context);
+                          }
+                        : null,
                   ),
                 ],
               )
@@ -54,6 +47,25 @@ class InfoCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _exibirPopupTituloForm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return _TituloForm(
+          contextPage: context,
+          personagem: personagem,
+        );
+      },
+    );
+  }
+
+  String _getTitulo() {
+    if (personagem.titulo.isEmpty) {
+      return "-";
+    }
+    return personagem.titulo;
   }
 }
 
