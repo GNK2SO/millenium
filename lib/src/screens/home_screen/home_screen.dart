@@ -11,7 +11,6 @@ import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
-import 'package:millenium/src/util/theme.dart';
 import 'package:millenium/src/util/util.dart';
 
 import '../personagem_screen/personagem_screen.dart';
@@ -148,7 +147,7 @@ class PersonagemForm extends StatelessWidget {
             "Cancelar",
             style: TextStyle(
               fontSize: 16,
-              color: primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           onPressed: () {
@@ -156,7 +155,7 @@ class PersonagemForm extends StatelessWidget {
           },
         ),
         RaisedButton(
-          color: primaryColor,
+          color: Theme.of(context).primaryColor,
           child: Text(
             "Cadastrar",
             style: TextStyle(

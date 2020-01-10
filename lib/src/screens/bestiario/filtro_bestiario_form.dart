@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millenium/src/models/enum_flag_filtro_nivel.dart';
 import 'package:millenium/src/models/filtro_bestiario.dart';
-import 'package:millenium/src/util/theme.dart';
 
 class FiltroBestiarioForm extends StatefulWidget {
   final FiltroBestiario filtro;
@@ -118,7 +117,7 @@ class _FiltroBestiarioFormState extends State<FiltroBestiarioForm> {
             ),
             children: localizacoes.keys.map((nomeLocal) {
               return CheckboxListTile(
-                activeColor: primaryColor,
+                activeColor: Theme.of(context).primaryColor,
                 secondary: Text(nomeLocal),
                 value: localizacoes[nomeLocal],
                 onChanged: (newValue) {
@@ -144,7 +143,7 @@ class _FiltroBestiarioFormState extends State<FiltroBestiarioForm> {
               "Voltar",
               style: TextStyle(fontSize: 16),
             ),
-            color: primaryColor,
+            color: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -157,7 +156,7 @@ class _FiltroBestiarioFormState extends State<FiltroBestiarioForm> {
               "Limpar",
               style: TextStyle(fontSize: 16),
             ),
-            color: primaryColor,
+            color: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.of(context).pop();
               onChanged(null);
@@ -171,7 +170,7 @@ class _FiltroBestiarioFormState extends State<FiltroBestiarioForm> {
               "Filtrar",
               style: TextStyle(fontSize: 16),
             ),
-            color: primaryColor,
+            color: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.of(context).pop();
               onChanged(filtro);
@@ -199,12 +198,12 @@ class _Nivel extends StatelessWidget {
             icon: index >= nivel
                 ? Icon(
                     Icons.star_border,
-                    color: primaryColor,
+                    color: Theme.of(context).primaryColor,
                     size: 40,
                   )
                 : Icon(
                     Icons.star,
-                    color: primaryColor,
+                    color: Theme.of(context).primaryColor,
                     size: 40,
                   ),
             onPressed: () {

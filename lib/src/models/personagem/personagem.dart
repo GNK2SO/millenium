@@ -5,6 +5,7 @@ import 'package:millenium/src/models/consumivel/consumivel.dart';
 import 'package:millenium/src/models/equipamento/arma/arma.dart';
 import 'package:millenium/src/models/equipamento/armadura/armadura.dart';
 import 'package:millenium/src/models/equipamento/capa/capa.dart';
+import 'package:millenium/src/models/habilidade/habilidade.dart';
 import 'package:millenium/src/models/item/item.dart';
 import 'package:millenium/src/util/constantes.dart';
 
@@ -16,6 +17,7 @@ class Personagem {
   String id;
   String nome;
   String titulo;
+  String classe;
   int vida;
   int energia;
   int mana;
@@ -26,12 +28,14 @@ class Personagem {
   AtributosExploracao atributosExploracao;
   List bolsa;
   List equipamentos;
+  List<Habilidade> habilidades;
 
   Personagem({
     this.jogadorId,
     this.id,
     this.nome,
     this.titulo: "",
+    this.classe: "",
     this.vida: vidaBase,
     this.energia: energiaBase,
     this.mana: 0,
@@ -42,6 +46,7 @@ class Personagem {
     this.atributosExploracao,
     this.bolsa: const [],
     this.equipamentos: const [],
+    this.habilidades: const [],
   });
 
   factory Personagem.fromJson(Map<String, dynamic> json) =>

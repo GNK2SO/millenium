@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:millenium/src/blocs/authentication_bloc/authentication_state.dart';
+import 'package:millenium/src/blocs/classe_bloc/classe_bloc.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_bloc.dart';
 import 'package:millenium/src/models/usuario.dart';
 import 'package:millenium/src/repository/bestiario_repository.dart';
+import 'package:millenium/src/repository/classe_repository.dart';
 import 'package:millenium/src/repository/personagem_repository.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/alterar_senha/alterar_senha_screen.dart';
@@ -41,6 +43,11 @@ class _MilleniumState extends State<Millenium> {
         BlocProvider<UsuarioBloc>(
           create: (context) => UsuarioBloc(
             repository: UsuarioRepository(),
+          ),
+        ),
+        BlocProvider<ClasseBloc>(
+          create: (context) => ClasseBloc(
+            repository: ClasseRepository(),
           ),
         ),
       ],

@@ -22,6 +22,10 @@ Classe _$ClasseFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ClasseToJson(Classe instance) => <String, dynamic>{
       'nome': instance.nome,
       'descricao': instance.descricao,
-      'habilidades': instance.habilidades,
-      'habilidadesAprendizagem': instance.habilidadesAprendizagem,
+      'habilidades': instance.habilidades
+          .map((habilidade) => habilidade.toJson())
+          .toList(),
+      'habilidadesAprendizagem': instance.habilidadesAprendizagem
+          .map((habilidade) => habilidade.toJson())
+          .toList(),
     };

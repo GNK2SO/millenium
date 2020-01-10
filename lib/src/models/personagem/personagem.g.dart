@@ -13,6 +13,7 @@ Personagem _$PersonagemFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     nome: json['nome'] as String,
     titulo: json['titulo'] as String,
+    classe: json['classe'] as String,
     vida: json['vida'] as int,
     energia: json['energia'] as int,
     mana: json['mana'] as int,
@@ -54,6 +55,11 @@ Personagem _$PersonagemFromJson(Map<String, dynamic> json) {
           return Item.fromJson(item);
       }
     }).toList(),
+    habilidades: json["habilidades"] == null
+        ? null
+        : (json["habilidades"] as List).map((habilidade) {
+            return Habilidade.fromJson(habilidade);
+          }).toList(),
   );
 }
 
@@ -64,6 +70,7 @@ Map<String, dynamic> _$PersonagemToJson(Personagem instance) =>
       'id': instance.id,
       'nome': instance.nome,
       'titulo': instance.titulo,
+      'classe': instance.classe,
       'vida': instance.vida,
       'energia': instance.energia,
       'mana': instance.mana,
@@ -76,5 +83,10 @@ Map<String, dynamic> _$PersonagemToJson(Personagem instance) =>
           : null,
       'equipamentos': instance.equipamentos != null
           ? instance.equipamentos.map((item) => item.toJson()).toList()
+          : null,
+      'habilidades': instance.habilidades != null
+          ? instance.habilidades
+              .map((habilidade) => habilidade.toJson())
+              .toList()
           : null,
     };

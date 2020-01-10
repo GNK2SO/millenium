@@ -7,7 +7,6 @@ import 'package:millenium/src/models/equipamento/armadura/armadura.dart';
 import 'package:millenium/src/models/equipamento/capa/capa.dart';
 import 'package:millenium/src/models/item/item.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
-import 'package:millenium/src/util/theme.dart';
 import 'package:millenium/src/validators/equipamento_validator.dart';
 
 class FormCadastroItem extends StatefulWidget {
@@ -125,7 +124,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                       "Voltar",
                       style: TextStyle(
                         fontSize: 16,
-                        color: primaryColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     onPressed: () {
@@ -137,7 +136,7 @@ class _FormCadastroItemState extends State<FormCadastroItem> {
                       "Salvar",
                       style: TextStyle(fontSize: 16),
                     ),
-                    color: primaryColor,
+                    color: Theme.of(context).primaryColor,
                     onPressed: _onSalvarEquipamento,
                   )
                 ],
