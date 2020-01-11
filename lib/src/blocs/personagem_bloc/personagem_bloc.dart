@@ -1,24 +1,19 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
-import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
-import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
-import 'package:millenium/src/repository/personagem_repository.dart';
+import 'package:millenium/src/service/personagem_service.dart';
 
 import 'personagem_state.dart';
 
 class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
-  final PersonagemRepository _personagemRepository;
+  final PersonagemService _service;
 
   PersonagemBloc({
     @required repository,
   })  : assert(repository != null),
-        _personagemRepository = repository;
+        _service = repository;
 
   @override
   PersonagemState get initialState => PersonagemInitial();
@@ -30,7 +25,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
     } else if (event is ObterPersonagem) {
       yield* this._mapObterPersonagemToState(idPersonagem: event.idPersonagem);
     } else if (event is ObterMeusPersonagens) {
-      yield* this._mapObterMeusPersonagensToState(uid: event.uid);
+      yield* this._mapObterMeusPersonagensToState(idUsuario: event.uid);
     } else if (event is ObterTodosPersonagens) {
       yield* this._mapObterTodosPersonagensToState();
     } else if (event is AtualizarPersonagem) {
@@ -45,17 +40,14 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
   }) async* {
     if (!(state is PersonagemCarregando)) {
       yield PersonagemCarregando();
-      final personagem = Personagem(
-        nome: nomePersonagem,
-        atributosCombate: AtributosCombate(),
-        atributosExploracao: AtributosExploracao(),
-      );
+
       try {
-        await _personagemRepository.salvar(personagem);
+        await _service.salvar(nomePersonagem);
         yield PersonagemSuccess();
       } catch (_) {
         yield PersonagemFailure(
-            erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
+          erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.",
+        );
       }
     }
   }
@@ -66,33 +58,29 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
     if (!(state is PersonagemCarregando)) {
       yield PersonagemCarregando();
       try {
-        DocumentSnapshot document =
-            await _personagemRepository.obterPersonagem(idPersonagem);
-        String data = json.encode(document.data);
-        yield PersonagemCarregado(
-            personagem: Personagem.fromJson(json.decode(data)));
+        Personagem personagem = await _service.obterPersonagem(idPersonagem);
+        yield PersonagemCarregado(personagem: personagem);
       } catch (e) {
         yield PersonagemFailure(
-            erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
+          erro: "Erro ao obter personagem.\nVerifique sua conexão.",
+        );
       }
     }
   }
 
   Stream<PersonagemState> _mapObterMeusPersonagensToState({
-    String uid,
+    String idUsuario,
   }) async* {
     if (!(state is PersonagemCarregando)) {
       yield PersonagemCarregando();
       try {
-        QuerySnapshot document =
-            await _personagemRepository.obterMeusPersonagens(uid);
-
-        yield PersonagensCarregado(
-          personagens: mapToList(documents: document.documents),
-        );
+        List<Personagem> personagens =
+            await _service.obterPersonagensPor(idUsuario);
+        yield PersonagensCarregado(personagens: personagens);
       } catch (e) {
         yield PersonagemFailure(
-            erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
+          erro: "Erro ao obter personagens.\nVerifique sua conexão.",
+        );
       }
     }
   }
@@ -103,15 +91,13 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
     if (!(state is PersonagemCarregando)) {
       yield PersonagemCarregando();
       try {
-        QuerySnapshot document =
-            await _personagemRepository.obterTodosPersonagens();
+        List<Personagem> personagens = await _service.obterTodosPersonagens();
 
-        yield PersonagensCarregado(
-          personagens: mapToList(documents: document.documents),
-        );
+        yield PersonagensCarregado(personagens: personagens);
       } catch (e) {
         yield PersonagemFailure(
-            erro: "Erro ao cadastrar personagem.\nVerifique sua conexão.");
+          erro: "Erro ao obter personagens.\nVerifique sua conexão.",
+        );
       }
     }
   }
@@ -123,13 +109,12 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
       yield PersonagemCarregando();
 
       try {
-        await _personagemRepository.atualizar(personagem);
-        yield PersonagemSuccess(
-          mensagem: "Alterações salvas com sucesso!",
-        );
+        await _service.atualizar(personagem);
+        yield PersonagemSuccess(mensagem: "Alterações salvas com sucesso!");
       } catch (_) {
         yield PersonagemFailure(
-            erro: "Erro ao atualizar personagem.\nVerifique sua conexão.");
+          erro: "Erro ao atualizar personagem.\nVerifique sua conexão.",
+        );
       }
     }
   }
@@ -140,23 +125,12 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
     if (!(state is PersonagemCarregando)) {
       yield PersonagemCarregando();
       try {
-        await _personagemRepository.remover(personagem);
+        await _service.remover(personagem);
         yield PersonagemRemovido(mensagem: "Personagem removido com sucesso");
       } catch (e) {
         yield PersonagemFailure(
             erro: "Erro ao remover personagem.\nVerifique sua conexão.");
       }
     }
-  }
-
-  List<Personagem> mapToList({List<DocumentSnapshot> documents}) {
-    List<Personagem> personagens = [];
-    if (documents != null) {
-      documents.forEach((document) {
-        String jsonData = json.encode(document.data);
-        personagens.add(Personagem.fromJson(json.decode(jsonData)));
-      });
-    }
-    return personagens;
   }
 }

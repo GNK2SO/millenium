@@ -19,10 +19,14 @@ class PersonagemRepository {
         .setData(personagem.toJson());
   }
 
-  Future<QuerySnapshot> obterMeusPersonagens(String uid) {
+  Future<DocumentSnapshot> obterPor(String idPersonagem) {
+    return _firestore.collection("personagens").document(idPersonagem).get();
+  }
+
+  Future<QuerySnapshot> obterPersonagensPor(String idUsuario) {
     return _firestore
         .collection("personagens")
-        .where("jogadorId", isEqualTo: uid)
+        .where("jogadorId", isEqualTo: idUsuario)
         .getDocuments();
   }
 
@@ -44,9 +48,5 @@ class PersonagemRepository {
         .collection("personagens")
         .document(personagem.id)
         .delete();
-  }
-
-  Future<DocumentSnapshot> obterPersonagem(String idPersonagem) {
-    return _firestore.collection("personagens").document(idPersonagem).get();
   }
 }
