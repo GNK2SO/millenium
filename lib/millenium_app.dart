@@ -5,7 +5,6 @@ import 'package:millenium/src/blocs/authentication_bloc/authentication_state.dar
 import 'package:millenium/src/blocs/classe_bloc/classe_bloc.dart';
 import 'package:millenium/src/blocs/usuario_bloc/usuario_bloc.dart';
 import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/repository/bestiario_repository.dart';
 import 'package:millenium/src/repository/usuario_repository.dart';
 import 'package:millenium/src/screens/alterar_senha/alterar_senha_screen.dart';
 import 'package:millenium/src/screens/bestiario/bestiario_screen.dart';
@@ -19,6 +18,7 @@ import 'package:millenium/src/screens/perfil/perfil_screen.dart';
 import 'package:millenium/src/screens/regras_screen/regras_screen.dart';
 import 'package:millenium/src/screens/splash_screen.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
+import 'package:millenium/src/service/bestiario_service.dart';
 import 'package:millenium/src/service/classe_service.dart';
 import 'package:millenium/src/service/personagem_service.dart';
 import 'package:millenium/src/util/theme.dart';
@@ -83,8 +83,8 @@ class _MilleniumState extends State<Millenium> {
               LoginScreen(repository: UsuarioRepository()),
           "/cadastroContaScreen": (context) =>
               CadastroScreen(repository: UsuarioRepository()),
-          "/bestiarioScreen": (context) => BestiarioScreen(
-              usuario: usuario, repository: BestiarioRepository()),
+          "/bestiarioScreen": (context) =>
+              BestiarioScreen(usuario: usuario, repository: BestiarioService()),
         },
       ),
     );

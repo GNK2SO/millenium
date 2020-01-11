@@ -135,6 +135,9 @@ class _Descricao extends StatelessWidget {
   _Descricao(this.descricao);
   @override
   Widget build(BuildContext context) {
+    if (descricao == null) {
+      return Container();
+    }
     return Text(
       descricao,
       textAlign: TextAlign.justify,

@@ -12,7 +12,6 @@ import 'package:millenium/src/screens/classes_screen/tabs/guerreiro_tab.dart';
 import 'package:millenium/src/screens/classes_screen/tabs/mago_tab.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
-import 'package:millenium/src/service/classe_service.dart';
 
 class ClassesScreen extends StatefulWidget {
   final Usuario usuario;
