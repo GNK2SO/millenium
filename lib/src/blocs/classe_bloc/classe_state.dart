@@ -53,3 +53,15 @@ class ClassesCarregadas extends ClasseState {
   @override
   String toString() => 'ClassesCarregadas';
 }
+
+class ClasseCarregada extends ClasseState {
+  final Classe classe;
+
+  ClasseCarregada({@required this.classe});
+
+  @override
+  List<Object> get props => [classe];
+
+  @override
+  String toString() => 'ClassesCarregadas { classe: ${classe.nome} }';
+}

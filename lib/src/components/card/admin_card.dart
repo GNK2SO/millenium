@@ -49,12 +49,31 @@ class AdminCard extends StatelessWidget {
                   }
                 },
               ),
+              Visibility(
+                visible: personagem.classe.isNotEmpty,
+                child: Column(
+                  children: <Widget>[
+                    CustomDivider(height: 1, width: double.infinity),
+                    PontosDitribuicaoFormField(
+                      text: "Pts. Habilidade",
+                      pontosDistribuicao: personagem.pontosHabilidade,
+                      onSaved: (pontosDistribuicao) {
+                        if (pontosDistribuicao != null) {
+                          personagem.pontosHabilidade = pontosDistribuicao;
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
               CustomDivider(height: 1, width: double.infinity),
               KarmaFormField(
                 text: "Karma",
                 karma: personagem.karma,
                 onSaved: (karma) {
-                  personagem.karma = karma;
+                  if (karma != null) {
+                    personagem.karma = karma;
+                  }
                 },
               ),
             ],

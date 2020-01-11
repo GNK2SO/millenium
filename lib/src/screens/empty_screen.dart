@@ -3,8 +3,9 @@ import 'package:millenium/src/util/theme.dart';
 
 class EmptyScreen extends StatelessWidget {
   final String mensagem;
+  final double fontSize;
 
-  EmptyScreen({@required this.mensagem});
+  EmptyScreen({@required this.mensagem, this.fontSize: 24});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class EmptyScreen extends StatelessWidget {
       child: Text(
         mensagem,
         style: TextStyle(
-          fontSize: 24,
+          fontSize: fontSize,
           color: primaryColor.withOpacity(0.5),
         ),
       ),

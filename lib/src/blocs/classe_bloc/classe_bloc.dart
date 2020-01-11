@@ -1,20 +1,17 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_event.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_state.dart';
 import 'package:millenium/src/models/classe/classe.dart';
-import 'package:millenium/src/repository/classe_repository.dart';
+import 'package:millenium/src/service/classe_service.dart';
 
 class ClasseBloc extends Bloc<ClasseEvent, ClasseState> {
-  final ClasseRepository _classeRepository;
+  final ClasseService _classeService;
 
   ClasseBloc({
     @required repository,
   })  : assert(repository != null),
-        _classeRepository = repository;
+        _classeService = repository;
 
   @override
   ClasseState get initialState => ClasseInitial();
@@ -23,6 +20,8 @@ class ClasseBloc extends Bloc<ClasseEvent, ClasseState> {
   Stream<ClasseState> mapEventToState(ClasseEvent event) async* {
     if (event is ObterClasses) {
       yield* this._mapObterClassesToState();
+    } else if (event is ObterClasse) {
+      yield* this._mapObterClasseToState(nomeClasse: event.nome);
     }
   }
 
@@ -32,11 +31,9 @@ class ClasseBloc extends Bloc<ClasseEvent, ClasseState> {
     if (!(state is ClasseCarregando)) {
       yield ClasseCarregando();
       try {
-        QuerySnapshot classes = await _classeRepository.obterClasses();
+        List<Classe> classes = await _classeService.obterClasses();
 
-        yield ClassesCarregadas(
-          classes: mapToList(documents: classes.documents),
-        );
+        yield ClassesCarregadas(classes: classes);
       } catch (e) {
         yield ClasseFailure(
             erro: "Erro ao obter classes.\nVerifique sua conexão.");
@@ -44,14 +41,16 @@ class ClasseBloc extends Bloc<ClasseEvent, ClasseState> {
     }
   }
 
-  List<Classe> mapToList({List<DocumentSnapshot> documents}) {
-    List<Classe> classes = [];
-    if (documents != null) {
-      documents.forEach((document) {
-        String jsonData = json.encode(document.data);
-        classes.add(Classe.fromJson(json.decode(jsonData)));
-      });
+  Stream<ClasseState> _mapObterClasseToState({String nomeClasse}) async* {
+    if (!(state is ClasseCarregando)) {
+      yield ClasseCarregando();
+      try {
+        Classe classe = await _classeService.obterClasse(nomeClasse);
+        yield ClasseCarregada(classe: classe);
+      } catch (e) {
+        yield ClasseFailure(
+            erro: "Erro ao obter classe: $nomeClasse.\nVerifique sua conexão.");
+      }
     }
-    return classes;
   }
 }

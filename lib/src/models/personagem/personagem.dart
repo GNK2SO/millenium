@@ -28,6 +28,7 @@ class Personagem {
   AtributosExploracao atributosExploracao;
   List bolsa;
   List equipamentos;
+  int pontosHabilidade;
   List<Habilidade> habilidades;
 
   Personagem({
@@ -46,6 +47,7 @@ class Personagem {
     this.atributosExploracao,
     this.bolsa: const [],
     this.equipamentos: const [],
+    this.pontosHabilidade: 0,
     this.habilidades: const [],
   });
 

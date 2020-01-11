@@ -55,6 +55,7 @@ Personagem _$PersonagemFromJson(Map<String, dynamic> json) {
           return Item.fromJson(item);
       }
     }).toList(),
+    pontosHabilidade: json['pontosHabilidade'] as int,
     habilidades: json["habilidades"] == null
         ? null
         : (json["habilidades"] as List).map((habilidade) {
@@ -84,6 +85,7 @@ Map<String, dynamic> _$PersonagemToJson(Personagem instance) =>
       'equipamentos': instance.equipamentos != null
           ? instance.equipamentos.map((item) => item.toJson()).toList()
           : null,
+      'pontosHabilidade': instance.pontosHabilidade,
       'habilidades': instance.habilidades != null
           ? instance.habilidades
               .map((habilidade) => habilidade.toJson())

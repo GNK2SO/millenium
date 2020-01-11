@@ -5,7 +5,6 @@ import 'package:millenium/src/blocs/classe_bloc/classe_bloc.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_event.dart';
 import 'package:millenium/src/blocs/classe_bloc/classe_state.dart';
 import 'package:millenium/src/models/usuario.dart';
-import 'package:millenium/src/repository/classe_repository.dart';
 import 'package:millenium/src/screens/classes_screen/tabs/assassino_tab.dart';
 import 'package:millenium/src/screens/classes_screen/tabs/barbaro_tab.dart';
 import 'package:millenium/src/screens/classes_screen/tabs/cacador_tab.dart';
@@ -13,6 +12,7 @@ import 'package:millenium/src/screens/classes_screen/tabs/guerreiro_tab.dart';
 import 'package:millenium/src/screens/classes_screen/tabs/mago_tab.dart';
 import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
+import 'package:millenium/src/service/classe_service.dart';
 
 class ClassesScreen extends StatelessWidget {
   final Usuario usuario;
@@ -22,7 +22,7 @@ class ClassesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ClasseBloc>(
-      create: (context) => ClasseBloc(repository: ClasseRepository()),
+      create: (context) => ClasseBloc(repository: ClasseService()),
       child: Body(
         usuario: usuario,
       ),

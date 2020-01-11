@@ -80,7 +80,10 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
                   usuario: this.widget.usuario,
                   personagem: personagem,
                 ),
-                HabilidadesTab(),
+                HabilidadesTab(
+                  usuario: this.widget.usuario,
+                  personagem: personagem,
+                ),
                 EquipamentoTab(
                   usuario: this.widget.usuario,
                   personagem: personagem,
