@@ -27,10 +27,10 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
 
   _EquipamentoTabState({@required this.usuario, @required this.personagem});
 
-  final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-
   AnimatedIconData iconFloatingButtonAdmin = AnimatedIcons.menu_close;
   Widget iconFloatingButtonPlayer = Icon(Icons.check);
+
+  final _refreshKey = GlobalKey<RefreshIndicatorState>();
 
   void atualizarPersonagem() {
     BlocProvider.of<PersonagemBloc>(context).add(
@@ -57,41 +57,46 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
         is PersonagemCarregando;
   }
 
-  Future<void> refresh() async {
-    BlocProvider.of<PersonagemBloc>(context).add(
-      ObterPersonagem(idPersonagem: personagem.id),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocListener<PersonagemBloc, PersonagemState>(
-        listener: (context, state) {
-          if (state is PersonagemCarregando) {
-            setState(() {
-              iconFloatingButtonAdmin = null;
-              iconFloatingButtonPlayer = CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.white),
-              );
-            });
-          }
+    return BlocListener<PersonagemBloc, PersonagemState>(
+      listener: (context, state) {
+        if (state is PersonagemCarregando) {
+          setState(() {
+            iconFloatingButtonAdmin = null;
+            iconFloatingButtonPlayer = CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.white),
+            );
+          });
+        }
 
-          if (state is PersonagemSuccess) {
-            setState(() {
-              iconFloatingButtonAdmin = AnimatedIcons.menu_close;
-              iconFloatingButtonPlayer = Icon(Icons.check);
-            });
-          }
-        },
-        child: RefreshIndicator(
-          key: refreshIndicatorKey,
-          onRefresh: refresh,
+        if (state is PersonagemCarregado) {
+          setState(() {
+            iconFloatingButtonAdmin = AnimatedIcons.menu_close;
+            iconFloatingButtonPlayer = Icon(Icons.check);
+          });
+        }
+
+        if (state is PersonagemSuccess) {
+          setState(() {
+            iconFloatingButtonAdmin = AnimatedIcons.menu_close;
+            iconFloatingButtonPlayer = Icon(Icons.check);
+          });
+        }
+      },
+      child: Scaffold(
+        body: RefreshIndicator(
+          key: _refreshKey,
+          onRefresh: () async {
+            BlocProvider.of<PersonagemBloc>(context).add(
+              ObterPersonagem(idPersonagem: personagem.id),
+            );
+          },
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   EquipamentoCard(personagem: personagem),
                   BolsaCard(personagem: personagem)
@@ -100,17 +105,17 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
             ),
           ),
         ),
+        floatingActionButton: usuario.isAdmin
+            ? _FloatingAdminButton(
+                animatedIcon: iconFloatingButtonAdmin,
+                onSalvar: atualizarPersonagem,
+                onAdicionar: exibirPopupCadastroItem,
+              )
+            : FloatingActionButton(
+                child: iconFloatingButtonPlayer,
+                onPressed: atualizarPersonagem,
+              ),
       ),
-      floatingActionButton: usuario.isAdmin
-          ? _FloatingAdminButton(
-              animatedIcon: iconFloatingButtonAdmin,
-              onSalvar: atualizarPersonagem,
-              onAdicionar: exibirPopupCadastroItem,
-            )
-          : FloatingActionButton(
-              child: iconFloatingButtonPlayer,
-              onPressed: atualizarPersonagem,
-            ),
     );
   }
 }

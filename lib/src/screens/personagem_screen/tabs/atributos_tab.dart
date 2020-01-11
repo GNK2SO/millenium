@@ -31,8 +31,8 @@ class _AtributosTabState extends State<AtributosTab>
   Personagem personagem;
   _AtributosTabState({@required this.usuario, @required this.personagem});
 
-  final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final _refreshKey = GlobalKey<RefreshIndicatorState>();
   AnimationController _animationController;
 
   Widget iconFloatingButton = Icon(Icons.check);
@@ -63,6 +63,11 @@ class _AtributosTabState extends State<AtributosTab>
             );
           });
         }
+        if (state is PersonagemCarregado) {
+          setState(() {
+            iconFloatingButton = Icon(Icons.check);
+          });
+        }
 
         if (state is PersonagemSuccess) {
           setState(() {
@@ -70,83 +75,85 @@ class _AtributosTabState extends State<AtributosTab>
           });
         }
       },
-      child: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: _refresh,
-        child: Stack(
-          children: <Widget>[
-            SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ImageFormField(
-                        context: context,
-                        imagem: personagem.imagem,
-                        size: 64,
-                        icon: Icon(Icons.person, size: 80),
-                        onChanged: (imagem) {
-                          if (imagem is String) {
-                            personagem.imagem = imagem;
-                          }
-                        },
-                      ),
+      child: Scaffold(
+        body: RefreshIndicator(
+          key: _refreshKey,
+          onRefresh: () async {
+            BlocProvider.of<PersonagemBloc>(context).add(
+              ObterPersonagem(idPersonagem: personagem.id),
+            );
+          },
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  _ImagemPersonagem(
+                    imagem: personagem.imagem,
+                    onChanged: (imagem) {
+                      if (imagem is String) {
+                        personagem.imagem = imagem;
+                      }
+                    },
+                  ),
+                  AdminCard(isAdmin: usuario.isAdmin, personagem: personagem),
+                  InfoCard(isAdmin: usuario.isAdmin, personagem: personagem),
+                  StatusCard(personagem: personagem),
+                  AtributosCombateFormField(
+                    isAdmin: usuario.isAdmin,
+                    isKarmaUnlocked: this.personagem.karma,
+                    isMagiaUnlocked: this.personagem.isMagiaUnlocked(),
+                    atributos: personagem.atributosCombate,
+                    atributosBase: AtributosCombate.fromJson(
+                      personagem.atributosCombate.toJson(),
                     ),
-                    AdminCard(isAdmin: usuario.isAdmin, personagem: personagem),
-                    InfoCard(isAdmin: usuario.isAdmin, personagem: personagem),
-                    StatusCard(personagem: personagem),
-                    AtributosCombateFormField(
-                      isAdmin: usuario.isAdmin,
-                      isKarmaUnlocked: this.personagem.karma,
-                      isMagiaUnlocked: this.personagem.isMagiaUnlocked(),
-                      atributos: personagem.atributosCombate,
-                      atributosBase: AtributosCombate.fromJson(
-                        personagem.atributosCombate.toJson(),
-                      ),
+                  ),
+                  AtributosExploracaoFormField(
+                    isAdmin: usuario.isAdmin,
+                    atributos: personagem.atributosExploracao,
+                    atributosBase: AtributosExploracao.fromJson(
+                      personagem.atributosExploracao.toJson(),
                     ),
-                    AtributosExploracaoFormField(
-                      isAdmin: usuario.isAdmin,
-                      atributos: personagem.atributosExploracao,
-                      atributosBase: AtributosExploracao.fromJson(
-                        personagem.atributosExploracao.toJson(),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FloatingActionButton(
-                  child: iconFloatingButton,
-                  onPressed: () {
-                    _onFormSubmitted();
-                  },
-                ),
-              ),
-            ),
-          ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: iconFloatingButton,
+          onPressed: _atualizarPersonagem,
         ),
       ),
     );
   }
 
-  void _onFormSubmitted() {
+  void _atualizarPersonagem() {
     _formKey.currentState.save();
 
     BlocProvider.of<PersonagemBloc>(context).add(
       AtualizarPersonagem(personagem: personagem),
     );
   }
+}
 
-  Future<void> _refresh() async {
-    BlocProvider.of<PersonagemBloc>(context).add(
-      ObterPersonagem(idPersonagem: personagem.id),
+class _ImagemPersonagem extends StatelessWidget {
+  final String imagem;
+  final Function(dynamic) onChanged;
+
+  _ImagemPersonagem({@required this.imagem, @required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ImageFormField(
+          context: context,
+          imagem: imagem,
+          size: 64,
+          icon: Icon(Icons.person, size: 80),
+          onChanged: onChanged),
     );
   }
 }
