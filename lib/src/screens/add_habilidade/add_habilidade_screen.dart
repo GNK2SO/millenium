@@ -56,67 +56,67 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        title: Text("Nova Habilidade"),
-        actions: [
-          Visibility(
-            visible: pontosHabilidade != personagem.pontosHabilidade,
-            child: IconButton(
-              icon: Icon(Icons.replay),
-              onPressed: () {
-                setState(() {
-                  habilidadesSelecionadas.clear();
-                  pontosHabilidade = personagem.pontosHabilidade;
-                });
-              },
-            ),
-          )
-        ],
-      ),
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<ClasseBloc, ClasseState>(
-            listener: (context, state) {
-              if (state is ClasseFailure) {
-                showMessage(key: scaffoldKey, mensagem: state.erro);
-              }
-            },
-          ),
-          BlocListener<PersonagemBloc, PersonagemState>(
-            listener: (context, state) {
-              if (state is PersonagemSuccess) {
-                setState(() {
-                  isLoading = false;
-                });
-                Navigator.of(context).pop();
-              }
-              if (state is PersonagemCarregando) {
-                setState(() {
-                  isLoading = true;
-                });
-              }
-              if (state is PersonagemFailure) {
-                setState(() {
-                  isLoading = false;
-                });
-                showMessage(key: scaffoldKey, mensagem: state.erro);
-              }
-            },
-          )
-        ],
-        child: BlocBuilder<ClasseBloc, ClasseState>(
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ClasseBloc, ClasseState>(
+          listener: (context, state) {
+            if (state is ClasseFailure) {
+              showMessage(key: scaffoldKey, mensagem: state.erro);
+            }
+          },
+        ),
+        BlocListener<PersonagemBloc, PersonagemState>(
+          listener: (context, state) {
+            if (state is PersonagemSuccess) {
+              setState(() {
+                isLoading = false;
+              });
+              Navigator.of(context).pop();
+            }
+            if (state is PersonagemCarregando) {
+              setState(() {
+                isLoading = true;
+              });
+            }
+            if (state is PersonagemFailure) {
+              setState(() {
+                isLoading = false;
+              });
+              showMessage(key: scaffoldKey, mensagem: state.erro);
+            }
+          },
+        )
+      ],
+      child: Scaffold(
+        key: scaffoldKey,
+        appBar: AppBar(
+          title: Text("Nova Habilidade"),
+          actions: [
+            Visibility(
+              visible: pontosHabilidade != personagem.pontosHabilidade,
+              child: IconButton(
+                icon: Icon(Icons.replay),
+                onPressed: () {
+                  setState(() {
+                    habilidadesSelecionadas.clear();
+                    pontosHabilidade = personagem.pontosHabilidade;
+                  });
+                },
+              ),
+            )
+          ],
+        ),
+        body: BlocBuilder<ClasseBloc, ClasseState>(
           builder: (context, state) {
             if (state is ClasseCarregada) {
-              return SingleChildScrollView(
-                child: Stack(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        _PontosHabilidade(pontosHabilidade),
-                        ListView.separated(
+              return Stack(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      _PontosHabilidade(pontosHabilidade),
+                      Expanded(
+                        child: ListView.separated(
                           shrinkWrap: true,
                           itemCount:
                               state.classe.habilidadesAprendizagem.length,
@@ -163,11 +163,11 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
                             return CustomDivider(height: 1);
                           },
                         ),
-                      ],
-                    ),
-                    _LoadingIndicator(isVisible: isLoading),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  _LoadingIndicator(isVisible: isLoading),
+                ],
               );
             }
 
@@ -178,16 +178,16 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
             return Container();
           },
         ),
-      ),
-      floatingActionButton: Visibility(
-        visible: pontosHabilidade != personagem.pontosHabilidade,
-        child: FloatingActionButton(
-          child: Icon(Icons.check),
-          onPressed: () {
-            personagem.pontosHabilidade = pontosHabilidade;
-            personagem.habilidades.addAll(habilidadesSelecionadas);
-            atualizarPersonagem();
-          },
+        floatingActionButton: Visibility(
+          visible: pontosHabilidade != personagem.pontosHabilidade,
+          child: FloatingActionButton(
+            child: Icon(Icons.check),
+            onPressed: () {
+              personagem.pontosHabilidade = pontosHabilidade;
+              personagem.habilidades.addAll(habilidadesSelecionadas);
+              atualizarPersonagem();
+            },
+          ),
         ),
       ),
     );
