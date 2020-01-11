@@ -14,38 +14,19 @@ import 'package:millenium/src/screens/error_screen.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
 import 'package:millenium/src/service/classe_service.dart';
 
-class ClassesScreen extends StatelessWidget {
+class ClassesScreen extends StatefulWidget {
   final Usuario usuario;
 
   ClassesScreen({@required this.usuario});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider<ClasseBloc>(
-      create: (context) => ClasseBloc(repository: ClasseService()),
-      child: Body(
-        usuario: usuario,
-      ),
-    );
-  }
+  _ClassesScreenState createState() => _ClassesScreenState(usuario: usuario);
 }
 
-class Body extends StatefulWidget {
+class _ClassesScreenState extends State<ClassesScreen> {
   final Usuario usuario;
 
-  Body({@required this.usuario});
-
-  @override
-  _BodyState createState() => _BodyState(
-        usuario: usuario,
-      );
-}
-
-class _BodyState extends State<Body> {
-  final Usuario usuario;
-
-  _BodyState({@required this.usuario});
-
+  _ClassesScreenState({@required this.usuario});
   final List<SvgPicture> tabs = [
     SvgPicture.asset(
       "assets/icons/swords.svg",
