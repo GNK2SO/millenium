@@ -52,38 +52,27 @@ class _EquipamentoTabState extends State<EquipamentoTab> {
     );
   }
 
-  bool isLoading() {
-    return BlocProvider.of<PersonagemBloc>(context).state
-        is PersonagemCarregando;
+  void personagemListener(BuildContext context, PersonagemState state) {
+    if (state is PersonagemCarregando) {
+      setState(() {
+        iconFloatingButtonAdmin = null;
+        iconFloatingButtonPlayer = CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Colors.white),
+        );
+      });
+    }
+    if (state is PersonagemAtualizado) {
+      setState(() {
+        iconFloatingButtonAdmin = AnimatedIcons.menu_close;
+        iconFloatingButtonPlayer = Icon(Icons.check);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
-      listener: (context, state) {
-        if (state is PersonagemCarregando) {
-          setState(() {
-            iconFloatingButtonAdmin = null;
-            iconFloatingButtonPlayer = CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.white),
-            );
-          });
-        }
-
-        if (state is PersonagemCarregado) {
-          setState(() {
-            iconFloatingButtonAdmin = AnimatedIcons.menu_close;
-            iconFloatingButtonPlayer = Icon(Icons.check);
-          });
-        }
-
-        if (state is PersonagemSuccess) {
-          setState(() {
-            iconFloatingButtonAdmin = AnimatedIcons.menu_close;
-            iconFloatingButtonPlayer = Icon(Icons.check);
-          });
-        }
-      },
+      listener: personagemListener,
       child: Scaffold(
         body: RefreshIndicator(
           key: _refreshKey,

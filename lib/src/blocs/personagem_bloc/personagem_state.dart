@@ -42,6 +42,18 @@ class PersonagensCarregado extends PersonagemState {
   String toString() => 'PersonagensCarregado';
 }
 
+class PersonagemAtualizado extends PersonagemState {
+  final String mensagem;
+
+  PersonagemAtualizado({this.mensagem: ""});
+
+  @override
+  List<Object> get props => [this.mensagem];
+
+  @override
+  String toString() => 'PersonagemAtualizado';
+}
+
 class PersonagemRemovido extends PersonagemState {
   final String mensagem;
 

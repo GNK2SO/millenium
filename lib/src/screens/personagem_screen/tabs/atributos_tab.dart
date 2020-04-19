@@ -9,6 +9,7 @@ import 'package:millenium/src/components/card/status_card.dart';
 import 'package:millenium/src/components/form/atributos/atributo_combate_form_field.dart';
 import 'package:millenium/src/components/form/atributos/atributo_exploracao_form_field.dart.dart';
 import 'package:millenium/src/components/form/imagem/image_form_field.dart';
+import 'package:millenium/src/components/form/personagem/imagem_personagem.dart';
 import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
 import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
@@ -29,10 +30,14 @@ class _AtributosTabState extends State<AtributosTab>
     with SingleTickerProviderStateMixin {
   Usuario usuario;
   Personagem personagem;
-  _AtributosTabState({@required this.usuario, @required this.personagem});
 
-  final _formKey = GlobalKey<FormState>();
-  final _refreshKey = GlobalKey<RefreshIndicatorState>();
+  _AtributosTabState({
+    @required this.usuario,
+    @required this.personagem,
+  });
+
+  GlobalKey<FormState> _formKey;
+  GlobalKey<RefreshIndicatorState> _refreshKey;
   AnimationController _animationController;
 
   Widget iconFloatingButton = Icon(Icons.check);
@@ -40,6 +45,8 @@ class _AtributosTabState extends State<AtributosTab>
   @override
   void initState() {
     super.initState();
+    _formKey = GlobalKey<FormState>();
+    _refreshKey = GlobalKey<RefreshIndicatorState>();
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -52,29 +59,34 @@ class _AtributosTabState extends State<AtributosTab>
     super.dispose();
   }
 
+  void personagemListener(BuildContext context, PersonagemState state) {
+    if (state is PersonagemCarregando) {
+      setState(() {
+        iconFloatingButton = CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Colors.white),
+        );
+      });
+    }
+    
+    if (state is PersonagemAtualizado) {
+      setState(() {
+        iconFloatingButton = Icon(Icons.check);
+      });
+    }
+  }
+
+  void _atualizarPersonagem() {
+    _formKey.currentState.save();
+
+    BlocProvider.of<PersonagemBloc>(context).add(
+      AtualizarPersonagem(personagem: personagem),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
-      listener: (context, state) {
-        if (state is PersonagemCarregando) {
-          setState(() {
-            iconFloatingButton = CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.white),
-            );
-          });
-        }
-        if (state is PersonagemCarregado) {
-          setState(() {
-            iconFloatingButton = Icon(Icons.check);
-          });
-        }
-
-        if (state is PersonagemSuccess) {
-          setState(() {
-            iconFloatingButton = Icon(Icons.check);
-          });
-        }
-      },
+      listener: personagemListener,
       child: Scaffold(
         body: RefreshIndicator(
           key: _refreshKey,
@@ -89,7 +101,7 @@ class _AtributosTabState extends State<AtributosTab>
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  _ImagemPersonagem(
+                  ImagemPersonagem(
                     imagem: personagem.imagem,
                     onChanged: (imagem) {
                       if (imagem is String) {
@@ -126,34 +138,6 @@ class _AtributosTabState extends State<AtributosTab>
           onPressed: _atualizarPersonagem,
         ),
       ),
-    );
-  }
-
-  void _atualizarPersonagem() {
-    _formKey.currentState.save();
-
-    BlocProvider.of<PersonagemBloc>(context).add(
-      AtualizarPersonagem(personagem: personagem),
-    );
-  }
-}
-
-class _ImagemPersonagem extends StatelessWidget {
-  final String imagem;
-  final Function(dynamic) onChanged;
-
-  _ImagemPersonagem({@required this.imagem, @required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ImageFormField(
-          context: context,
-          imagem: imagem,
-          size: 64,
-          icon: Icon(Icons.person, size: 80),
-          onChanged: onChanged),
     );
   }
 }

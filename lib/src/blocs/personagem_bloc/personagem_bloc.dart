@@ -110,7 +110,7 @@ class PersonagemBloc extends Bloc<PersonagemEvent, PersonagemState> {
 
       try {
         await _service.atualizar(personagem);
-        yield PersonagemSuccess(mensagem: "Alterações salvas com sucesso!");
+        yield PersonagemAtualizado(mensagem: "Alterações salvas com sucesso!");
       } catch (_) {
         yield PersonagemFailure(
           erro: "Erro ao atualizar personagem.\nVerifique sua conexão.",
