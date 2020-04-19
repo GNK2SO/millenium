@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_bloc.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_event.dart';
 import 'package:millenium/src/blocs/personagem_bloc/personagem_state.dart';
-import 'package:millenium/src/components/form/input/text_input.dart';
+import 'package:millenium/src/components/form/personagem/personagem_form.dart';
 import 'package:millenium/src/components/tiles/personagem_tile.dart';
 import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/components/drawer.dart';
@@ -35,25 +35,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    obterMeusPersonagens();
+  }
+
+  void obterMeusPersonagens() {
     BlocProvider.of<PersonagemBloc>(context).add(
       ObterMeusPersonagens(uid: usuario.uid),
     );
   }
 
+  void personagemListener(BuildContext context, PersonagemState state) {
+    if (state is PersonagemSuccess) {
+      obterMeusPersonagens();
+    }
+    if (state is PersonagemRemovido) {
+      showMessage(key: _scaffoldKey, mensagem: state.mensagem);
+      obterMeusPersonagens();
+    }
+    if (state is PersonagemFailure) {
+      showMessage(key: _scaffoldKey, mensagem: state.erro);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<PersonagemBloc, PersonagemState>(
-      listener: (context, state) {
-        if (state is PersonagemRemovido) {
-          showMessage(key: _scaffoldKey, mensagem: state.mensagem);
-          BlocProvider.of<PersonagemBloc>(context).add(
-            ObterMeusPersonagens(uid: usuario.uid),
-          );
-        }
-        if (state is PersonagemFailure) {
-          showMessage(key: _scaffoldKey, mensagem: state.erro);
-        }
-      },
+      listener: personagemListener,
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(title: Text("Personagens")),
@@ -84,9 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                     ),
-                    background: Container(
-                      color: Colors.red,
-                    ),
+                    background: Container(color: Colors.red),
                     onDismissed: (_) {
                       BlocProvider.of<PersonagemBloc>(context).add(
                         RemoverPersonagem(personagem: personagens[index]),
@@ -118,70 +123,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-}
-
-class PersonagemForm extends StatelessWidget {
-  final _nomeController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final BuildContext contextPage;
-
-  PersonagemForm({this.contextPage});
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("Novo Personagem"),
-      content: Form(
-        key: _formKey,
-        child: TextInput(
-          padding: const EdgeInsets.all(0),
-          labelText: "Nome",
-          controller: _nomeController,
-          validator: isValidNome,
-        ),
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: Text(
-            "Cancelar",
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        RaisedButton(
-          color: Theme.of(context).primaryColor,
-          child: Text(
-            "Cadastrar",
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          onPressed: () {
-            _submitForm(contextPage);
-          },
-        )
-      ],
-    );
-  }
-
-  void _submitForm(BuildContext context) {
-    if (_formKey.currentState.validate()) {
-      Navigator.of(context).pop();
-      BlocProvider.of<PersonagemBloc>(context)
-          .add(SalvarPersonagem(nome: _nomeController.text));
-    }
-  }
-
-  String isValidNome(String nomePersonagen) {
-    if (nomePersonagen == null || nomePersonagen.isEmpty) {
-      return "Campo obrigatório!";
-    }
-    return null;
   }
 }
