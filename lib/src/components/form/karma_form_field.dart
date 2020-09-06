@@ -7,6 +7,7 @@ class KarmaFormField extends FormField<bool> {
     bool karma,
     FormFieldSetter<bool> onSaved,
   }) : super(
+          initialValue: karma,
           onSaved: onSaved,
           builder: (state) {
             return Padding(
@@ -22,7 +23,7 @@ class KarmaFormField extends FormField<bool> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 64.0),
                       child: Switch(
                         activeColor: primaryColor,
                         value: karma,

@@ -13,6 +13,9 @@ class EquipamentoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (equipamentos.isEmpty) {
+      return ListTile(title: Text("Não possui nenhum item equipado."));
+    }
     return ListView.separated(
       shrinkWrap: true,
       itemCount: equipamentos.length,

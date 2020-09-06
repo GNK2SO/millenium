@@ -8,7 +8,6 @@ import 'package:millenium/src/components/card/info_card.dart';
 import 'package:millenium/src/components/card/status_card.dart';
 import 'package:millenium/src/components/form/atributos/atributo_combate_form_field.dart';
 import 'package:millenium/src/components/form/atributos/atributo_exploracao_form_field.dart.dart';
-import 'package:millenium/src/components/form/imagem/image_form_field.dart';
 import 'package:millenium/src/components/form/personagem/imagem_personagem.dart';
 import 'package:millenium/src/models/atributos_combate/atributos_combate.dart';
 import 'package:millenium/src/models/atributos_exploracao/atributos_exploracao.dart';
@@ -67,7 +66,7 @@ class _AtributosTabState extends State<AtributosTab>
         );
       });
     }
-    
+
     if (state is PersonagemAtualizado) {
       setState(() {
         iconFloatingButton = Icon(Icons.check);
@@ -109,7 +108,10 @@ class _AtributosTabState extends State<AtributosTab>
                       }
                     },
                   ),
-                  AdminCard(isAdmin: usuario.isAdmin, personagem: personagem),
+                  Visibility(
+                    visible: usuario.isAdmin,
+                    child: AdminCard(personagem: personagem),
+                  ),
                   InfoCard(isAdmin: usuario.isAdmin, personagem: personagem),
                   StatusCard(personagem: personagem),
                   AtributosCombateFormField(

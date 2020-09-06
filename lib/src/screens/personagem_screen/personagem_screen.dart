@@ -47,6 +47,11 @@ class _PersonagemScreenState extends State<PersonagemScreen> {
     return true;
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void personagemListener(BuildContext context, PersonagemState state) {
     if (state is PersonagemAtualizado) {
       showMessage(

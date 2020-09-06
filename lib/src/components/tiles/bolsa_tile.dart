@@ -39,6 +39,9 @@ class BolsaTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (bolsa.isEmpty) {
+      return ListTile(title: Text("Não possui itens."));
+    }
     return ListView.separated(
       shrinkWrap: true,
       itemCount: bolsa.length,

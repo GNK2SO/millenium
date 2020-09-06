@@ -13,6 +13,8 @@ import 'package:millenium/src/models/personagem/personagem.dart';
 import 'package:millenium/src/screens/loading_screen.dart';
 import 'package:millenium/src/util/util.dart';
 
+import '../../blocs/personagem_bloc/personagem_state.dart';
+
 class AddHabilidadeScreen extends StatefulWidget {
   final Personagem personagem;
 
@@ -32,20 +34,13 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
   int pontosHabilidade;
   List<Habilidade> habilidadesSelecionadas = [];
 
-  bool isLoading = false;
-
   @override
   void initState() {
     super.initState();
     pontosHabilidade = personagem.pontosHabilidade;
-    BlocProvider.of<ClasseBloc>(context)
-        .add(ObterClasse(nome: personagem.classe));
-  }
-
-  List<Habilidade> getHabilidades(List<Habilidade> habilidadeClasse) {
-    return habilidadeClasse.where((habilidade) {
-      return !personagem.habilidades.contains(habilidade);
-    }).toList();
+    BlocProvider.of<ClasseBloc>(context).add(
+      ObterClasse(nome: personagem.classe),
+    );
   }
 
   void atualizarPersonagem() {
@@ -67,21 +62,13 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
         ),
         BlocListener<PersonagemBloc, PersonagemState>(
           listener: (context, state) {
-            if (state is PersonagemSuccess) {
-              setState(() {
-                isLoading = false;
-              });
+            if (state is PersonagemAtualizado) {
+              BlocProvider.of<PersonagemBloc>(context).add(
+                ObterPersonagem(idPersonagem: personagem.id),
+              );
               Navigator.of(context).pop();
             }
-            if (state is PersonagemCarregando) {
-              setState(() {
-                isLoading = true;
-              });
-            }
             if (state is PersonagemFailure) {
-              setState(() {
-                isLoading = false;
-              });
               showMessage(key: scaffoldKey, mensagem: state.erro);
             }
           },
@@ -103,12 +90,26 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
                   });
                 },
               ),
-            )
+            ),
+            Visibility(
+              visible: pontosHabilidade != personagem.pontosHabilidade,
+              child: IconButton(
+                icon: Icon(Icons.check),
+                onPressed: () {
+                  personagem.pontosHabilidade = pontosHabilidade;
+                  personagem.habilidades.addAll(habilidadesSelecionadas);
+                  atualizarPersonagem();
+                },
+              ),
+            ),
           ],
         ),
         body: BlocBuilder<ClasseBloc, ClasseState>(
           builder: (context, state) {
             if (state is ClasseCarregada) {
+              List<Habilidade> habilidades =
+                  state.classe.habilidadesAprendizagem;
+
               return Stack(
                 children: <Widget>[
                   Column(
@@ -118,44 +119,20 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
                       Expanded(
                         child: ListView.separated(
                           shrinkWrap: true,
-                          itemCount:
-                              state.classe.habilidadesAprendizagem.length,
+                          itemCount: habilidades.length,
                           itemBuilder: (context, atual) {
-                            Habilidade habilidade =
-                                state.classe.habilidadesAprendizagem[atual];
+                            Habilidade habilidade = habilidades[atual];
 
                             return ListTile(
                               title: Text(habilidade.titulo),
                               trailing: Checkbox(
-                                value: habilidadesSelecionadas
-                                    .contains(habilidade),
+                                value: isSelected(habilidade),
                                 onChanged: (selected) {
-                                  if (pontosHabilidade > 0 && selected) {
-                                    setState(() {
-                                      habilidadesSelecionadas.add(habilidade);
-                                      pontosHabilidade--;
-                                    });
-                                  }
-                                  if (!selected) {
-                                    setState(() {
-                                      habilidadesSelecionadas
-                                          .remove(habilidade);
-                                      pontosHabilidade++;
-                                    });
-                                  }
+                                  selecionarHabilidade(selected, habilidade);
                                 },
                               ),
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      content: HabilidadeTile(
-                                        habilidade: habilidade,
-                                      ),
-                                    );
-                                  },
-                                );
+                                exibirDescricaoHabilidade(habilidade);
                               },
                             );
                           },
@@ -166,7 +143,6 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
                       ),
                     ],
                   ),
-                  _LoadingIndicator(isVisible: isLoading),
                 ],
               );
             }
@@ -178,18 +154,48 @@ class _AddHabilidadeScreenState extends State<AddHabilidadeScreen> {
             return Container();
           },
         ),
-        floatingActionButton: Visibility(
-          visible: pontosHabilidade != personagem.pontosHabilidade,
-          child: FloatingActionButton(
-            child: Icon(Icons.check),
-            onPressed: () {
-              personagem.pontosHabilidade = pontosHabilidade;
-              personagem.habilidades.addAll(habilidadesSelecionadas);
-              atualizarPersonagem();
-            },
-          ),
-        ),
       ),
+    );
+  }
+
+  bool isSelected(Habilidade habilidade) {
+    return habilidadesSelecionadas.contains(habilidade) ||
+        personagem.habilidades
+            .map((habilidade) => habilidade.titulo)
+            .contains(habilidade.titulo);
+  }
+
+  void selecionarHabilidade(bool isSelected, Habilidade habilidade) {
+    bool alredyHasHabilidade = personagem.habilidades
+        .map((habilidade) => habilidade.titulo)
+        .contains(habilidade.titulo);
+
+    if (!alredyHasHabilidade) {
+      if (pontosHabilidade > 0 && isSelected) {
+        setState(() {
+          habilidadesSelecionadas.add(habilidade);
+          pontosHabilidade--;
+        });
+      }
+      if (!isSelected) {
+        setState(() {
+          habilidadesSelecionadas.remove(habilidade);
+          pontosHabilidade++;
+        });
+      }
+    }
+  }
+
+  void exibirDescricaoHabilidade(Habilidade habilidade) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: HabilidadeTile(
+            habilidade: habilidade,
+          ),
+        );
+      },
     );
   }
 }
@@ -214,39 +220,6 @@ class _PontosHabilidade extends StatelessWidget {
       child: Text(
         "$pontosHabilidade Pontos",
         textAlign: TextAlign.center,
-      ),
-    );
-  }
-}
-
-class _LoadingIndicator extends StatelessWidget {
-  final bool isVisible;
-
-  _LoadingIndicator({@required this.isVisible});
-
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: isVisible,
-      child: Container(
-        height: MediaQuery.of(context).size.height - 80,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(360),
-              ),
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.white),
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

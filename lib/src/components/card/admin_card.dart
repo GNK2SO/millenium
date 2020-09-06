@@ -5,79 +5,63 @@ import 'package:millenium/src/components/utils/custom_divider.dart';
 import 'package:millenium/src/models/personagem/personagem.dart';
 
 class AdminCard extends StatelessWidget {
-  final bool isAdmin;
   final Personagem personagem;
-  AdminCard({@required this.isAdmin, @required this.personagem});
+  AdminCard({@required this.personagem});
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isAdmin,
-      child: Card(
-        child: Container(
-          decoration: BoxDecoration(border: Border.all()),
-          child: ExpansionTile(
-            title: Text(
-              "Admin",
-              style: TextStyle(fontSize: 24),
-            ),
-            children: <Widget>[
-              CustomDivider(
-                height: 1,
-                width: double.infinity,
-              ),
-              PontosDitribuicaoFormField(
-                text: "Pts. Combate",
-                pontosDistribuicao:
-                    personagem.atributosCombate.pontosDistribuicao,
-                onSaved: (pontosDistribuicao) {
-                  if (pontosDistribuicao != null) {
-                    personagem.atributosCombate.pontosDistribuicao =
-                        pontosDistribuicao;
-                  }
-                },
-              ),
-              CustomDivider(height: 1, width: double.infinity),
-              PontosDitribuicaoFormField(
-                text: "Pts. Exploração",
-                pontosDistribuicao:
-                    personagem.atributosExploracao.pontosDistribuicao,
-                onSaved: (pontosDistribuicao) {
-                  if (pontosDistribuicao != null) {
-                    personagem.atributosExploracao.pontosDistribuicao =
-                        pontosDistribuicao;
-                  }
-                },
-              ),
-              Visibility(
-                visible: personagem.classe.isNotEmpty,
-                child: Column(
-                  children: <Widget>[
-                    CustomDivider(height: 1, width: double.infinity),
-                    PontosDitribuicaoFormField(
-                      text: "Pts. Habilidade",
-                      pontosDistribuicao: personagem.pontosHabilidade,
-                      onSaved: (pontosDistribuicao) {
-                        if (pontosDistribuicao != null) {
-                          personagem.pontosHabilidade = pontosDistribuicao;
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              CustomDivider(height: 1, width: double.infinity),
-              KarmaFormField(
-                text: "Karma",
-                karma: personagem.karma,
-                onSaved: (karma) {
-                  if (karma != null) {
-                    personagem.karma = karma;
-                  }
-                },
-              ),
-            ],
+    return Card(
+      child: Container(
+        decoration: BoxDecoration(border: Border.all()),
+        child: ExpansionTile(
+          title: Text(
+            "Admin",
+            style: TextStyle(fontSize: 24),
           ),
+          children: <Widget>[
+            CustomDivider(
+              height: 1,
+              width: double.infinity,
+            ),
+            PontosDitribuicaoFormField(
+              text: "Pts. Combate",
+              pontosDistribuicao: personagem.pontosDistribuicaoCombate,
+              onSaved: (pontosDistribuicao) {
+                personagem.setPontoDistribuicaoCombate(pontosDistribuicao);
+              },
+            ),
+            CustomDivider(height: 1, width: double.infinity),
+            PontosDitribuicaoFormField(
+              text: "Pts. Exploração",
+              pontosDistribuicao: personagem.pontosDistribuicaoExploracao,
+              onSaved: (pontosDistribuicao) {
+                personagem.setPontoDistribuicaoExploracao(pontosDistribuicao);
+              },
+            ),
+            Visibility(
+              visible: personagem.classe.isNotEmpty,
+              child: Column(
+                children: <Widget>[
+                  CustomDivider(height: 1, width: double.infinity),
+                  PontosDitribuicaoFormField(
+                    text: "Pts. Habilidade",
+                    pontosDistribuicao: personagem.pontosHabilidade,
+                    onSaved: (pontosDistribuicao) {
+                      personagem.setPontoHabilidade(pontosDistribuicao);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            CustomDivider(height: 1, width: double.infinity),
+            KarmaFormField(
+              text: "Karma",
+              karma: personagem.karma,
+              onSaved: (karma) {
+                personagem.karma = karma;
+              },
+            ),
+          ],
         ),
       ),
     );

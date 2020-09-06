@@ -6,6 +6,7 @@ class PontosDitribuicaoFormField extends FormField<int> {
     int pontosDistribuicao,
     FormFieldSetter<int> onSaved,
   }) : super(
+          initialValue: pontosDistribuicao,
           onSaved: onSaved,
           builder: (state) {
             return Padding(

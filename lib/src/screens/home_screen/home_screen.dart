@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             if (state is PersonagensCarregado) {
               List<Personagem> personagens = state.personagens;
-              return ListView.separated(
+              return ListView.builder(
                 itemCount: personagens.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
@@ -86,9 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         );
-                        BlocProvider.of<PersonagemBloc>(context).add(
-                          ObterMeusPersonagens(uid: usuario.uid),
-                        );
                       },
                     ),
                     background: Container(color: Colors.red),
@@ -98,9 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   );
-                },
-                separatorBuilder: (context, index) {
-                  return CustomDivider(height: 1);
                 },
               );
             } else if (state is PersonagemCarregando) {

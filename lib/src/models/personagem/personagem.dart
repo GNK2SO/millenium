@@ -115,6 +115,22 @@ class Personagem {
     return this.atributosExploracao.magia >= 10;
   }
 
+  int get pontosDistribuicaoCombate => this.atributosCombate.pontosDistribuicao;
+  int get pontosDistribuicaoExploracao =>
+      this.atributosExploracao.pontosDistribuicao;
+
+  void setPontoDistribuicaoCombate(int pontos) {
+    this.atributosCombate.pontosDistribuicao = pontos;
+  }
+
+  void setPontoDistribuicaoExploracao(int pontos) {
+    this.atributosExploracao.pontosDistribuicao = pontos;
+  }
+
+  void setPontoHabilidade(int pontos) {
+    this.pontosHabilidade = pontos;
+  }
+
   @override
   String toString() => "Personagem { id: $id, nome: $nome }";
 }
